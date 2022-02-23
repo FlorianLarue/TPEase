@@ -7,9 +7,9 @@
 rsquared(Obs, Sim)
 }
 \arguments{
-\item{Obs}{Vector of observed value(s)}
+\item{Obs}{Vector of observed values}
 
-\item{Sim}{Vector of simulated value(s)}
+\item{Sim}{Vector of simulated values}
 }
 \value{
 The R squared of \code{Obs} and \code{Sim}

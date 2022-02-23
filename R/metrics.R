@@ -12,6 +12,7 @@
 #' @examples
 #' MAE(c(1,1,2), c(1,2,2))
 #' MAE(2, 3)
+#' @export
 MAE <- function(Obs,Sim) {
   Resid <- (Obs-Sim)
   Num <- sum(abs(Resid),na.rm=T)
@@ -30,6 +31,7 @@ MAE <- function(Obs,Sim) {
 #' @examples
 #' rMAE(c(1,1,2), c(1,2,2))
 #' rMAE(2, 3)
+#' @export
 rMAE <- function(Obs,Sim) {
   Num <- MAE(Obs,Sim)
   Den <- mean(Obs,na.rm=T)
@@ -46,6 +48,7 @@ rMAE <- function(Obs,Sim) {
 #' @examples
 #' MSE(c(1,1,2), c(1,2,2))
 #' MSE(2, 3)
+#' @export
 MSE <- function(Obs,Sim) {
   Resid <- (Obs-Sim)
   Num <- sum(Resid^2,na.rm=TRUE)
@@ -64,6 +67,7 @@ MSE <- function(Obs,Sim) {
 #' @examples
 #' RMSE(c(1,1,2), c(1,2,2))
 #' RMSE(2, 3)
+#' @export
 RMSE <- function(Obs,Sim) {
   return(sqrt(MSE(Obs,Sim)))
 }
@@ -79,6 +83,7 @@ RMSE <- function(Obs,Sim) {
 #' @examples
 #' rRMSE(c(1,1,2), c(1,2,2))
 #' rRMSE(2, 3)
+#' @export
 rRMSE <- function(Obs,Sim) {
   Num <- RMSE(Obs,Sim)
   Den <- mean(Obs,na.rm=T)
@@ -94,6 +99,7 @@ rRMSE <- function(Obs,Sim) {
 #' @return The R squared of \code{Obs} and \code{Sim}
 #' @examples
 #' rsquared(c(1,1,2), c(1,2,2))
+#' @export
 rsquared <- function(Obs, Sim) {
   Corr <- cor(Obs, Sim)
   return(Corr^2)

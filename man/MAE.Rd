@@ -15,7 +15,8 @@ MAE(Obs, Sim)
 The mean absolute error of \code{Obs} and \code{Sim}
 }
 \description{
-Computes Mean Absolute Error between observed and simulated values
+Computes Mean Absolute Error between observed
+and simulated values
 }
 \examples{
 MAE(c(1,1,2), c(1,2,2))
