@@ -1,6 +1,6 @@
 # Collection of Frequently Used Functions (FUF)
 
-#' @title Combine dataframes by Columns
+#' @title Merge dataframes by Columns
 #' @description Allows cbind to work with dataframes with different columns
 #' by filling missing values with NA
 #' found on https://stackoverflow.com/questions/7962267/
@@ -11,12 +11,13 @@
 #' b <- data.frame(a = 1, b = 2, c = 3)
 #' df <- cbind.all(a, b)
 #' @export
-cbind.all <- function (...) {
+cmerge.all <- function (...) {
   nm <- list(...)
   nm <- lapply(nm, as.matrix)
   n <- max(sapply(nm, nrow))
-  do.call(cbind, lapply(nm, function(x) rbind(x, matrix(, n - nrow(x),
-                                                        ncol(x)))))
+  df <- do.call(cbind, lapply(nm, function(x)
+    rbind(x, matrix(NA, n - nrow(x), ncol(x)))))
+  return(as.data.frame(df))
 }
 
 #' @title Merge rows inside dataframe
