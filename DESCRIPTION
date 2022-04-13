@@ -1,15 +1,16 @@
 Package: CGMTPE
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Generic Framework to perform Target Population of Environments analysis
 Version: 0.1.0
-Author: Who wrote it
-Maintainer: The package maintainer <yourself@somewhere.net>
-Description: More about what it does (maybe more than one line)
-    Use four spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Author: Florian Larue
+Maintainer: Florian Larue <florian.larue@cirad.fr>
+Description: Generic Framework to perform analysis of 
+  Target Population of Environments by using a crop model. From model calibration
+  to data visualisation.
 Encoding: UTF-8
 LazyData: true
-Imports: ggplot2
+Imports: ggplot2, Rdpack
+RdMacros: Rdpack
 RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 2.0.0)

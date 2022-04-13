@@ -1,5 +1,6 @@
 # Collection of functions related to crop models
 
+
 #' @title Launch Crop Model simulation
 #' @description Launch a simulation of one of the supported crop models using
 #' input from dataframes/files for plant/soil parameters, and weather data
@@ -14,14 +15,14 @@
 #' resSamara <- launch_sim("Samara", param, weather)
 #'
 #' simOptions <- stics_wrapper_option(javastics_path = "path_to_javastics",
-#' workspace_path = "examples_stics/", target_path = "examples_stics/results/",
+#' workspace_path = "data/stics/", target_path = "examples_stics/results/",
 #' verbose = false)
-#' resStics <- launch_sim("STICS", "examples_stics/", simOptions)
+#' resStics <- launch_sim("STICS", "data/stics/", simOptions)
 #' @export
 #' @import rsamara
 #' @import SticsRPacks
 launch_sim <- function(model="Samara", data, params) {
-
+ #TODO
 }
 
 #' @title Construct Samara dataframes
@@ -30,22 +31,25 @@ launch_sim <- function(model="Samara", data, params) {
 #' @param variety Name of the studied variety
 #' @param genotype Corresponding genotype code of the variety
 #' @param itk Name of the studied itk
+#' @param simlist Table containing information about itk name, starting and
+#' ending simulation date
 #' @param workspace Path to the parent folder containing the subfolders obs,
 #' params, meteos
 #' @return A list with parameter, weather and observation data
 #' @examples
-#' dfList <- construct_data("621B","G7","BAMA2014S1","examples_samara/")
+#' simlist <- read.table("data/samara/simulation_list.csv")
+#' dfList <- construct_data("621B","G7","BAMA2014S1",simlist,"examples_samara/")
 #' param <- dfList[["parameters"]]
 #' weather <- dfList[["weathers"]]
 #' obs <- dfList[["observations"]]
 #' @export
 #' @import rsamara
-construct_data <- function(variety,genotype,itk,workspace) {
-  #TODO: change way of reading endingdate and startingdate without using ib
-  itks <- c("BAMA2014S1")
-  ib <- match(itk,itks)
-
+construct_data <- function(variety,genotype,itk,simlist,workspace) {
   varietyData <- list()
+  startingDates <- simlist$startingdate
+  endingDates <- simlist$endingdate
+  ib <- which(simlist$itkcode == itk)
+
   # variety and itk parameters
   varietyParameters <- read.csv(paste0(workspace,"varieties/",variety,".csv"))
   varietyParameters <- as.data.frame(varietyParameters[1,])

@@ -27,7 +27,7 @@ weather <- read.table("samara_weather.csv")
 resSamara <- launch_sim("Samara", param, weather)
 
 simOptions <- stics_wrapper_option(javastics_path = "path_to_javastics",
-workspace_path = "examples_stics/", target_path = "examples_stics/results/",
+workspace_path = "data/stics/", target_path = "examples_stics/results/",
 verbose = false)
-resStics <- launch_sim("STICS", "examples_stics/", simOptions)
+resStics <- launch_sim("STICS", "data/stics/", simOptions)
 }

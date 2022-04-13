@@ -4,7 +4,7 @@
 \alias{construct_data}
 \title{Construct Samara dataframes}
 \usage{
-construct_data(variety, genotype, itk)
+construct_data(variety, genotype, itk, simlist, workspace)
 }
 \arguments{
 \item{variety}{Name of the studied variety}
@@ -12,6 +12,9 @@ construct_data(variety, genotype, itk)
 \item{genotype}{Corresponding genotype code of the variety}
 
 \item{itk}{Name of the studied itk}
+
+\item{simlist}{Table containing information about itk name, starting and
+ending simulation date}
 
 \item{workspace}{Path to the parent folder containing the subfolders obs,
 params, meteos}
@@ -24,7 +27,8 @@ Construct dataframes of parameters and weather data from files
 of individual variety and itk parameters to run a Samara simulation
 }
 \examples{
-dfList <- construct_data("621B","G7","BAMA2014S1","examples_samara/")
+simlist <- read.table("data/samara/simulation_list.csv")
+dfList <- construct_data("621B","G7","BAMA2014S1",simlist,"examples_samara/")
 param <- dfList[["parameters"]]
 weather <- dfList[["weathers"]]
 obs <- dfList[["observations"]]

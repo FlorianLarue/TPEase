@@ -1,4 +1,5 @@
 # Collection of Frequently Used Functions (FUF)
+#' @importFrom Rdpack reprompt
 
 #' @title Merge dataframes by Columns
 #' @description Allows cbind to work with dataframes with different columns
