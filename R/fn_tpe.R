@@ -108,3 +108,16 @@ et0 <- function(tmin,tmax,srad){
   eo[index_tmax_inf5] <- eeq[index_tmax_inf5]*0.01*exp(0.18*(tmax[index_tmax_inf5]+20.0))
   return(eo)
 }
+
+
+#' @title Create a TPE analysis object
+#' @description Create a TPE analysis object (from R6 class TPEa)
+#' @param name test
+#' @param model test
+#' @return A R6 class TPE analysis object
+#' @examples
+#' TPE_analysos <- create_tpe("tpea1","Samara")
+#' @export
+create_tpe <- function(name="tpea1", model="Samara") {
+  TPEa$new(name,model)
+}
