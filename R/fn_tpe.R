@@ -7,7 +7,8 @@
 #' test
 #' @export
 #' @importFrom raster getData
-generateClimate <- function(lon, lat, rcp, year, yearNb,modelNb, path, pathCLI=NA) {
+generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
+                            pathCLI=NA) {
   if(is.na(pathCLI)) {
     pathCLI <- path
   }
@@ -114,10 +115,14 @@ et0 <- function(tmin,tmax,srad){
 #' @description Create a TPE analysis object (from R6 class TPEa)
 #' @param name test
 #' @param model test
+#' @param varieties test
+#' @param genotypes test
+#' @param environments test
 #' @return A R6 class TPE analysis object
 #' @examples
-#' TPE_analysos <- create_tpe("tpea1","Samara")
+#' TPE_analysis <- create_tpe("tpea1","Samara")
 #' @export
-create_tpe <- function(name="tpea1", model="Samara") {
-  TPEa$new(name,model)
+create_tpe <- function(name="TPEa_1", model="Samara", varieties=NA,
+                       environments=NA, genotypes=NA) {
+  return(TPEa$new(name, model, varieties, environments, genotypes))
 }

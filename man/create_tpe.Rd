@@ -4,12 +4,24 @@
 \alias{create_tpe}
 \title{Create a TPE analysis object}
 \usage{
-create_tpe(name = "tpea1", model = "Samara")
+create_tpe(
+  name = "TPEa_1",
+  model = "Samara",
+  varieties = NA,
+  environments = NA,
+  genotypes = NA
+)
 }
 \arguments{
 \item{name}{test}
 
 \item{model}{test}
+
+\item{varieties}{test}
+
+\item{environments}{test}
+
+\item{genotypes}{test}
 }
 \value{
 A R6 class TPE analysis object
@@ -18,5 +30,5 @@ A R6 class TPE analysis object
 Create a TPE analysis object (from R6 class TPEa)
 }
 \examples{
-TPE_analysos <- create_tpe("tpea1","Samara")
+TPE_analysis <- create_tpe("tpea1","Samara")
 }

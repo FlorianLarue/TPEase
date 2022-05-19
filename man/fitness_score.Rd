@@ -38,6 +38,3 @@ The fitness score for the candidate parameter set
 Computes the fitness score of a given parameter set candidate
 and according to a user-defined function (see examples)
 }
-\examples{
-
-}

@@ -26,32 +26,55 @@ TPE_analysis$model
 \item{\code{name}}{Identifier of the TPE analysis}
 
 \item{\code{model}}{Name of the crop model used for simulations}
+
+\item{\code{varieties}}{List of varieties names used for TPE analysis}
+
+\item{\code{environments}}{List of environment names used for TPE analysis}
+
+\item{\code{genotypes}}{List of alternate varieties names used for TPE analysis}
+
+\item{\code{grid}}{Simulation grid}
 }
 \if{html}{\out{</div>}}
 }
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
-\item \href{#method-new}{\code{TPEa$new()}}
-\item \href{#method-set_model}{\code{TPEa$set_model()}}
-\item \href{#method-clone}{\code{TPEa$clone()}}
+\item \href{#method-TPEa-new}{\code{TPEa$new()}}
+\item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
+\item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
+\item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
+\item \href{#method-TPEa-genClim}{\code{TPEa$genClim()}}
+\item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-new"></a>}}
-\if{latex}{\out{\hypertarget{method-new}{}}}
+\if{html}{\out{<a id="method-TPEa-new"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-new}{}}}
 \subsection{Method \code{new()}}{
 Create a new TPE analysis object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$new(name = NA, model = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$new(
+  name = "TPEa_1",
+  model = "Samara",
+  varieties = NA,
+  environments = NA,
+  genotypes = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{name Identifier of the TPE analysis}
+\item{\code{name}}{Identifier of the TPE analysis}
 
-\item{\code{model}}{model Name of the crop model used for simulations}
+\item{\code{model}}{Name of the crop model used for simulations}
+
+\item{\code{varieties}}{List of varieties}
+
+\item{\code{environments}}{List of environments}
+
+\item{\code{genotypes}}{Optional. List of alternate variety names.}
 }
 \if{html}{\out{</div>}}
 }
@@ -60,8 +83,8 @@ A new `TPEa` object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-set_model"></a>}}
-\if{latex}{\out{\hypertarget{method-set_model}{}}}
+\if{html}{\out{<a id="method-TPEa-set_model"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_model}{}}}
 \subsection{Method \code{set_model()}}{
 Change crop model
 \subsection{Usage}{
@@ -88,8 +111,60 @@ TPE_analysis$model
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-clone"></a>}}
-\if{latex}{\out{\hypertarget{method-clone}{}}}
+\if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-initMessage}{}}}
+\subsection{Method \code{initMessage()}}{
+Confirm creation of TPE analysis object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-createGrid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-createGrid}{}}}
+\subsection{Method \code{createGrid()}}{
+Create a simulation grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(cols = NA, rows = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{cols}}{Number of columns in the grid}
+
+\item{\code{rows}}{Number of rows in the grid}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-genClim"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-genClim}{}}}
+\subsection{Method \code{genClim()}}{
+Generate climate data for each point of the grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(rcp = NA, year = 2010, yearNb = 50, modelNb = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rcp}}{Rcp scenario to use}
+
+\item{\code{year}}{Year to simulate climate}
+
+\item{\code{yearNb}}{Number of years to simulate}
+
+\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-clone"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-clone}{}}}
 \subsection{Method \code{clone()}}{
 The objects of this class are cloneable with this method.
 \subsection{Usage}{

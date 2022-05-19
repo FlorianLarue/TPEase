@@ -11,7 +11,6 @@
 #' @param score_fn A user-defined function to compute the error between
 #' @param idx An integer used as the simulation identifier
 #' @return The fitness score for the candidate parameter set
-#' @examples
 #'
 #' @export
 #' @import rsamara
