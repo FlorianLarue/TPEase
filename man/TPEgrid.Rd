@@ -17,6 +17,8 @@ TODO
 \item{\code{lat}}{Latitude of the TPE analysis}
 
 \item{\code{lon}}{Longitude of the TPE analysis}
+
+\item{\code{weather}}{Samara climate data}
 }
 \if{html}{\out{</div>}}
 }
@@ -24,6 +26,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
+\item \href{#method-TPEgrid-set_weather}{\code{TPEgrid$set_weather()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -49,6 +52,23 @@ Create a new TPE grid object.
 }
 \subsection{Returns}{
 A new `TPEgrid` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-set_weather"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-set_weather}{}}}
+\subsection{Method \code{set_weather()}}{
+Change weather of grid point
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_weather(weather)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{weather}}{Weather dataframe}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

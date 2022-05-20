@@ -116,13 +116,16 @@ et0 <- function(tmin,tmax,srad){
 #' @param name test
 #' @param model test
 #' @param varieties test
-#' @param genotypes test
 #' @param environments test
+#' @param latStart test
+#' @param lonStart test
+#' @param genotypes test
 #' @return A R6 class TPE analysis object
 #' @examples
 #' TPE_analysis <- create_tpe("tpea1","Samara")
 #' @export
 create_tpe <- function(name="TPEa_1", model="Samara", varieties=NA,
-                       environments=NA, genotypes=NA) {
+                       environments=NA, latStart=NA, lonStart=NA,
+                       genotypes=NA) {
   return(TPEa$new(name, model, varieties, environments, genotypes))
 }

@@ -18,6 +18,10 @@ TPEa <- R6::R6Class("TPEa",
     environments = c(),
     #' @field genotypes List of alternate varieties names used for TPE analysis
     genotypes = c(),
+    #' @field latStart Starting latitude for the grid (upper left corner)
+    latStart = NULL,
+    #' @field lonStart Starting longitude for the grid (upper left corner)
+    lonStart = NULL,
     #' @field grid Simulation grid
     grid = NULL,
 
@@ -26,10 +30,13 @@ TPEa <- R6::R6Class("TPEa",
     #' @param model Name of the crop model used for simulations
     #' @param varieties List of varieties
     #' @param environments List of environments
+    #' @param latStart Starting latitude for grid
+    #' @param lonStart Starting longitude for grid
     #' @param genotypes Optional. List of alternate variety names.
     #' @return A new `TPEa` object.
     initialize = function(name="TPEa_1", model="Samara", varieties=NA,
-                          environments=NA, genotypes=NA) {
+                          environments=NA, latStart=NA, lonStart=NA,
+                          genotypes=NA) {
       self$name <- as.character(name)
       self$model <- as.character(model)
       if(length(varieties) > 1 || !is.na(varieties)) {
@@ -91,12 +98,24 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Generate climate data for each point of the grid
+    #' @param res Resolution of grid (in km)
     #' @param rcp Rcp scenario to use
     #' @param year Year to simulate climate
     #' @param yearNb Number of years to simulate
     #' @param modelNb Identifier of model to use, see \code{generateClimate}
-    genClim = function(rcp=NA,year=2010,yearNb=50,modelNb=NA) {
-
+    #' @param path Path to marksim standalone
+    #' @param pathCLI Optional. Path to CLI folder for marksim standalone
+    genClim = function(res=5, rcp="rcp26", year=2015, yearNb=99,
+                       modelNb="00000000000000000", path=NA, pathCLI=NA) {
+      for(i in 1:length(self$grid)) {
+        lat <- self$latStart + (i*(res/111))
+        for(j in 1:length(self$grid[[i]])) {
+          lon <- self$lonStart + ((j*(res/111)) * cos(lat))
+          climate <- generateClimate(lon,lat,rcp,year,yearNb,
+                                     modelNb,path,pathCLI)
+          self$grid[[i]][[j]]$set_weather(climate)
+        }
+      }
     }
   ),
   private = list()

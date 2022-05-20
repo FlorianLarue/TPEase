@@ -9,6 +9,8 @@ create_tpe(
   model = "Samara",
   varieties = NA,
   environments = NA,
+  latStart = NA,
+  lonStart = NA,
   genotypes = NA
 )
 }
@@ -20,6 +22,10 @@ create_tpe(
 \item{varieties}{test}
 
 \item{environments}{test}
+
+\item{latStart}{test}
+
+\item{lonStart}{test}
 
 \item{genotypes}{test}
 }

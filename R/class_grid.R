@@ -14,6 +14,9 @@ TPEgrid <- R6::R6Class("TPEgrid",
     lat = NULL,
     #' @field lon Longitude of the TPE analysis
     lon = NULL,
+    #' @field weather Samara climate data
+    weather = NULL,
+
 
     #' @description Create a new TPE grid object.
     #' @param name Identifier of the TPE analysis
@@ -24,6 +27,12 @@ TPEgrid <- R6::R6Class("TPEgrid",
       self$name <- name
       self$lat <- lat
       self$lon <- lon
+    },
+
+    #' @description Change weather of grid point
+    #' @param weather Weather dataframe
+    set_weather = function(weather) {
+      self$weather <- weather
     }
   )
 )

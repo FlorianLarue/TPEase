@@ -33,6 +33,10 @@ TPE_analysis$model
 
 \item{\code{genotypes}}{List of alternate varieties names used for TPE analysis}
 
+\item{\code{latStart}}{Starting latitude for the grid (upper left corner)}
+
+\item{\code{lonStart}}{Starting longitude for the grid (upper left corner)}
+
 \item{\code{grid}}{Simulation grid}
 }
 \if{html}{\out{</div>}}
@@ -59,6 +63,8 @@ Create a new TPE analysis object.
   model = "Samara",
   varieties = NA,
   environments = NA,
+  latStart = NA,
+  lonStart = NA,
   genotypes = NA
 )}\if{html}{\out{</div>}}
 }
@@ -73,6 +79,10 @@ Create a new TPE analysis object.
 \item{\code{varieties}}{List of varieties}
 
 \item{\code{environments}}{List of environments}
+
+\item{\code{latStart}}{Starting latitude for grid}
+
+\item{\code{lonStart}}{Starting longitude for grid}
 
 \item{\code{genotypes}}{Optional. List of alternate variety names.}
 }
@@ -145,12 +155,22 @@ Create a simulation grid
 \subsection{Method \code{genClim()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(rcp = NA, year = 2010, yearNb = 50, modelNb = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(
+  res = 5,
+  rcp = "rcp26",
+  year = 2015,
+  yearNb = 99,
+  modelNb = "00000000000000000",
+  path = NA,
+  pathCLI = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{res}}{Resolution of grid (in km)}
+
 \item{\code{rcp}}{Rcp scenario to use}
 
 \item{\code{year}}{Year to simulate climate}
@@ -158,6 +178,10 @@ Generate climate data for each point of the grid
 \item{\code{yearNb}}{Number of years to simulate}
 
 \item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+
+\item{\code{path}}{Path to marksim standalone}
+
+\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
 }
 \if{html}{\out{</div>}}
 }
