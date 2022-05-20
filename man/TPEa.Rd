@@ -38,6 +38,9 @@ TPE_analysis$model
 \item{\code{lonStart}}{Starting longitude for the grid (upper left corner)}
 
 \item{\code{grid}}{Simulation grid}
+
+\item{\code{parameters}}{A vector or dataframe with all parameters used for
+simulation with the corresponding `model`}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +59,7 @@ TPE_analysis$model
 \if{html}{\out{<a id="method-TPEa-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPE analysis object.
+Create a new TPE analysis object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$new(
   name = "TPEa_1",
@@ -65,7 +68,8 @@ Create a new TPE analysis object.
   environments = NA,
   latStart = NA,
   lonStart = NA,
-  genotypes = NA
+  genotypes = NA,
+  parameters = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -84,7 +88,9 @@ Create a new TPE analysis object.
 
 \item{\code{lonStart}}{Starting longitude for grid}
 
-\item{\code{genotypes}}{Optional. List of alternate variety names.}
+\item{\code{genotypes}}{Optional. List of alternate variety names}
+
+\item{\code{parameters}}{A vector or dataframe with all crop model parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -136,12 +142,14 @@ Confirm creation of TPE analysis object
 \subsection{Method \code{createGrid()}}{
 Create a simulation grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(cols = NA, rows = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(res = 5, cols = NA, rows = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{res}}{Resolution of grid, in km}
+
 \item{\code{cols}}{Number of columns in the grid}
 
 \item{\code{rows}}{Number of rows in the grid}
@@ -156,7 +164,6 @@ Create a simulation grid
 Generate climate data for each point of the grid
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(
-  res = 5,
   rcp = "rcp26",
   year = 2015,
   yearNb = 99,
@@ -169,8 +176,6 @@ Generate climate data for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{res}}{Resolution of grid (in km)}
-
 \item{\code{rcp}}{Rcp scenario to use}
 
 \item{\code{year}}{Year to simulate climate}

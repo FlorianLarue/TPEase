@@ -33,6 +33,19 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param weather Weather dataframe
     set_weather = function(weather) {
       self$weather <- weather
+    },
+
+    #' @description Generate climate at grid point
+    #' @param rcp Rcp scenario to use
+    #' @param year Year to simulate climate
+    #' @param yearNb Number of years to simulate
+    #' @param modelNb Identifier of model to use, see \code{generateClimate}
+    #' @param path Path to marksim standalone
+    #' @param pathCLI Optional. Path to CLI folder for marksim standalone
+    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
+      climate <- generateClimate(self$lon, self$lat, rcp, year, yearNb, modelNb,
+                                 path,pathCLI)
+      self$set_weather(climate)
     }
   )
 )

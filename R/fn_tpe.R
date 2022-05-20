@@ -6,9 +6,13 @@
 #' @examples
 #' test
 #' @export
+#' @importFrom gdata write.fwf
 #' @importFrom raster getData
+#' @importFrom raster extract
 generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
                             pathCLI=NA) {
+  currentPath <- getwd()
+  setwd(path)
   if(is.na(pathCLI)) {
     pathCLI <- path
   }
@@ -35,10 +39,10 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     mdata[,7] <- rep(-99,12)
 
     mdata2 <- cbind(mdata[,1],format(mdata[,-1],nsmall=1))
-    if(file.exists(paste0(pathCLI,"/Anywhe.cli"))) {
-      file.remove(paste0(pathCLI,"/Anywhe.cli"))
+    if(file.exists(paste0(pathCLI,"CLI/Anywhe.cli"))) {
+      file.remove(paste0(pathCLI,"CLI/Anywhe.cli"))
     }
-    out <- file(paste0(pathCLI,"/Anywhe.cli"),open="a")
+    out <- file(paste0(pathCLI,"CLI/Anywhe.cli"),open="a")
     writeLines("*CLIMATE : ANYWHERE", out)
     writeLines("@ INSI      LAT     LONG  ELEV   TAV   AMP  SRAY  TMXY  TMNY  RAIY", out)
     writeLines(paste("  0000 ",sprintf("%07.2f", lat),"",sprintf("%07.3f", lon),
@@ -55,17 +59,19 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     close(out)
 
     #Run marksim with user parameters
-    shell(paste0('MarkSim_Standalone_v2.exe ', path, 'Data ', pathCLI, 'CLI ',
-                 modelNb, ' ', rcp, ' ', year, ' ', yearNb,' 1337'))
+    cmd <- paste("MarkSim_Standalone_v2.exe ", path, "Data ", pathCLI,
+               "CLI ", modelNb, " ", rcp, " ", year, " ", yearNb, " 1337",
+               sep="")
+    shell(cmd)
 
     #Transform data in Samara readable format
     tab <- data.frame()
-    nlines <<- c()
-    dirname <- paste0(pathCLI,"/ANYWHE_",modelNb,"_",rcp,"_",year)
+    nlines <- c()
+    dirname <- paste0(pathCLI,"CLI/ANYWHE_",modelNb,"_",rcp,"_",year)
     files <- dir(dirname,pattern="ANYW[0-9][0-9][0-9]")
     for(f in files) {
       line=read.table(paste(dirname,"/",f,sep=""),head=T,skip=3)
-      nlines <<-c(nlines,nrow(line))
+      nlines <-c(nlines,nrow(line))
       tab <- rbind(tab,line)
     }
     tab$day_in_year=tab$X.DATE %% 1000
@@ -75,15 +81,17 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     tabNA <- data.frame(tmoy=vectNA,rhmax=vectNA,rhmin=vectNA,rhmoy=vectNA,windtot=vectNA,sunshine=vectNA,eto=vectNA)
     tab_meteo_init <- cbind(tab,tabNA)
     tab_meteo <- tab_meteo_init[,c("date","tmax","tmin","tmoy","rhmax","rhmin","rhmoy","windtot","sunshine","radiation","eto","rainfall")]
-    et0_estim_vect <- et0vect(tab_meteo$tmin,tab_meteo$tmax,tab_meteo$radiation)
+    et0_estim_vect <- et0(tab_meteo$tmin,tab_meteo$tmax,tab_meteo$radiation)
     tab_meteo$eto <- et0_estim_vect
     tab_meteo$weatherdate <- format(seq.Date(from=as.Date("01/01/2001",format="%d/%m/%Y"),to=as.Date("31/12/2099",format="%d/%m/%Y"),by='days'),"%d/%m/%Y")
     tab_meteo$wscode <- rep(1,nrow(tab_meteo))
     meteo_samara <- tab_meteo[,c("wscode", "weatherdate",	"tmin",	"tmax",	"tmoy",	"rhmin",	"rhmax",	"rhmoy",	"rainfall",	"windtot",	"radiation",	"sunshine",	"eto")]
 
+    setwd(currentPath)
     return(meteo_samara)
   } else {
-    print(paste0("Could not find worldclim data at longitude ",
+    setwd(currentPath)
+    stop(paste0("Could not find worldclim data at longitude ",
                  lon," and lat ",lat))
   }
 }
@@ -127,5 +135,6 @@ et0 <- function(tmin,tmax,srad){
 create_tpe <- function(name="TPEa_1", model="Samara", varieties=NA,
                        environments=NA, latStart=NA, lonStart=NA,
                        genotypes=NA) {
-  return(TPEa$new(name, model, varieties, environments, genotypes))
+  return(TPEa$new(name, model, varieties, environments, latStart, lonStart,
+                  genotypes))
 }

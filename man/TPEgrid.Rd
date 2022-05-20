@@ -27,6 +27,7 @@ TODO
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
 \item \href{#method-TPEgrid-set_weather}{\code{TPEgrid$set_weather()}}
+\item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -67,6 +68,33 @@ Change weather of grid point
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{weather}}{Weather dataframe}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-genClimate"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-genClimate}{}}}
+\subsection{Method \code{genClimate()}}{
+Generate climate at grid point
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rcp}}{Rcp scenario to use}
+
+\item{\code{year}}{Year to simulate climate}
+
+\item{\code{yearNb}}{Number of years to simulate}
+
+\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+
+\item{\code{path}}{Path to marksim standalone}
+
+\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
 }
 \if{html}{\out{</div>}}
 }
