@@ -132,9 +132,31 @@ et0 <- function(tmin,tmax,srad){
 #' @examples
 #' TPE_analysis <- create_tpe("tpea1","Samara")
 #' @export
-create_tpe <- function(name="TPEa_1", model="Samara", varieties=NA,
+createTpe <- function(name="TPEa_1", model="Samara", varieties=NA,
                        environments=NA, latStart=NA, lonStart=NA,
-                       genotypes=NA) {
+                       genotypes=NA, parameters=NA) {
   return(TPEa$new(name, model, varieties, environments, latStart, lonStart,
-                  genotypes))
+                  genotypes, parameters))
+}
+
+#' @title Load data for testing
+#' @description Load data for testing
+#' @export
+loadData <- function() {
+  blocks <<- c("I","II","III","IV") #name of blocks used in obs file names
+  estimInfo <<- read.csv("data/samara/simulation_list.csv")
+  paramInfo <<- read.csv("data/samara/estimation_params.csv")
+  lowerBounds <<- as.numeric(paramInfo[which(paramInfo$Value == "MinValue"),
+                                      -c(1,2)])
+  upperBounds <<- as.numeric(paramInfo[which(paramInfo$Value == "MaxValue"),
+                                      -c(1,2)])
+  paramBounds <<- matrix(c(lowerBounds,upperBounds),ncol=2)
+  paramOfInterest <<- tolower(colnames(paramInfo)[-c(1,2)])
+
+  # Step 1: construct necessary dataframes (see ?construct_data)
+  varietyData <<- construct_data(estimInfo$variety,estimInfo$genotype,
+                                estimInfo$itkcode, estimInfo, "data/samara/")
+  weather <<- varietyData[["weathers"]]
+  param <<- varietyData[["parameters"]]
+  obs <<- varietyData[["observations"]]
 }

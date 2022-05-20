@@ -16,14 +16,15 @@ TPEgrid <- R6::R6Class("TPEgrid",
     lon = NULL,
     #' @field weather Samara climate data
     weather = NULL,
-
+    #' @field result Model simulation
+    result = NULL,
 
     #' @description Create a new TPE grid object.
     #' @param name Identifier of the TPE analysis
     #' @param lat Latitude of grid point
     #' @param lon Longitude of grid point
     #' @return A new `TPEgrid` object.
-    initialize = function(name="c11", lat=11.18, lon=-4.3) {
+    initialize = function(name="11", lat=11.18, lon=-4.3) {
       self$name <- name
       self$lat <- lat
       self$lon <- lon
@@ -46,6 +47,30 @@ TPEgrid <- R6::R6Class("TPEgrid",
       climate <- generateClimate(self$lon, self$lat, rcp, year, yearNb, modelNb,
                                  path,pathCLI)
       self$set_weather(climate)
+    },
+
+    #' @description Run simulation on grid point
+    #' @param param Parameter values
+    #' @import stringr
+    runSimulation = function(param) {
+      sy <- strsplit(rsamara::toStringDateCalcc(param$startingdate),
+                     split="/")[[1]][[3]]
+      ey <- strsplit(rsamara::toStringDateCalcc(param$endingdate),
+                     split="/")[[1]][[3]]
+      sm <- strsplit(rsamara::toStringDateCalcc(param$startingdate),
+                     split="/")[[1]][[2]]
+      em <- strsplit(rsamara::toStringDateCalcc(param$endingdate),
+                     split="/")[[1]][[2]]
+      simWeather <- self$weather[which(stringr::str_split_fixed(
+        self$weather$weatherdate, "/",3)[,3] %in% c(sy,ey)),]
+      simWeather <- simWeather[which(stringr::str_split_fixed(
+        simWeather$weatherdate, "/",3)[,2] >= sm),]
+      simWeather <- simWeather[which(stringr::str_split_fixed(
+        simWeather$weatherdate, "/",3)[,2] <= em),]
+
+      rsamara::init_sim_idx_simple(as.numeric(self$name), param, simWeather)
+      res <- rsamara::run_sim_idx(as.numeric(self$name))
+      self$result <- res
     }
   )
 )

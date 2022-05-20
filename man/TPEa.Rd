@@ -52,6 +52,7 @@ simulation with the corresponding `model`}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClim}{\code{TPEa$genClim()}}
+\item \href{#method-TPEa-runSim}{\code{TPEa$runSim()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -187,6 +188,23 @@ Generate climate data for each point of the grid
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-runSim"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-runSim}{}}}
+\subsection{Method \code{runSim()}}{
+Generate climate data for each point of the grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runSim(row = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{row}}{Row of parameter dataframe to use}
 }
 \if{html}{\out{</div>}}
 }

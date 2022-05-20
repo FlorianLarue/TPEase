@@ -19,6 +19,8 @@ TODO
 \item{\code{lon}}{Longitude of the TPE analysis}
 
 \item{\code{weather}}{Samara climate data}
+
+\item{\code{result}}{Model simulation}
 }
 \if{html}{\out{</div>}}
 }
@@ -28,6 +30,7 @@ TODO
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
 \item \href{#method-TPEgrid-set_weather}{\code{TPEgrid$set_weather()}}
 \item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
+\item \href{#method-TPEgrid-runSimulation}{\code{TPEgrid$runSimulation()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -37,7 +40,7 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE grid object.
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(name = "c11", lat = 11.18, lon = -4.3)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(name = "11", lat = 11.18, lon = -4.3)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -95,6 +98,23 @@ Generate climate at grid point
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-runSimulation"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-runSimulation}{}}}
+\subsection{Method \code{runSimulation()}}{
+Run simulation on grid point
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runSimulation(param)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{param}}{Parameter values}
 }
 \if{html}{\out{</div>}}
 }

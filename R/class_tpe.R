@@ -115,7 +115,7 @@ TPEa <- R6::R6Class("TPEa",
         self$grid[[i]] <- vector("list",rows)
         for(j in 1:length(self$grid[[i]])) {
           lon <- self$lonStart + ((j*(res/111)) * cos(lat))
-          self$grid[[i]][[j]] <- TPEgrid$new(name=paste0("c",i,j),
+          self$grid[[i]][[j]] <- TPEgrid$new(name=paste0(i,j),
                                              lat=lat, lon=lon)
         }
       }
@@ -134,6 +134,17 @@ TPEa <- R6::R6Class("TPEa",
         for(j in 1:length(self$grid[[i]])) {
           self$grid[[i]][[j]]$genClimate(rcp, year, yearNb, modelNb, path,
                                          pathCLI)
+        }
+      }
+    },
+
+    #' @description Generate climate data for each point of the grid
+    #' @param row Row of parameter dataframe to use
+    runSim = function(row=1) {
+      param <- self$parameters[1,]
+      for(i in 1:length(self$grid)) {
+        for(j in 1:length(self$grid[[i]])) {
+          self$grid[[i]][[j]]$runSimulation(param)
         }
       }
     }
