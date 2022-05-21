@@ -139,8 +139,8 @@ createTpe <- function(name="TPEa_1", model="Samara", varieties=NA,
                   genotypes, parameters))
 }
 
-#' @title Load data for testing
-#' @description Load data for testing
+#' @title Load data for vignette
+#' @description Load data for vignette
 #' @export
 loadData <- function() {
   blocks <<- c("I","II","III","IV") #name of blocks used in obs file names
@@ -152,8 +152,6 @@ loadData <- function() {
                                       -c(1,2)])
   paramBounds <<- matrix(c(lowerBounds,upperBounds),ncol=2)
   paramOfInterest <<- tolower(colnames(paramInfo)[-c(1,2)])
-
-  # Step 1: construct necessary dataframes (see ?construct_data)
   varietyData <<- construct_data(estimInfo$variety,estimInfo$genotype,
                                 estimInfo$itkcode, estimInfo, "data/samara/")
   weather <<- varietyData[["weathers"]]

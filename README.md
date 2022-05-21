@@ -35,7 +35,7 @@ TPE_analysis$createGrid(5,3,3) #size 3x3 with 5km grid points
 TPE_analysis$genClim(path="D:\\Marksim\\")
 
 # run model simulation on each point of the grid
-TPE_analysis$runSim()
+TPE_analysis$runGridSim()
 
 # plot simulations
 TPE_analysis$plotSim("GrainYieldPopFin")

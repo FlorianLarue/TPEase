@@ -13,5 +13,8 @@ Imports: ggplot2, Rdpack
 RdMacros: Rdpack
 RoxygenNote: 7.2.0
 Suggests: 
+    rmarkdown,
+    knitr,
     testthat (>= 2.0.0)
 Config/testthat/edition: 2
+VignetteBuilder: knitr

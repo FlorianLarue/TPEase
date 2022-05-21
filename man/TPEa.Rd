@@ -9,17 +9,6 @@ TODO
 \details{
 TODO
 }
-\examples{
-
-## ------------------------------------------------
-## Method `TPEa$set_model`
-## ------------------------------------------------
-
-TPE_analysis <- TPEa("TPEa1", "STICS")
-TPE_analysis$model
-TPE_analysis$set_model("Samara")
-TPE_analysis$model
-}
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
@@ -41,6 +30,11 @@ TPE_analysis$model
 
 \item{\code{parameters}}{A vector or dataframe with all parameters used for
 simulation with the corresponding `model`}
+
+\item{\code{weathers}}{A dataframe or list of dataframe with weather data for
+each of the `environments`}
+
+\item{\code{estimParam}}{Values of estimated parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -49,10 +43,12 @@ simulation with the corresponding `model`}
 \itemize{
 \item \href{#method-TPEa-new}{\code{TPEa$new()}}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
+\item \href{#method-TPEa-set_param}{\code{TPEa$set_param()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClim}{\code{TPEa$genClim()}}
-\item \href{#method-TPEa-runSim}{\code{TPEa$runSim()}}
+\item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
+\item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -103,7 +99,7 @@ A new `TPEa` object.
 \if{html}{\out{<a id="method-TPEa-set_model"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-set_model}{}}}
 \subsection{Method \code{set_model()}}{
-Change crop model
+Set crop model
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$set_model(val)}\if{html}{\out{</div>}}
 }
@@ -115,17 +111,23 @@ Change crop model
 }
 \if{html}{\out{</div>}}
 }
-\subsection{Examples}{
-\if{html}{\out{<div class="r example copy">}}
-\preformatted{TPE_analysis <- TPEa("TPEa1", "STICS")
-TPE_analysis$model
-TPE_analysis$set_model("Samara")
-TPE_analysis$model
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_param"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_param}{}}}
+\subsection{Method \code{set_param()}}{
+Set estimated parameter values
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_param(p)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{p}}{Vector of parameter values}
 }
 \if{html}{\out{</div>}}
-
 }
-
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
@@ -193,18 +195,46 @@ Generate climate data for each point of the grid
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-runSim"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-runSim}{}}}
-\subsection{Method \code{runSim()}}{
+\if{html}{\out{<a id="method-TPEa-runGridSim"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-runGridSim}{}}}
+\subsection{Method \code{runGridSim()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$runSim(row = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(row = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{row}}{Row of parameter dataframe to use}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-runEstimation"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-runEstimation}{}}}
+\subsection{Method \code{runEstimation()}}{
+Run parameter estimation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
+  paramnames = NA,
+  metric = "RMSE",
+  score_fn = get_score,
+  weigh_fn = NA
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{paramnames}}{Vector of parameter names to be estimated}
+
+\item{\code{metric}}{Metric to use for fitness computation}
+
+\item{\code{score_fn}}{Function to compute fitness, see \code{get_score}}
+
+\item{\code{weigh_fn}}{Not used}
 }
 \if{html}{\out{</div>}}
 }

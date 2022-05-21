@@ -2,10 +2,10 @@
 % Please edit documentation in R/fn_tpe.R
 \name{loadData}
 \alias{loadData}
-\title{Load data for testing}
+\title{Load data for vignette}
 \usage{
 loadData()
 }
 \description{
-Load data for testing
+Load data for vignette
 }

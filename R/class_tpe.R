@@ -27,6 +27,11 @@ TPEa <- R6::R6Class("TPEa",
     #' @field parameters A vector or dataframe with all parameters used for
     #' simulation with the corresponding `model`
     parameters = NULL,
+    #' @field weathers A dataframe or list of dataframe with weather data for
+    #' each of the `environments`
+    weathers = NULL,
+    #' @field estimParam Values of estimated parameters
+    estimParam = NULL,
 
     #' @description Create a new TPE analysis object
     #' @param name Identifier of the TPE analysis
@@ -83,15 +88,16 @@ TPEa <- R6::R6Class("TPEa",
       self$initMessage()
     },
 
-    #' @description Change crop model
+    #' @description Set crop model
     #' @param val New model name
-    #' @examples
-    #' TPE_analysis <- TPEa("TPEa1", "STICS")
-    #' TPE_analysis$model
-    #' TPE_analysis$set_model("Samara")
-    #' TPE_analysis$model
     set_model = function(val) {
       self$model <- val
+    },
+
+    #' @description Set estimated parameter values
+    #' @param p Vector of parameter values
+    set_param = function(p) {
+      self$estimParam <- p
     },
 
     #' @description Confirm creation of TPE analysis object
@@ -140,13 +146,24 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Generate climate data for each point of the grid
     #' @param row Row of parameter dataframe to use
-    runSim = function(row=1) {
+    runGridSim = function(row=1) {
       param <- self$parameters[1,]
       for(i in 1:length(self$grid)) {
         for(j in 1:length(self$grid[[i]])) {
           self$grid[[i]][[j]]$runSimulation(param)
         }
       }
+    },
+
+    #' @description Run parameter estimation
+    #' @param paramnames Vector of parameter names to be estimated
+    #' @param metric Metric to use for fitness computation
+    #' @param score_fn Function to compute fitness, see \code{get_score}
+    #' @param weigh_fn Not used
+    runEstimation = function(paramnames=NA, metric="RMSE", score_fn=get_score,
+                             weigh_fn=NA) {
+      resEstim <- 1
+      self$set_param(resEstim)
     }
   ),
   private = list()

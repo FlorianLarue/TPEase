@@ -59,5 +59,7 @@ fitness_score <- function(p, param, paramnames, weather, obs, score_fn, idx,
 get_score <- function(obs, sim, metric, weight_fn) {
   if(class(obs) != "data.frame" || class(sim) != "data.frame") {
     print("Please provide a dataframe for observations and simulations")
+  } else {
+    return(99999)
   }
 }

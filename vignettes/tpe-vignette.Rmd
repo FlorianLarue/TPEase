@@ -1,0 +1,38 @@
+---
+title: "tpe-vignette"
+author: "Florian Larue"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{tpe-vignette}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include=TRUE}
+library(CGMTPE)
+knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+```
+
+```{r}
+# load example data
+loadData()
+
+# create a TPE analysis object
+TPE_analysis <- createTpe(varieties=c("Fadda"),
+                          environments=c("BAMA2014S1"),
+                          latStart=11.8, lonStart=-4.3,
+                          parameters=param)
+
+# create a simulation grid
+TPE_analysis$createGrid(5,3,3) #size 3x3 with 5km grid points
+
+# generate climate on each point of the grid
+TPE_analysis$genClim(path="D:\\Marksim\\")
+
+# run model simulation on each point of the grid
+TPE_analysis$runGridSim()
+
+# plot simulations
+#TPE_analysis$plotSim("GrainYieldPopFin")
+
+```
