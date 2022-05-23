@@ -48,7 +48,8 @@ data}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
-\item \href{#method-TPEa-set_param}{\code{TPEa$set_param()}}
+\item \href{#method-TPEa-set_eparam}{\code{TPEa$set_eparam()}}
+\item \href{#method-TPEa-update_param}{\code{TPEa$update_param()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClim}{\code{TPEa$genClim()}}
@@ -152,18 +153,37 @@ Set observation data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-set_param"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-set_param}{}}}
-\subsection{Method \code{set_param()}}{
+\if{html}{\out{<a id="method-TPEa-set_eparam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_eparam}{}}}
+\subsection{Method \code{set_eparam()}}{
 Set estimated parameter values
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_param(p)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_eparam(val)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{p}}{Vector of parameter values}
+\item{\code{val}}{Vector of parameter values}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-update_param"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-update_param}{}}}
+\subsection{Method \code{update_param()}}{
+Update parameter with estimated parameter values
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$update_param(val, names)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Vector of parameter values}
+
+\item{\code{names}}{Vector of parameter names}
 }
 \if{html}{\out{</div>}}
 }
@@ -257,7 +277,7 @@ Generate climate data for each point of the grid
 Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
-  maxiter = 5,
+  maxiter = 2000,
   paramnames = NA,
   metric = "RMSE",
   score_fn = get_score,

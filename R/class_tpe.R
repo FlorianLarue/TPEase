@@ -110,9 +110,19 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Set estimated parameter values
-    #' @param p Vector of parameter values
-    set_param = function(p) {
-      self$estimParam <- p
+    #' @param val Vector of parameter values
+    set_eparam = function(val) {
+      self$estimParam <- val
+    },
+
+    #' @description Update parameter with estimated parameter values
+    #' @param val Vector of parameter values
+    #' @param names Vector of parameter names
+    update_param = function(val,names) {
+      for(p in 1:length(names)) {
+        self$parameters[,which(colnames(self$parameters) ==
+                                 names[[p]])] <- val[[p]]
+      }
     },
 
     #' @description Confirm creation of TPE analysis object
@@ -190,7 +200,8 @@ TPEa <- R6::R6Class("TPEa",
                                    paramnames, self$weathers, self$observations,
                                    score_fn, metric, weigh_fn,
                                    fnMap=NULL)
-      self$set_param(resEstim)
+      self$set_eparam(as.vector(resEstim$optim$bestmem))
+      self$update_param(self$estimParam, paramnames)
     }
   ),
   private = list()

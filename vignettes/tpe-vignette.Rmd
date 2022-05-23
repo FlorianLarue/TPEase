@@ -23,22 +23,21 @@ TPE_analysis <- createTpe(varieties=c("Fadda"),
                           latStart=11.8, lonStart=-4.3,
                           parameters=param)
 
+# set weather data and observation data from the data loaded with loadData()
+TPE_analysis$set_weather(weather)
+TPE_analysis$set_obs(obs)
+
+# run parameter estimation, will also update the parameters of the TPE a object
+TPE_analysis$runEstimation(maxiter=5, paramnames=paramOfInterest)
+
 # create a simulation grid
 TPE_analysis$createGrid(5,3,3) #size 3x3 with 5km grid points
 
 # generate climate on each point of the grid
 TPE_analysis$genClim(path="D:\\Marksim\\")
 
-# run model simulation on each point of the grid
+# run model simulation on each point of the grid using estimated parameters
 TPE_analysis$runGridSim()
-
-# TEST TODO: REMOVE
-TPE_analysis$set_weather(weather)
-TPE_analysis$set_obs(obs)
-
-TPE_analysis$runEstimation(maxiter=10, paramnames=paramOfInterest)
-# TEST TODO: REMOVE
-
 
 # plot simulations
 #TPE_analysis$plotSim("GrainYieldPopFin")
