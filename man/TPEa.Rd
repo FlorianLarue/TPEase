@@ -34,6 +34,9 @@ simulation with the corresponding `model`}
 \item{\code{weathers}}{A dataframe or list of dataframe with weather data for
 each of the `environments`}
 
+\item{\code{observations}}{A dataframe or list of dataframe with observation *
+data}
+
 \item{\code{estimParam}}{Values of estimated parameters}
 }
 \if{html}{\out{</div>}}
@@ -43,6 +46,8 @@ each of the `environments`}
 \itemize{
 \item \href{#method-TPEa-new}{\code{TPEa$new()}}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
+\item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
+\item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
 \item \href{#method-TPEa-set_param}{\code{TPEa$set_param()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
@@ -108,6 +113,40 @@ Set crop model
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{New model name}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_weather"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_weather}{}}}
+\subsection{Method \code{set_weather()}}{
+Set weather data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_weather(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Dataframe (or list of df) of weather data}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_obs"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_obs}{}}}
+\subsection{Method \code{set_obs()}}{
+Set observation data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_obs(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Dataframe (or list of df) of observation data}
 }
 \if{html}{\out{</div>}}
 }
@@ -218,6 +257,7 @@ Generate climate data for each point of the grid
 Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
+  maxiter = 2000,
   paramnames = NA,
   metric = "RMSE",
   score_fn = get_score,
@@ -228,6 +268,8 @@ Run parameter estimation
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{maxiter}}{Maximum number of iteration for DEoptim}
+
 \item{\code{paramnames}}{Vector of parameter names to be estimated}
 
 \item{\code{metric}}{Metric to use for fitness computation}

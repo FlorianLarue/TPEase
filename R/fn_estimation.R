@@ -1,5 +1,21 @@
 # Collection of functions to perform model calibration (parameter estimation)
 
+#' @title Generic function for parameter estimation over 1 to n environments
+#' @description TODO
+#' @import rsamara
+#' @export
+estim_param <- function(p, environments, param, paramnames, weather,
+                        obs, score_fn, metric="RMSE", weigh_fn=NA) {
+  totalScore <- 0
+  for(e in 1:length(environments)) {
+    envScore <- fitness_score(p, param, paramnames, weather, obs, score_fn, e,
+                              metric, weigh_fn)
+    totalScore <- totalScore + envScore
+  }
+  return(totalScore)
+}
+
+
 #' @title Fitness function for parameter estimation of Samara
 #' @description Computes the fitness score of a given parameter set candidate
 #' and according to a user-defined function (see examples)

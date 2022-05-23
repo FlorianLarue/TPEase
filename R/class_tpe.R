@@ -30,6 +30,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @field weathers A dataframe or list of dataframe with weather data for
     #' each of the `environments`
     weathers = NULL,
+    #' @field observations A dataframe or list of dataframe with observation *
+    #' data
+    observations = NULL,
     #' @field estimParam Values of estimated parameters
     estimParam = NULL,
 
@@ -94,6 +97,18 @@ TPEa <- R6::R6Class("TPEa",
       self$model <- val
     },
 
+    #' @description Set weather data
+    #' @param val Dataframe (or list of df) of weather data
+    set_weather = function(val) {
+      self$weathers <- val
+    },
+
+    #' @description Set observation data
+    #' @param val Dataframe (or list of df) of observation data
+    set_obs = function(val) {
+      self$observations <- val
+    },
+
     #' @description Set estimated parameter values
     #' @param p Vector of parameter values
     set_param = function(p) {
@@ -156,13 +171,25 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Run parameter estimation
+    #' @param maxiter Maximum number of iteration for DEoptim
     #' @param paramnames Vector of parameter names to be estimated
     #' @param metric Metric to use for fitness computation
     #' @param score_fn Function to compute fitness, see \code{get_score}
     #' @param weigh_fn Not used
-    runEstimation = function(paramnames=NA, metric="RMSE", score_fn=get_score,
-                             weigh_fn=NA) {
-      resEstim <- 1
+    #' @import rsamara
+    #' @import DEoptim
+    runEstimation = function(maxiter=2000,paramnames=NA, metric="RMSE",
+                             score_fn=get_score, weigh_fn=NA) {
+
+      DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
+                                  NP=10*length(paramOfInterest))
+
+      resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
+                                   paramBounds[,1], control=DEParams,
+                                   self$environments, self$parameters,
+                                   paramnames, self$weathers, self$observations,
+                                   score_fn, metric, weigh_fn,
+                                   fnMap=NULL)
       self$set_param(resEstim)
     }
   ),

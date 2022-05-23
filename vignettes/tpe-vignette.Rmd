@@ -32,6 +32,14 @@ TPE_analysis$genClim(path="D:\\Marksim\\")
 # run model simulation on each point of the grid
 TPE_analysis$runGridSim()
 
+# TEST TODO: REMOVE
+TPE_analysis$set_weather(weather)
+TPE_analysis$set_obs(obs)
+
+TPE_analysis$runEstimation(paramnames=paramOfInterest)
+# TEST TODO: REMOVE
+
+
 # plot simulations
 #TPE_analysis$plotSim("GrainYieldPopFin")
 
