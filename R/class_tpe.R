@@ -185,7 +185,7 @@ TPEa <- R6::R6Class("TPEa",
                                   NP=10*length(paramOfInterest))
 
       resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
-                                   paramBounds[,1], control=DEParams,
+                                   paramBounds[,2], control=DEParams,
                                    self$environments, self$parameters,
                                    paramnames, self$weathers, self$observations,
                                    score_fn, metric, weigh_fn,

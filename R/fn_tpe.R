@@ -145,7 +145,7 @@ createTpe <- function(name="TPEa_1", model="Samara", varieties=NA,
 loadData <- function() {
   blocks <<- c("I","II","III","IV") #name of blocks used in obs file names
   estimInfo <<- read.csv("data/samara/simulation_list.csv")
-  paramInfo <<- read.csv("data/samara/estimation_params.csv")
+  paramInfo <<- read.csv("data/samara/estimation_params.csv", sep=";")
   lowerBounds <<- as.numeric(paramInfo[which(paramInfo$Value == "MinValue"),
                                       -c(1,2)])
   upperBounds <<- as.numeric(paramInfo[which(paramInfo$Value == "MaxValue"),

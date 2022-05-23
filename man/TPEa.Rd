@@ -257,7 +257,7 @@ Generate climate data for each point of the grid
 Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
-  maxiter = 2000,
+  maxiter = 5,
   paramnames = NA,
   metric = "RMSE",
   score_fn = get_score,

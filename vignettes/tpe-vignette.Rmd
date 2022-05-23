@@ -36,7 +36,7 @@ TPE_analysis$runGridSim()
 TPE_analysis$set_weather(weather)
 TPE_analysis$set_obs(obs)
 
-TPE_analysis$runEstimation(paramnames=paramOfInterest)
+TPE_analysis$runEstimation(maxiter=10, paramnames=paramOfInterest)
 # TEST TODO: REMOVE
 
 

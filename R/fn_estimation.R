@@ -76,6 +76,7 @@ get_score <- function(obs, sim, metric, weight_fn) {
   if(class(obs) != "data.frame" || class(sim) != "data.frame") {
     print("Please provide a dataframe for observations and simulations")
   } else {
-    return(99999)
+    score <- MAE(obs,sim)
+    return(score)
   }
 }
