@@ -1,4 +1,4 @@
-#'#' R6 Class Representing a simulation grid point
+#'#' R6 Class Representing a simulation grid
 #'
 #' @description
 #' TODO
@@ -8,69 +8,58 @@
 #' @import R6
 TPEgrid <- R6::R6Class("TPEgrid",
   public = list(
-    #' @field name Identifier of the grid point
+    #' @field name Identifier of the grid
     name = NULL,
-    #' @field lat Latitude of the TPE analysis
-    lat = NULL,
-    #' @field lon Longitude of the TPE analysis
-    lon = NULL,
-    #' @field weather Samara climate data
-    weather = NULL,
-    #' @field result Model simulation
-    result = NULL,
+    #' @field length Length of the grid
+    length = NULL,
+    #' @field width Width of the grid
+    width = NULL,
+    #' @field res Resolution of the grid
+    res = NULL,
+    #' @field lonStart Starting longitude of the grid
+    lonStart = NULL,
+    #' @field latStart Starting latitude of the grid
+    latStart = NULL,
+    #' @field gridPoints Collection of each point on the grid
+    gridPoints = NULL,
 
-    #' @description Create a new TPE grid object.
-    #' @param name Identifier of the TPE analysis
-    #' @param lat Latitude of grid point
-    #' @param lon Longitude of grid point
+    #' @description Create a new TPE grid object
+    #' @param name Identifier of the grid
+    #' @param res Resolution of the grid
+    #' @param width Width of the grid
+    #' @param length Length of the grid
+    #' @param lon Optional. Starting longitude of the grid (upper left corner)
+    #' @param lat Optional. Starting latitude of the grid (upper left corner)
     #' @return A new `TPEgrid` object.
-    initialize = function(name="11", lat=11.18, lon=-4.3) {
+    initialize = function(name="grid1", res=5, width=5, length=5,
+                          lon=NA, lat=NA) {
       self$name <- name
-      self$lat <- lat
-      self$lon <- lon
-    },
+      self$width <- width
+      self$length <- length
+      self$res <- res
+      self$lonStart <- lon
+      self$latStart <- lat
 
-    #' @description Change weather of grid point
-    #' @param weather Weather dataframe
-    set_weather = function(weather) {
-      self$weather <- weather
-    },
+      #TODO: might need to find a better solution than list of list
+      self$gridPoints <- vector("list",self$width)
+      for(g in 1:length(self$gridPoints)) {
+        self$gridPoints[[g]] <- vector("list",self$length)
+      }
 
-    #' @description Generate climate at grid point
-    #' @param rcp Rcp scenario to use
-    #' @param year Year to simulate climate
-    #' @param yearNb Number of years to simulate
-    #' @param modelNb Identifier of model to use, see \code{generateClimate}
-    #' @param path Path to marksim standalone
-    #' @param pathCLI Optional. Path to CLI folder for marksim standalone
-    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
-      climate <- generateClimate(self$lon, self$lat, rcp, year, yearNb, modelNb,
-                                 path,pathCLI)
-      self$set_weather(climate)
-    },
-
-    #' @description Run simulation on grid point
-    #' @param param Parameter values
-    #' @import stringr
-    runSimulation = function(param) {
-      sy <- strsplit(rsamara::toStringDateCalcc(param$startingdate),
-                     split="/")[[1]][[3]]
-      ey <- strsplit(rsamara::toStringDateCalcc(param$endingdate),
-                     split="/")[[1]][[3]]
-      sm <- strsplit(rsamara::toStringDateCalcc(param$startingdate),
-                     split="/")[[1]][[2]]
-      em <- strsplit(rsamara::toStringDateCalcc(param$endingdate),
-                     split="/")[[1]][[2]]
-      simWeather <- self$weather[which(stringr::str_split_fixed(
-        self$weather$weatherdate, "/",3)[,3] %in% c(sy,ey)),]
-      simWeather <- simWeather[which(stringr::str_split_fixed(
-        simWeather$weatherdate, "/",3)[,2] >= sm),]
-      simWeather <- simWeather[which(stringr::str_split_fixed(
-        simWeather$weatherdate, "/",3)[,2] <= em),]
-
-      rsamara::init_sim_idx_simple(as.numeric(self$name), param, simWeather)
-      res <- rsamara::run_sim_idx(as.numeric(self$name))
-      self$result <- res
+      if(!is.na(lon) & !is.na(lat)) {
+        for(i in 1:length(self$gridPoints)) {
+          latPoint <- self$latStart + (i*(self$res/111))
+          for(j in 1:length(self$gridPoints[[i]])) {
+            lonPoint <- self$lonStart + ((j*(self$res/111)) * cos(latPoint))
+            self$gridPoints[[i]][[j]] <- gridPoint$new(name=paste0(i,j),
+                                                       lon=lonPoint,
+                                                       lat=latPoint)
+          }
+        }
+      } else {
+        cat("Missing longitude or latitude, grid will not be populated.
+            If needed, please use populateGrid() on this object.")
+      }
     }
   )
 )

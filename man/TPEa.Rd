@@ -22,10 +22,6 @@ TODO
 
 \item{\code{genotypes}}{List of alternate varieties names used for TPE analysis}
 
-\item{\code{latStart}}{Starting latitude for the grid (upper left corner)}
-
-\item{\code{lonStart}}{Starting longitude for the grid (upper left corner)}
-
 \item{\code{grid}}{Simulation grid}
 
 \item{\code{parameters}}{A vector or dataframe with all parameters used for
@@ -69,8 +65,6 @@ Create a new TPE analysis object
   model = "Samara",
   varieties = NA,
   environments = NA,
-  latStart = NA,
-  lonStart = NA,
   genotypes = NA,
   parameters = NA
 )}\if{html}{\out{</div>}}
@@ -86,10 +80,6 @@ Create a new TPE analysis object
 \item{\code{varieties}}{List of varieties}
 
 \item{\code{environments}}{List of environments}
-
-\item{\code{latStart}}{Starting latitude for grid}
-
-\item{\code{lonStart}}{Starting longitude for grid}
 
 \item{\code{genotypes}}{Optional. List of alternate variety names}
 
@@ -204,17 +194,30 @@ Confirm creation of TPE analysis object
 \subsection{Method \code{createGrid()}}{
 Create a simulation grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(res = 5, cols = NA, rows = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
+  name = "grid1",
+  res = 5,
+  cols = 5,
+  rows = 5,
+  lon = NA,
+  lat = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{res}}{Resolution of grid, in km}
+\item{\code{name}}{Identifier of the grid}
+
+\item{\code{res}}{Resolution of the grid}
 
 \item{\code{cols}}{Number of columns in the grid}
 
 \item{\code{rows}}{Number of rows in the grid}
+
+\item{\code{lon}}{Optional. Starting longitude of the grid}
+
+\item{\code{lat}}{Optional. Starting latitude of the grid}
 }
 \if{html}{\out{</div>}}
 }

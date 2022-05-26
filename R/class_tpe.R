@@ -18,10 +18,6 @@ TPEa <- R6::R6Class("TPEa",
     environments = c(),
     #' @field genotypes List of alternate varieties names used for TPE analysis
     genotypes = c(),
-    #' @field latStart Starting latitude for the grid (upper left corner)
-    latStart = NULL,
-    #' @field lonStart Starting longitude for the grid (upper left corner)
-    lonStart = NULL,
     #' @field grid Simulation grid
     grid = NULL,
     #' @field parameters A vector or dataframe with all parameters used for
@@ -41,14 +37,11 @@ TPEa <- R6::R6Class("TPEa",
     #' @param model Name of the crop model used for simulations
     #' @param varieties List of varieties
     #' @param environments List of environments
-    #' @param latStart Starting latitude for grid
-    #' @param lonStart Starting longitude for grid
     #' @param genotypes Optional. List of alternate variety names
     #' @param parameters A vector or dataframe with all crop model parameters
     #' @return A new `TPEa` object.
     initialize = function(name="TPEa_1", model="Samara", varieties=NA,
-                          environments=NA, latStart=NA, lonStart=NA,
-                          genotypes=NA,parameters=NA) {
+                          environments=NA, genotypes=NA,parameters=NA) {
       self$name <- as.character(name)
       self$model <- as.character(model)
       if(length(varieties) > 1 || !is.na(varieties)) {
@@ -61,22 +54,9 @@ TPEa <- R6::R6Class("TPEa",
       } else {
         stop("Please provide at least one environment name.")
       }
-
-      if(!is.na(as.numeric(latStart))) {
-        self$latStart <- as.numeric(latStart)
-      } else {
-        stop("Please provide a starting latitude in Decimal Degree")
-      }
-
-      if(!is.na(as.numeric(lonStart))) {
-        self$lonStart <- as.numeric(lonStart)
-      } else {
-        stop("Please provide a starting longitude in Decimal Degree")
-      }
-
       if(!is.na(genotypes)) {
         if(length(genotypes != length(varieties))) {
-          stop("Length of genotypes does not match length of varieties.\n
+          stop("Length of genotypes does not match length of varieties.
                Please either provide an alternate name for each variety or use
                genotypes=NA.")
         } else {
@@ -85,9 +65,7 @@ TPEa <- R6::R6Class("TPEa",
       } else {
         self$genotypes <- self$varieties
       }
-
       self$parameters <- parameters
-
       self$initMessage()
     },
 
@@ -136,20 +114,14 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Create a simulation grid
-    #' @param res Resolution of grid, in km
+    #' @param name Identifier of the grid
+    #' @param res Resolution of the grid
     #' @param cols Number of columns in the grid
     #' @param rows Number of rows in the grid
-    createGrid = function(res=5,cols=NA,rows=NA) {
-      self$grid <- vector("list",cols)
-      for(i in 1:length(self$grid)) {
-        lat <- self$latStart + (i*(res/111))
-        self$grid[[i]] <- vector("list",rows)
-        for(j in 1:length(self$grid[[i]])) {
-          lon <- self$lonStart + ((j*(res/111)) * cos(lat))
-          self$grid[[i]][[j]] <- TPEgrid$new(name=paste0(i,j),
-                                             lat=lat, lon=lon)
-        }
-      }
+    #' @param lon Optional. Starting longitude of the grid
+    #' @param lat Optional. Starting latitude of the grid
+    createGrid = function(name="grid1", res=5, cols=5, rows=5, lon=NA, lat=NA) {
+      self$grid <- TPEgrid$new(name, res, cols, rows, lon, lat)
     },
 
     #' @description Generate climate data for each point of the grid
@@ -161,10 +133,10 @@ TPEa <- R6::R6Class("TPEa",
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
     genClim = function(rcp="rcp26", year=2015, yearNb=99,
                        modelNb="00000000000000000", path=NA, pathCLI=NA) {
-      for(i in 1:length(self$grid)) {
-        for(j in 1:length(self$grid[[i]])) {
-          self$grid[[i]][[j]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                         pathCLI)
+      for(i in 1:length(self$grid$gridPoints)) {
+        for(j in 1:length(self$grid$gridPoints[[i]])) {
+          self$grid$gridPoints[[i]][[j]]$genClimate(rcp, year, yearNb, modelNb,
+                                                    path, pathCLI)
         }
       }
     },
@@ -173,9 +145,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @param row Row of parameter dataframe to use
     runGridSim = function(row=1) {
       param <- self$parameters[1,]
-      for(i in 1:length(self$grid)) {
-        for(j in 1:length(self$grid[[i]])) {
-          self$grid[[i]][[j]]$runSimulation(param)
+      for(i in 1:length(self$grid$gridPoints)) {
+        for(j in 1:length(self$grid$gridPoints[[i]])) {
+          self$grid$gridPoints[[i]][[j]]$runSimulation(param)
         }
       }
     },

@@ -133,10 +133,8 @@ et0 <- function(tmin,tmax,srad){
 #' TPE_analysis <- create_tpe("tpea1","Samara")
 #' @export
 createTpe <- function(name="TPEa_1", model="Samara", varieties=NA,
-                       environments=NA, latStart=NA, lonStart=NA,
-                       genotypes=NA, parameters=NA) {
-  return(TPEa$new(name, model, varieties, environments, latStart, lonStart,
-                  genotypes, parameters))
+                       environments=NA, genotypes=NA, parameters=NA) {
+  return(TPEa$new(name, model, varieties, environments, genotypes, parameters))
 }
 
 #' @title Load data for vignette

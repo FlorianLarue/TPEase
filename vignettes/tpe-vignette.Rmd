@@ -19,9 +19,8 @@ loadData()
 
 # create a TPE analysis object
 TPE_analysis <- createTpe(varieties=c("Fadda"),
-                          environments=c("BAMA2014S1"),
-                          latStart=11.8, lonStart=-4.3,
-                          parameters=param)
+                 environments=c("BAMA2014S1"),
+                 parameters=param)
 
 # set weather data and observation data from the data loaded with loadData()
 TPE_analysis$set_weather(weather)
@@ -31,7 +30,7 @@ TPE_analysis$set_obs(obs)
 TPE_analysis$runEstimation(maxiter=5, paramnames=paramOfInterest)
 
 # create a simulation grid
-TPE_analysis$createGrid(5,3,3) #size 3x3 with 5km grid points
+TPE_analysis$createGrid("grid1", 5, 2, 2, -4.3, 11.8)
 
 # generate climate on each point of the grid
 TPE_analysis$genClim(path="D:\\Marksim\\")

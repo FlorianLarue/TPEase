@@ -9,8 +9,6 @@ createTpe(
   model = "Samara",
   varieties = NA,
   environments = NA,
-  latStart = NA,
-  lonStart = NA,
   genotypes = NA,
   parameters = NA
 )
@@ -24,11 +22,11 @@ createTpe(
 
 \item{environments}{test}
 
+\item{genotypes}{test}
+
 \item{latStart}{test}
 
 \item{lonStart}{test}
-
-\item{genotypes}{test}
 }
 \value{
 A R6 class TPE analysis object

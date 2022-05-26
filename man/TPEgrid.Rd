@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_grid.R
 \name{TPEgrid}
 \alias{TPEgrid}
-\title{#' R6 Class Representing a simulation grid point}
+\title{#' R6 Class Representing a simulation grid}
 \description{
 TODO
 }
@@ -12,15 +12,19 @@ TODO
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{Identifier of the grid point}
+\item{\code{name}}{Identifier of the grid}
 
-\item{\code{lat}}{Latitude of the TPE analysis}
+\item{\code{length}}{Length of the grid}
 
-\item{\code{lon}}{Longitude of the TPE analysis}
+\item{\code{width}}{Width of the grid}
 
-\item{\code{weather}}{Samara climate data}
+\item{\code{res}}{Resolution of the grid}
 
-\item{\code{result}}{Model simulation}
+\item{\code{lonStart}}{Starting longitude of the grid}
+
+\item{\code{latStart}}{Starting latitude of the grid}
+
+\item{\code{gridPoints}}{Collection of each point on the grid}
 }
 \if{html}{\out{</div>}}
 }
@@ -28,9 +32,6 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
-\item \href{#method-TPEgrid-set_weather}{\code{TPEgrid$set_weather()}}
-\item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
-\item \href{#method-TPEgrid-runSimulation}{\code{TPEgrid$runSimulation()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -38,85 +39,30 @@ TODO
 \if{html}{\out{<a id="method-TPEgrid-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEgrid-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPE grid object.
+Create a new TPE grid object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(name = "11", lat = 11.18, lon = -4.3)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(name = "grid1", res = 5, width = 5, length = 5, lon = NA, lat = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{Identifier of the TPE analysis}
+\item{\code{name}}{Identifier of the grid}
 
-\item{\code{lat}}{Latitude of grid point}
+\item{\code{res}}{Resolution of the grid}
 
-\item{\code{lon}}{Longitude of grid point}
+\item{\code{width}}{Width of the grid}
+
+\item{\code{length}}{Length of the grid}
+
+\item{\code{lon}}{Optional. Starting longitude of the grid (upper left corner)}
+
+\item{\code{lat}}{Optional. Starting latitude of the grid (upper left corner)}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `TPEgrid` object.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEgrid-set_weather"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEgrid-set_weather}{}}}
-\subsection{Method \code{set_weather()}}{
-Change weather of grid point
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_weather(weather)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{weather}}{Weather dataframe}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEgrid-genClimate"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEgrid-genClimate}{}}}
-\subsection{Method \code{genClimate()}}{
-Generate climate at grid point
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{rcp}}{Rcp scenario to use}
-
-\item{\code{year}}{Year to simulate climate}
-
-\item{\code{yearNb}}{Number of years to simulate}
-
-\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
-
-\item{\code{path}}{Path to marksim standalone}
-
-\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEgrid-runSimulation"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEgrid-runSimulation}{}}}
-\subsection{Method \code{runSimulation()}}{
-Run simulation on grid point
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runSimulation(param)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{param}}{Parameter values}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
