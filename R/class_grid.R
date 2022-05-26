@@ -40,20 +40,15 @@ TPEgrid <- R6::R6Class("TPEgrid",
       self$lonStart <- lon
       self$latStart <- lat
 
-      #TODO: might need to find a better solution than list of list
-      self$gridPoints <- vector("list",self$width)
-      for(g in 1:length(self$gridPoints)) {
-        self$gridPoints[[g]] <- vector("list",self$length)
-      }
-
+      #TODO: might have to find a better solution than having list in matrix
+      self$gridPoints <- matrix(list(), nrow=length, ncol=width)
       if(!is.na(lon) & !is.na(lat)) {
-        for(i in 1:length(self$gridPoints)) {
+        for(i in 1:nrow(self$gridPoints)) {
           latPoint <- self$latStart + (i*(self$res/111))
-          for(j in 1:length(self$gridPoints[[i]])) {
+          for(j in 1:ncol(self$gridPoints)) {
             lonPoint <- self$lonStart + ((j*(self$res/111)) * cos(latPoint))
-            self$gridPoints[[i]][[j]] <- gridPoint$new(name=paste0(i,j),
-                                                       lon=lonPoint,
-                                                       lat=latPoint)
+            self$gridPoints[i,j] <- list(gridPoint$new(name=paste0(i,j),
+                                                  lon=lonPoint, lat=latPoint))
           }
         }
       } else {

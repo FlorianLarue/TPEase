@@ -133,9 +133,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
     genClim = function(rcp="rcp26", year=2015, yearNb=99,
                        modelNb="00000000000000000", path=NA, pathCLI=NA) {
-      for(i in 1:length(self$grid$gridPoints)) {
-        for(j in 1:length(self$grid$gridPoints[[i]])) {
-          self$grid$gridPoints[[i]][[j]]$genClimate(rcp, year, yearNb, modelNb,
+      for(i in 1:nrow(self$grid$gridPoints)) {
+        for(j in 1:ncol(self$grid$gridPoints)) {
+          self$grid$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb,
                                                     path, pathCLI)
         }
       }
@@ -145,9 +145,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @param row Row of parameter dataframe to use
     runGridSim = function(row=1) {
       param <- self$parameters[1,]
-      for(i in 1:length(self$grid$gridPoints)) {
-        for(j in 1:length(self$grid$gridPoints[[i]])) {
-          self$grid$gridPoints[[i]][[j]]$runSimulation(param)
+      for(i in 1:nrow(self$grid$gridPoints)) {
+        for(j in 1:ncol(self$grid$gridPoints)) {
+          self$grid$gridPoints[i,j][[1]]$runSimulation(param)
         }
       }
     },
