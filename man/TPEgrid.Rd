@@ -32,6 +32,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
+\item \href{#method-TPEgrid-get_name}{\code{TPEgrid$get_name()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -64,6 +65,16 @@ Create a new TPE grid object
 \subsection{Returns}{
 A new `TPEgrid` object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-get_name"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-get_name}{}}}
+\subsection{Method \code{get_name()}}{
+Returns name of grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_name()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEgrid-clone"></a>}}

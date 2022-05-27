@@ -47,14 +47,21 @@ TPEgrid <- R6::R6Class("TPEgrid",
           latPoint <- self$latStart + (i*(self$res/111))
           for(j in 1:ncol(self$gridPoints)) {
             lonPoint <- self$lonStart + ((j*(self$res/111)) * cos(latPoint))
-            self$gridPoints[i,j] <- list(gridPoint$new(name=paste0(i,j),
-                                                  lon=lonPoint, lat=latPoint))
+            self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
+                                                       name=paste0(i,j),
+                                                       lon=lonPoint,
+                                                       lat=latPoint))
           }
         }
       } else {
         cat("Missing longitude or latitude, grid will not be populated.
             If needed, please use populateGrid() on this object.")
       }
+    },
+
+    #' @description Returns name of grid
+    get_name = function() {
+      return(self$name)
     }
   )
 )

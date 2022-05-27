@@ -22,7 +22,9 @@ TODO
 
 \item{\code{genotypes}}{List of alternate varieties names used for TPE analysis}
 
-\item{\code{grid}}{Simulation grid}
+\item{\code{grids}}{List of simulation grids}
+
+\item{\code{gridnames}}{List of simulation grids}
 
 \item{\code{parameters}}{A vector or dataframe with all parameters used for
 simulation with the corresponding `model`}
@@ -229,6 +231,7 @@ Create a simulation grid
 Generate climate data for each point of the grid
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(
+  gridID = 1,
   rcp = "rcp26",
   year = 2015,
   yearNb = 99,
@@ -241,6 +244,8 @@ Generate climate data for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{gridID}}{Grid identifier}
+
 \item{\code{rcp}}{Rcp scenario to use}
 
 \item{\code{year}}{Year to simulate climate}
@@ -262,12 +267,14 @@ Generate climate data for each point of the grid
 \subsection{Method \code{runGridSim()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(row = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(gridID = 1, row = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{gridID}}{Grid identifier}
+
 \item{\code{row}}{Row of parameter dataframe to use}
 }
 \if{html}{\out{</div>}}

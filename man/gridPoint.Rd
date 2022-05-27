@@ -18,9 +18,19 @@ TODO
 
 \item{\code{lat}}{Latitude of the grid point}
 
-\item{\code{weather}}{Samara climate data}
+\item{\code{weather}}{Samara climate data generated from marksim}
+
+\item{\code{simuweather}}{Samara climate data for simulation of given year}
 
 \item{\code{result}}{Model simulation}
+
+\item{\code{soilParam}}{soil parameters of grid point}
+
+\item{\code{dateParam}}{sowing date of grid point}
+
+\item{\code{parent}}{Grid parent of grid point}
+
+\item{\code{test}}{Test attribute TODO: REMOVE}
 }
 \if{html}{\out{</div>}}
 }
@@ -29,6 +39,8 @@ TODO
 \itemize{
 \item \href{#method-gridPoint-new}{\code{gridPoint$new()}}
 \item \href{#method-gridPoint-set_weather}{\code{gridPoint$set_weather()}}
+\item \href{#method-gridPoint-set_soilParam}{\code{gridPoint$set_soilParam()}}
+\item \href{#method-gridPoint-set_dateParam}{\code{gridPoint$set_dateParam()}}
 \item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
 \item \href{#method-gridPoint-runSimulation}{\code{gridPoint$runSimulation()}}
 \item \href{#method-gridPoint-clone}{\code{gridPoint$clone()}}
@@ -40,12 +52,14 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE grid point object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$new(name = "11", lon = -4.3, lat = 11.18)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$new(parent = NA, name = "11", lon = -4.3, lat = 11.18)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{parent}}{Grid parent of grid point}
+
 \item{\code{name}}{Identifier of the TPE analysis}
 
 \item{\code{lon}}{Longitude of grid point}
@@ -71,6 +85,33 @@ Change weather of grid point
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{weather}}{Weather dataframe}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-set_soilParam"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-set_soilParam}{}}}
+\subsection{Method \code{set_soilParam()}}{
+Set soil parameters for grid point location
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_soilParam()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-set_dateParam"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-set_dateParam}{}}}
+\subsection{Method \code{set_dateParam()}}{
+Set soil parameters for grid point location
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{year}}{Year of simulation}
 }
 \if{html}{\out{</div>}}
 }
