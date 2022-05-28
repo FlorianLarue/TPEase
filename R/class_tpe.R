@@ -58,9 +58,9 @@ TPEa <- R6::R6Class("TPEa",
       }
       if(!is.na(genotypes)) {
         if(length(genotypes != length(varieties))) {
-          stop("Length of genotypes does not match length of varieties.
-               Please either provide an alternate name for each variety or use
-               genotypes=NA.")
+          stop(paste("Length of genotypes does not match length of varieties.",
+               "Please either provide an alternate name for each variety",
+               "or use genotypes=NA."))
         } else {
           self$genotypes <- genotypes
         }
@@ -124,11 +124,11 @@ TPEa <- R6::R6Class("TPEa",
     #' @param lat Optional. Starting latitude of the grid
     createGrid = function(name="grid1", res=5, cols=5, rows=5, lon=NA, lat=NA) {
       if(name %in% self$gridnames) {
-        stop(paste("Grid with name",name,"already exists.
-                   Please provide a unique identifier."))
+        stop(paste("Grid with name",name,"already exists.",
+                   "Please provide a unique identifier."))
       }
       self$grids[[length(self$grids)+1]] <- TPEgrid$new(name, res, cols, rows,
-                                                      lon, lat)
+                                                      lon, lat, self)
       self$gridnames <- c(self$gridnames, name)
     },
 

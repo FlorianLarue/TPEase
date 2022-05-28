@@ -25,6 +25,8 @@ TODO
 \item{\code{latStart}}{Starting latitude of the grid}
 
 \item{\code{gridPoints}}{Collection of each point on the grid}
+
+\item{\code{parent}}{TPE analysis parent}
 }
 \if{html}{\out{</div>}}
 }
@@ -42,7 +44,15 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE grid object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(name = "grid1", res = 5, width = 5, length = 5, lon = NA, lat = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(
+  name = "grid1",
+  res = 5,
+  width = 5,
+  length = 5,
+  lon = NA,
+  lat = NA,
+  parent = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -59,6 +69,8 @@ Create a new TPE grid object
 \item{\code{lon}}{Optional. Starting longitude of the grid (upper left corner)}
 
 \item{\code{lat}}{Optional. Starting latitude of the grid (upper left corner)}
+
+\item{\code{parent}}{TPE analysis parent}
 }
 \if{html}{\out{</div>}}
 }

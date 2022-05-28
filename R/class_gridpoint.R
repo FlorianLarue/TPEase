@@ -83,11 +83,12 @@ gridPoint <- R6::R6Class("gridPoint",
           }
         }
         if(is.null(self$dateParam)) {
-          print("No sowing date could be found.")
+          stop(paste("No sowing date could be found for gridpoint",
+                      self$name,))
         }
       } else {
-        stop(paste("Weather data for grid point", self$name, "is not set.
-                   Please use genClimate() on grid", self$parent$name))
+        stop(paste("Weather data for grid point", self$name,
+        "is not set. Please use genClimate() on grid", self$parent$name))
       }
     },
 
@@ -127,8 +128,9 @@ gridPoint <- R6::R6Class("gridPoint",
           simWeather$weatherdate, "/",3)[,2] >= sm),]
         self$simuweather <- simWeather[which(stringr::str_split_fixed(
           simWeather$weatherdate, "/",3)[,2] <= em),]
-        warning("Sowing date was not extracted from weatherdate.
-                The current sowingdate from TPEa will be used.")
+        warning(paste("Sowing date was not extracted from weatherdata for",
+        "grid point", self$name, "The current sowingdate from TPE analysis",
+        self$parent$parent$name, "will be used."))
       }
       rsamara::init_sim_idx_simple(as.numeric(self$name), param,
                                    self$simuweather)
