@@ -37,6 +37,8 @@ TODO
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
 \item \href{#method-TPEgrid-set_resGrid}{\code{TPEgrid$set_resGrid()}}
+\item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
+\item \href{#method-TPEgrid-runGridSim}{\code{TPEgrid$runGridSim()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -97,6 +99,71 @@ Set simulation result for given grid point in result matrix
 \item{\code{j}}{Col position of grid point}
 
 \item{\code{val}}{Value of simulation result}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-genClimate"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-genClimate}{}}}
+\subsection{Method \code{genClimate()}}{
+Generate climate data for each point of the grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(
+  rcp = "rcp26",
+  year = 2015,
+  yearNb = 99,
+  modelNb = "00000000000000000",
+  path = NA,
+  pathCLI = NA
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rcp}}{Rcp scenario to use}
+
+\item{\code{year}}{Year to simulate climate}
+
+\item{\code{yearNb}}{Number of years to simulate}
+
+\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+
+\item{\code{path}}{Path to marksim standalone}
+
+\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-runGridSim"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-runGridSim}{}}}
+\subsection{Method \code{runGridSim()}}{
+Run simulation for each point of the grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(
+  trait = "GrainYieldPopFin",
+  year = 2015,
+  soilData = soil,
+  latlonData = lat_lon,
+  param
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{trait}}{Trait name for grid res matrix}
+
+\item{\code{year}}{Year to run the simulation}
+
+\item{\code{soilData}}{Tmp for Adam et al.}
+
+\item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{param}}{Parameters to use for simulation}
 }
 \if{html}{\out{</div>}}
 }

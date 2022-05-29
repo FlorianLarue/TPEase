@@ -12,19 +12,19 @@ TODO
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{Identifier of the TPE analysis}
+\item{\code{name}}{A character string identifier of the TPE analysis}
 
-\item{\code{model}}{Name of the crop model used for simulations}
+\item{\code{model}}{A character string with the name of the crop model
+used for simulations (only "Samara" is supported for now)}
 
-\item{\code{varieties}}{List of varieties names used for TPE analysis}
+\item{\code{varieties}}{A list of varieties names}
 
-\item{\code{environments}}{List of environment names used for TPE analysis}
+\item{\code{environments}}{A list of environment names used for calibration}
 
-\item{\code{genotypes}}{List of alternate varieties names used for TPE analysis}
+\item{\code{genotypes}}{A list of alternate varieties names}
 
-\item{\code{grids}}{List of simulation grids}
-
-\item{\code{gridnames}}{List of simulation grids}
+\item{\code{grids}}{A list of simulation grids, will be populated by the
+`createGrid()` function}
 
 \item{\code{parameters}}{A vector or dataframe with all parameters used for
 simulation with the corresponding `model`}
@@ -32,10 +32,11 @@ simulation with the corresponding `model`}
 \item{\code{weathers}}{A dataframe or list of dataframe with weather data for
 each of the `environments`}
 
-\item{\code{observations}}{A dataframe or list of dataframe with observation *
-data}
+\item{\code{observations}}{A dataframe or list of dataframe with observations
+for each of the `environments`}
 
-\item{\code{estimParam}}{Values of estimated parameters}
+\item{\code{estimParam}}{A vector containing the values of estimated parameters
+will be populated by the `runEstimation` function}
 }
 \if{html}{\out{</div>}}
 }
@@ -46,11 +47,10 @@ data}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
-\item \href{#method-TPEa-set_eparam}{\code{TPEa$set_eparam()}}
-\item \href{#method-TPEa-update_param}{\code{TPEa$update_param()}}
+\item \href{#method-TPEa-set_param}{\code{TPEa$set_param()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
-\item \href{#method-TPEa-genClim}{\code{TPEa$genClim()}}
+\item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
 \item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
@@ -75,15 +75,16 @@ Create a new TPE analysis object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{Identifier of the TPE analysis}
+\item{\code{name}}{A character string identifier of the TPE analysis}
 
-\item{\code{model}}{Name of the crop model used for simulations}
+\item{\code{model}}{A character string with the name of the crop model used
+for simulations}
 
-\item{\code{varieties}}{List of varieties}
+\item{\code{varieties}}{A list of varieties names}
 
-\item{\code{environments}}{List of environments}
+\item{\code{environments}}{A list of environments names}
 
-\item{\code{genotypes}}{Optional. List of alternate variety names}
+\item{\code{genotypes}}{Optional. A list of alternate variety names}
 
 \item{\code{parameters}}{A vector or dataframe with all crop model parameters}
 }
@@ -122,7 +123,8 @@ Set weather data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Dataframe (or list of df) of weather data}
+\item{\code{val}}{A dataframe or list of dataframes with weather data for each
+of the `environments`}
 }
 \if{html}{\out{</div>}}
 }
@@ -139,43 +141,25 @@ Set observation data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Dataframe (or list of df) of observation data}
+\item{\code{val}}{A dataframe or list of dataframes with observations for each
+of the `environments` and `varieties`}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-set_eparam"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-set_eparam}{}}}
-\subsection{Method \code{set_eparam()}}{
-Set estimated parameter values
+\if{html}{\out{<a id="method-TPEa-set_param"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_param}{}}}
+\subsection{Method \code{set_param()}}{
+Set parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_eparam(val)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_param(val)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Vector of parameter values}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-update_param"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-update_param}{}}}
-\subsection{Method \code{update_param()}}{
-Update parameter with estimated parameter values
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$update_param(val, names)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{Vector of parameter values}
-
-\item{\code{names}}{Vector of parameter names}
+\item{\code{val}}{A vector or dataframe with all crop model parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -209,28 +193,30 @@ Create a simulation grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{Identifier of the grid}
+\item{\code{name}}{A character string identifier of the grid}
 
-\item{\code{res}}{Resolution of the grid}
+\item{\code{res}}{A numeric value of the resolution of the grid}
 
-\item{\code{cols}}{Number of columns in the grid}
+\item{\code{cols}}{A numeric value of the number of columns in the grid}
 
-\item{\code{rows}}{Number of rows in the grid}
+\item{\code{rows}}{A numeric value of the number of rows in the grid}
 
-\item{\code{lon}}{Optional. Starting longitude of the grid}
+\item{\code{lon}}{A numeric value of the starting longitude of the grid in
+decimal degrees}
 
-\item{\code{lat}}{Optional. Starting latitude of the grid}
+\item{\code{lat}}{A numeric value of the starting latitude of the grid in
+decimal degrees}
 }
 \if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-genClim"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-genClim}{}}}
-\subsection{Method \code{genClim()}}{
-Generate climate data for each point of the grid
+\if{html}{\out{<a id="method-TPEa-genClimate"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-genClimate}{}}}
+\subsection{Method \code{genClimate()}}{
+Generate climate data for one or several grids
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$genClim(
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$genClimate(
   gridID = 1,
   rcp = "rcp26",
   year = 2015,
@@ -244,19 +230,27 @@ Generate climate data for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{Grid identifier}
+\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
 
-\item{\code{rcp}}{Rcp scenario to use}
+\item{\code{rcp}}{A character string with the name of the Representative
+Concentration Pathway to use. One of the following options
+c("rcp26","rcp45","rcp60","rcp85")}
 
-\item{\code{year}}{Year to simulate climate}
+\item{\code{year}}{A numeric value of the year to simulate climate (format %Y,
+this can include years from 2013 to 2099)}
 
-\item{\code{yearNb}}{Number of years to simulate}
+\item{\code{yearNb}}{A numeric value of the number of years to simulate}
 
-\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+\item{\code{modelNb}}{A character string of the  general circulation model
+identifier to use, see \code{generateClimate}}
 
-\item{\code{path}}{Path to marksim standalone}
+\item{\code{path}}{A character string with the path to the marksim standalone.
+For the moment, this path can not contain spaces}
 
-\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+\item{\code{pathCLI}}{Optional. A character string with the path to CLI folder.
+If no value is provided, the CLI folder will be considered in the same
+folder as the marksim standalone. For the moment, this path can not
+contain spaces}
 }
 \if{html}{\out{</div>}}
 }
@@ -265,7 +259,7 @@ Generate climate data for each point of the grid
 \if{html}{\out{<a id="method-TPEa-runGridSim"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-runGridSim}{}}}
 \subsection{Method \code{runGridSim()}}{
-Generate climate data for each point of the grid
+Run simulation on one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
   gridID = 1,
@@ -280,13 +274,13 @@ Generate climate data for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{Grid identifier}
+\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
 
-\item{\code{row}}{Row of parameter dataframe to use}
+\item{\code{row}}{A numeric value with the row of parameter dataframe to use}
 
-\item{\code{trait}}{Trait name for grid res matrix}
+\item{\code{trait}}{A character string with the trait name for grid res matrix}
 
-\item{\code{year}}{Year to run the simulation}
+\item{\code{year}}{A numeric value with the year to run the simulation (%Y)}
 
 \item{\code{soilData}}{Tmp for Adam et al.}
 
@@ -313,15 +307,17 @@ Run parameter estimation
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{maxiter}}{Maximum number of iteration for DEoptim}
+\item{\code{maxiter}}{A numeric value of the maximum number of iteration
+for DEoptim}
 
-\item{\code{paramnames}}{Vector of parameter names to be estimated}
+\item{\code{paramnames}}{A vector of parameter names to be estimated}
 
-\item{\code{metric}}{Metric to use for fitness computation}
+\item{\code{metric}}{A character string with the name of the metric to use
+for fitness computation. Options are c("RMSE","MAE","MSE")}
 
-\item{\code{score_fn}}{Function to compute fitness, see \code{get_score}}
+\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
 
-\item{\code{weigh_fn}}{Not used}
+\item{\code{weigh_fn}}{Not used for the moment}
 }
 \if{html}{\out{</div>}}
 }

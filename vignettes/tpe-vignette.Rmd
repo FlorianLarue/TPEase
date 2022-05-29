@@ -33,7 +33,7 @@ TPE_analysis$runEstimation(maxiter=2, paramnames=paramOfInterest)
 TPE_analysis$createGrid("grid1", 0.5, 10, 10, -10.59, 9.20)
 
 # generate climate on each point of the grid
-TPE_analysis$genClim(gridID=1, path="D:\\Marksim\\")
+TPE_analysis$genClimate(gridID=1, path="D:\\Marksim\\")
 
 # run model simulation on each point of the grid using estimated parameters
 TPE_analysis$runGridSim(gridID=1, row=1, trait="GrainYieldPopFin",

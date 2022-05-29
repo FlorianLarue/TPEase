@@ -74,6 +74,39 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param val Value of simulation result
     set_resGrid = function(i, j, val) {
       self$resGrid[i,j] <- val
+    },
+
+    #' @description Generate climate data for each point of the grid
+    #' @param rcp Rcp scenario to use
+    #' @param year Year to simulate climate
+    #' @param yearNb Number of years to simulate
+    #' @param modelNb Identifier of model to use, see \code{generateClimate}
+    #' @param path Path to marksim standalone
+    #' @param pathCLI Optional. Path to CLI folder for marksim standalone
+    genClimate = function(rcp="rcp26", year=2015, yearNb=99,
+                       modelNb="00000000000000000", path=NA, pathCLI=NA) {
+      for(i in 1:nrow(self$gridPoints)) {
+        for(j in 1:ncol(self$gridPoints)) {
+          self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb, path,
+                                               pathCLI)
+        }
+      }
+    },
+    #' @description Run simulation for each point of the grid
+    #' @param trait Trait name for grid res matrix
+    #' @param year Year to run the simulation
+    #' @param soilData Tmp for Adam et al.
+    #' @param latlonData Tmp for Adam et al.
+    #' @param param Parameters to use for simulation
+    runGridSim = function(trait="GrainYieldPopFin", year=2015, soilData=soil,
+                          latlonData=lat_lon, param) {
+      for(i in 1:nrow(self$gridPoints)) {
+        for(j in 1:ncol(self$gridPoints)) {
+          self$gridPoints[i,j][[1]]$set_soilParam(soil, lat_lon)
+          self$gridPoints[i,j][[1]]$set_dateParam(year)
+          self$gridPoints[i,j][[1]]$runSimulation(param, trait, i,j)
+        }
+      }
     }
   )
 )
