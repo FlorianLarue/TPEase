@@ -91,8 +91,9 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     return(meteo_samara)
   } else {
     setwd(currentPath)
-    stop(paste0("Could not find worldclim data at longitude ",
+    warning(paste0("Could not find worldclim data at longitude ",
                  lon," and lat ",lat))
+    return(NULL)
   }
 }
 
@@ -155,4 +156,10 @@ loadData <- function() {
   weather <<- varietyData[["weathers"]]
   param <<- varietyData[["parameters"]]
   obs <<- varietyData[["observations"]]
+
+  soil <<- read.table("data/samara/HC27_soil_info_samara_BF.csv",
+                      dec=".",sep=",",quote="\"",header=T)
+  lat_lon <<-read.table("data/samara/soil_lat_long_AO.txt",sep='\t',header=TRUE)
+  cumul_rf <<-read.table("data/samara/cumul_pluvio_AO_2000_2050.txt",
+                         sep='\t',header=TRUE)
 }

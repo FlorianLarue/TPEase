@@ -198,7 +198,7 @@ Create a simulation grid
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
   name = "grid1",
-  res = 5,
+  res = 0.5,
   cols = 5,
   rows = 5,
   lon = NA,
@@ -267,7 +267,14 @@ Generate climate data for each point of the grid
 \subsection{Method \code{runGridSim()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(gridID = 1, row = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
+  gridID = 1,
+  row = 1,
+  trait = "GrainYieldPopFin",
+  year = 2015,
+  soilData = soil,
+  latlonData = lat_lon
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -276,6 +283,14 @@ Generate climate data for each point of the grid
 \item{\code{gridID}}{Grid identifier}
 
 \item{\code{row}}{Row of parameter dataframe to use}
+
+\item{\code{trait}}{Trait name for grid res matrix}
+
+\item{\code{year}}{Year to run the simulation}
+
+\item{\code{soilData}}{Tmp for Adam et al.}
+
+\item{\code{latlonData}}{Tmp for Adam et al.}
 }
 \if{html}{\out{</div>}}
 }

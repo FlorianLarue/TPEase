@@ -95,9 +95,18 @@ Change weather of grid point
 \subsection{Method \code{set_soilParam()}}{
 Set soil parameters for grid point location
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_soilParam()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_soilParam(soil, lat_lon)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{soil}}{Dataframe with soil characteristics}
+
+\item{\code{lat_lon}}{Dataframe with correspondance of lat/lon with soil df}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-gridPoint-set_dateParam"></a>}}
@@ -149,13 +158,19 @@ Generate climate at grid point
 \subsection{Method \code{runSimulation()}}{
 Run simulation on grid point
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, trait = "GrainYieldPopFin", i, j)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{param}}{Parameter values}
+
+\item{\code{trait}}{Trait name for matrix grid res}
+
+\item{\code{i}}{row position of grid point}
+
+\item{\code{j}}{col position of grid point}
 }
 \if{html}{\out{</div>}}
 }

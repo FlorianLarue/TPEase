@@ -26,6 +26,8 @@ TODO
 
 \item{\code{gridPoints}}{Collection of each point on the grid}
 
+\item{\code{resGrid}}{Matrix with value of simulated trait for each grid point}
+
 \item{\code{parent}}{TPE analysis parent}
 }
 \if{html}{\out{</div>}}
@@ -34,7 +36,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
-\item \href{#method-TPEgrid-get_name}{\code{TPEgrid$get_name()}}
+\item \href{#method-TPEgrid-set_resGrid}{\code{TPEgrid$set_resGrid()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
 }
 }
@@ -79,14 +81,25 @@ A new `TPEgrid` object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEgrid-get_name"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEgrid-get_name}{}}}
-\subsection{Method \code{get_name()}}{
-Returns name of grid
+\if{html}{\out{<a id="method-TPEgrid-set_resGrid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-set_resGrid}{}}}
+\subsection{Method \code{set_resGrid()}}{
+Set simulation result for given grid point in result matrix
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_name()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_resGrid(i, j, val)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{i}}{Row position of grid point}
+
+\item{\code{j}}{Col position of grid point}
+
+\item{\code{val}}{Value of simulation result}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEgrid-clone"></a>}}

@@ -122,7 +122,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @param rows Number of rows in the grid
     #' @param lon Optional. Starting longitude of the grid
     #' @param lat Optional. Starting latitude of the grid
-    createGrid = function(name="grid1", res=5, cols=5, rows=5, lon=NA, lat=NA) {
+    createGrid = function(name="grid1", res=0.5, cols=5, rows=5, lon=NA, lat=NA) {
       if(name %in% self$gridnames) {
         stop(paste("Grid with name",name,"already exists.",
                    "Please provide a unique identifier."))
@@ -154,11 +154,19 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Generate climate data for each point of the grid
     #' @param gridID Grid identifier
     #' @param row Row of parameter dataframe to use
-    runGridSim = function(gridID=1, row=1) {
+    #' @param trait Trait name for grid res matrix
+    #' @param year Year to run the simulation
+    #' @param soilData Tmp for Adam et al.
+    #' @param latlonData Tmp for Adam et al.
+    runGridSim = function(gridID=1, row=1, trait="GrainYieldPopFin",
+                          year=2015, soilData=soil, latlonData=lat_lon) {
       param <- self$parameters[1,]
       for(i in 1:nrow(self$grids[[gridID]]$gridPoints)) {
         for(j in 1:ncol(self$grids[[gridID]]$gridPoints)) {
-          self$grids[[gridID]]$gridPoints[i,j][[1]]$runSimulation(param)
+          self$grids[[gridID]]$gridPoints[i,j][[1]]$set_soilParam(soil, lat_lon)
+          self$grids[[gridID]]$gridPoints[i,j][[1]]$set_dateParam(year)
+          self$grids[[gridID]]$gridPoints[i,j][[1]]$runSimulation(param,trait,
+                                                                  i,j)
         }
       }
     },

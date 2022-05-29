@@ -22,6 +22,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
     latStart = NULL,
     #' @field gridPoints Collection of each point on the grid
     gridPoints = NULL,
+    #' @field resGrid Matrix with value of simulated trait for each grid point
+    resGrid = NULL,
     #' @field parent TPE analysis parent
     parent = NULL,
 
@@ -46,12 +48,14 @@ TPEgrid <- R6::R6Class("TPEgrid",
 
       #TODO: might have to find a better solution than having list in matrix
       #TODO: need to generalize (see improvements.md)
+      #tmp solution for Adam et al.
       self$gridPoints <- matrix(list(), nrow=length, ncol=width)
+      self$resGrid <- matrix(NA, nrow=length, ncol=width)
       if(!is.na(lon) & !is.na(lat)) {
         for(i in 1:nrow(self$gridPoints)) {
-          latPoint <- self$latStart + (i*(self$res/111))
+          latPoint <- self$latStart + (0.35*i)
           for(j in 1:ncol(self$gridPoints)) {
-            lonPoint <- self$lonStart + ((j*(self$res/111)) * cos(latPoint))
+            lonPoint <- self$lonStart + (res*j)
             self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
                                                        name=paste0(i,j),
                                                        lon=lonPoint,
@@ -64,9 +68,12 @@ TPEgrid <- R6::R6Class("TPEgrid",
       }
     },
 
-    #' @description Returns name of grid
-    get_name = function() {
-      return(self$name)
+    #' @description Set simulation result for given grid point in result matrix
+    #' @param i Row position of grid point
+    #' @param j Col position of grid point
+    #' @param val Value of simulation result
+    set_resGrid = function(i, j, val) {
+      self$resGrid[i,j] <- val
     }
   )
 )
