@@ -158,7 +158,7 @@ Generate climate at grid point
 \subsection{Method \code{runSimulation()}}{
 Run simulation on grid point
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, trait = "GrainYieldPopFin", i, j)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, trait, i, j)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

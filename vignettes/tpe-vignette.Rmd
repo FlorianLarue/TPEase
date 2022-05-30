@@ -10,6 +10,7 @@ vignette: >
 
 ```{r setup, include=TRUE}
 library(CGMTPE)
+library(ggplot2)
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```
 
@@ -27,20 +28,25 @@ TPE_analysis$set_weather(weather)
 TPE_analysis$set_obs(obs)
 
 # run parameter estimation, will also update the parameters of the TPE a object
-TPE_analysis$runEstimation(maxiter=2, paramnames=paramOfInterest)
+#TPE_analysis$runEstimation(maxiter=2, paramnames=paramOfInterest)
 
 # create a simulation grid
-TPE_analysis$createGrid("grid1", 0.5, 10, 10, -10.59, 9.20)
+TPE_analysis$createGrid("grid1", 0.5, 100, 100, -17, 5)
 
 # generate climate on each point of the grid
-TPE_analysis$genClimate(gridID=1, path="D:\\Marksim\\")
+TPE_analysis$genClimate(gridID=1, year=2014, yearNb=1, path="D:\\Marksim\\")
 
 # run model simulation on each point of the grid using estimated parameters
 TPE_analysis$runGridSim(gridID=1, row=1, trait="GrainYieldPopFin",
                         year=2014, soilData=soil, latlonData=lat_lon)
 
-# plot simulations
-#TPE_analysis$plotSim("GrainYieldPopFin")
-#plot(TPE_analysis$grids[[1]]$gridPoints[1,1][[1]]$result$Lai, type="l") #TMP
+# create a map of the studied region in TPE anaylisis
+TPE_analysis$createMap(res=150, bounds=c(25,20,0,-20))
+
+# plot map
+TPE_analysis$plotMap()
+df <- TPE_analysis$maps[[1]]
+# p <- ggplot() + geom_tile(data=df, aes(x=x,y=y), alpha=0.5)
+# print(p)
 
 ```

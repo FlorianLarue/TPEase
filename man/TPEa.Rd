@@ -17,13 +17,13 @@ TODO
 \item{\code{model}}{A character string with the name of the crop model
 used for simulations (only "Samara" is supported for now)}
 
-\item{\code{varieties}}{A list of varieties names}
+\item{\code{varieties}}{A vector of varieties names}
 
-\item{\code{environments}}{A list of environment names used for calibration}
+\item{\code{environments}}{A vector of environment names used for calibration}
 
-\item{\code{genotypes}}{A list of alternate varieties names}
+\item{\code{genotypes}}{A vector of alternate varieties names}
 
-\item{\code{grids}}{A list of simulation grids, will be populated by the
+\item{\code{grids}}{A vector of simulation grids, will be populated by the
 `createGrid()` function}
 
 \item{\code{parameters}}{A vector or dataframe with all parameters used for
@@ -37,6 +37,8 @@ for each of the `environments`}
 
 \item{\code{estimParam}}{A vector containing the values of estimated parameters
 will be populated by the `runEstimation` function}
+
+\item{\code{maps}}{A list of raster maps for each of the `grids`}
 }
 \if{html}{\out{</div>}}
 }
@@ -52,6 +54,8 @@ will be populated by the `runEstimation` function}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
+\item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
+\item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
 \item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
@@ -219,8 +223,8 @@ Generate climate data for one or several grids
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$genClimate(
   gridID = 1,
   rcp = "rcp26",
-  year = 2015,
-  yearNb = 99,
+  year = 2014,
+  yearNb = 1,
   modelNb = "00000000000000000",
   path = NA,
   pathCLI = NA
@@ -236,8 +240,8 @@ Generate climate data for one or several grids
 Concentration Pathway to use. One of the following options
 c("rcp26","rcp45","rcp60","rcp85")}
 
-\item{\code{year}}{A numeric value of the year to simulate climate (format %Y,
-this can include years from 2013 to 2099)}
+\item{\code{year}}{A numeric value of the year to simulate climate
+(this can include years from 2013 to 2099)}
 
 \item{\code{yearNb}}{A numeric value of the number of years to simulate}
 
@@ -280,11 +284,51 @@ Run simulation on one or several grids
 
 \item{\code{trait}}{A character string with the trait name for grid res matrix}
 
-\item{\code{year}}{A numeric value with the year to run the simulation (%Y)}
+\item{\code{year}}{A numeric value with the year to run the simulation}
 
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-createMap"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-createMap}{}}}
+\subsection{Method \code{createMap()}}{
+Create raster map
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(res = 150, bounds = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{res}}{A numeric valuein sec of the resolution of world map to use.
+Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
+
+\item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
+of north, east, south, west bounds to crop map}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-plotMap"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-plotMap}{}}}
+\subsection{Method \code{plotMap()}}{
+Create plot on map
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mapID}}{A numeric value of the index of map to plot}
+
+\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
 }
 \if{html}{\out{</div>}}
 }

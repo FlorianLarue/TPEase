@@ -83,7 +83,7 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     tab_meteo <- tab_meteo_init[,c("date","tmax","tmin","tmoy","rhmax","rhmin","rhmoy","windtot","sunshine","radiation","eto","rainfall")]
     et0_estim_vect <- et0(tab_meteo$tmin,tab_meteo$tmax,tab_meteo$radiation)
     tab_meteo$eto <- et0_estim_vect
-    tab_meteo$weatherdate <- format(seq.Date(from=as.Date("01/01/2001",format="%d/%m/%Y"),to=as.Date("31/12/2099",format="%d/%m/%Y"),by='days'),"%d/%m/%Y")
+    tab_meteo$weatherdate <- format(seq.Date(from=as.Date(paste0("01/01/",year),format="%d/%m/%Y"),to=as.Date(paste0("31/12/",year+yearNb-1),format="%d/%m/%Y"),by='days'),"%d/%m/%Y")
     tab_meteo$wscode <- rep(1,nrow(tab_meteo))
     meteo_samara <- tab_meteo[,c("wscode", "weatherdate",	"tmin",	"tmax",	"tmoy",	"rhmin",	"rhmax",	"rhmoy",	"rainfall",	"windtot",	"radiation",	"sunshine",	"eto")]
 

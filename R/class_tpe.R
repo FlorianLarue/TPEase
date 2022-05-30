@@ -13,13 +13,13 @@ TPEa <- R6::R6Class("TPEa",
     #' @field model A character string with the name of the crop model
     #' used for simulations (only "Samara" is supported for now)
     model = NULL,
-    #' @field varieties A list of varieties names
+    #' @field varieties A vector of varieties names
     varieties = c(),
-    #' @field environments A list of environment names used for calibration
+    #' @field environments A vector of environment names used for calibration
     environments = c(),
-    #' @field genotypes A list of alternate varieties names
+    #' @field genotypes A vector of alternate varieties names
     genotypes = c(),
-    #' @field grids A list of simulation grids, will be populated by the
+    #' @field grids A vector of simulation grids, will be populated by the
     #' `createGrid()` function
     grids = NULL,
     #' @field parameters A vector or dataframe with all parameters used for
@@ -34,6 +34,8 @@ TPEa <- R6::R6Class("TPEa",
     #' @field estimParam A vector containing the values of estimated parameters
     #' will be populated by the `runEstimation` function
     estimParam = NULL,
+    #' @field maps A list of raster maps for each of the `grids`
+    maps = list(),
 
     #' @description Create a new TPE analysis object
     #' @param name A character string identifier of the TPE analysis
@@ -69,7 +71,7 @@ TPEa <- R6::R6Class("TPEa",
       } else {
         self$genotypes <- self$varieties
       }
-      if(!is.na(parameters)) {
+      if(length(varieties) > 1 || !is.na(parameters)) {
         self$parameters <- parameters
       } else {
         warning(paste("No parameters were provided",
@@ -140,8 +142,8 @@ TPEa <- R6::R6Class("TPEa",
     #' @param rcp A character string with the name of the Representative
     #' Concentration Pathway to use. One of the following options
     #' c("rcp26","rcp45","rcp60","rcp85")
-    #' @param year A numeric value of the year to simulate climate (format %Y,
-    #' this can include years from 2013 to 2099)
+    #' @param year A numeric value of the year to simulate climate
+    #' (this can include years from 2013 to 2099)
     #' @param yearNb A numeric value of the number of years to simulate
     #' @param modelNb A character string of the  general circulation model
     #' identifier to use, see \code{generateClimate}
@@ -151,16 +153,18 @@ TPEa <- R6::R6Class("TPEa",
     #' If no value is provided, the CLI folder will be considered in the same
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
-    genClimate = function(gridID=1, rcp="rcp26", year=2015, yearNb=99,
+    genClimate = function(gridID=1, rcp="rcp26", year=2014, yearNb=1,
                        modelNb="00000000000000000", path=NA, pathCLI=NA) {
       for(i in 1:length(gridID)) {
+        cat(paste("Generating climate for grid",gridID, "this may take some",
+                  "time if this is the first time generating climate",
+                  "for this grid.\n"))
         if(class(gridID) == "numeric") {
           id <- gridID[[i]]
         } else {
           id <- match(gridID[[i]], private$gridnames)
         }
-        self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                             pathCLI)
+        self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)
       }
     },
 
@@ -168,7 +172,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @param gridID A vector of grid identifiers (either index or name)
     #' @param row A numeric value with the row of parameter dataframe to use
     #' @param trait A character string with the trait name for grid res matrix
-    #' @param year A numeric value with the year to run the simulation (%Y)
+    #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     runGridSim = function(gridID=1, row=1, trait="GrainYieldPopFin",
@@ -181,6 +185,48 @@ TPEa <- R6::R6Class("TPEa",
           id <- match(gridID[[i]], private$gridnames)
         }
         self$grids[[id]]$runGridSim(trait, year, soilData, latlonData, param)
+      }
+    },
+
+    #' @description Create raster map
+    #' @param res A numeric valuein sec of the resolution of world map to use.
+    #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
+    #' @param bounds Optional. A vector of four numeric values as decimal degree
+    #' of north, east, south, west bounds to crop map
+    #' @importFrom raster raster
+    #' @importFrom raster crop
+    #' @importFrom raster extent
+    #' @importFrom raster crs
+    createMap = function(res=150, bounds=NA) {
+      tmpmap <- raster(paste0("data/gis/world_",as.character(res),".tif"))
+      if(length(bounds) == 4) {
+        e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
+                "SpatialPolygons")
+        raster::crs(e) <- "+proj=longlat +datum=WGS84 +no_defs"
+        tmpmap <- crop(tmpmap, e)
+      } else if(!is.na(bounds)) {
+          stop(paste("Length of bounds is not 4.",
+                     "Please provide a value for each cardinal point,",
+                     "or use bounds=NA"))
+      }
+        map <- as(tmpmap, "SpatialPixelsDataFrame")
+        map <- as.data.frame(map)
+        colnames(map) <- c("value", "x", "y")
+        map$value <- NA
+        self$maps[[length(self$maps)+1]] <- map
+    },
+
+    #' @description Create plot on map
+    #' @param mapID A numeric value of the index of map to plot
+    #' @param gridID A vector of grid identifiers (either index or name)
+    plotMap = function(mapID=1, gridID=1) {
+      for(i in 1:length(gridID)) {
+        if(class(gridID) == "numeric") {
+          id <- gridID[[i]]
+        } else {
+          id <- match(gridID[[i]], private$gridnames)
+        }
+        self$grids[[id]]$plotMap(mapID=mapID)
       }
     },
 

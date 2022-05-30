@@ -127,7 +127,7 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param i row position of grid point
     #' @param j col position of grid point
     #' @import stringr
-    runSimulation = function(param, trait="GrainYieldPopFin", i, j) {
+    runSimulation = function(param, trait, i, j) {
       if(!is.null(self$weather)) {
         if(!is.null(self$dateParam)) {
           param$startingdate <- self$dateParam[1]
