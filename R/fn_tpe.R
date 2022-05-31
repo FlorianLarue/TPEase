@@ -11,8 +11,6 @@
 #' @importFrom raster extract
 generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
                             pathCLI=NA) {
-  currentPath <- getwd()
-  setwd(path)
   if(is.na(pathCLI)) {
     pathCLI <- path
   }
@@ -86,11 +84,8 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     tab_meteo$weatherdate <- format(seq.Date(from=as.Date(paste0("01/01/",year),format="%d/%m/%Y"),to=as.Date(paste0("31/12/",year+yearNb-1),format="%d/%m/%Y"),by='days'),"%d/%m/%Y")
     tab_meteo$wscode <- rep(1,nrow(tab_meteo))
     meteo_samara <- tab_meteo[,c("wscode", "weatherdate",	"tmin",	"tmax",	"tmoy",	"rhmin",	"rhmax",	"rhmoy",	"rainfall",	"windtot",	"radiation",	"sunshine",	"eto")]
-
-    setwd(currentPath)
     return(meteo_samara)
   } else {
-    setwd(currentPath)
     warning(paste0("Could not find worldclim data at longitude ",
                  lon," and lat ",lat))
     return(NULL)

@@ -34,7 +34,8 @@ TPE_analysis$runEstimation(maxiter=5, paramnames=paramOfInterest)
 TPE_analysis$createGrid("grid1", 0.5, 39, 22, -16.59, 9.20)
 
 # generate climate on each point of the grid
-TPE_analysis$genClimate(gridID=1, year=2014, yearNb=1, path="D:\\Marksim\\")
+TPE_analysis$genClimate(gridID=1, year=2014, yearNb=1, path="D:\\Marksim\\",
+                        filesE=T)
 
 # run model simulation on each point of the grid using estimated parameters
 TPE_analysis$runGridSim(gridID=1, row=1, trait="GrainYieldPopFin",
@@ -45,8 +46,6 @@ TPE_analysis$createMap(res=150, bounds=c(17,5,5,-20))
 
 # plot map
 TPE_analysis$plotMap()
-df <- TPE_analysis$maps[[1]]
-# p <- ggplot() + geom_tile(data=df, aes(x=x,y=y), alpha=0.5)
-# print(p)
+print(TPE_analysis$grids[[1]]$plots[[1]])
 
 ```

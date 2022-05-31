@@ -127,7 +127,7 @@ TPEa <- R6::R6Class("TPEa",
     #' decimal degrees
     #' @param lat A numeric value of the starting latitude of the grid in
     #' decimal degrees
-    createGrid = function(name="grid1", res=0.5, cols=5, rows=5, lon=NA, lat=NA) {
+    createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA) {
         if(name %in% private$gridnames) {
         stop(paste("Grid with name", name,"already exists.",
                    "Please provide a unique identifier."))
@@ -153,8 +153,10 @@ TPEa <- R6::R6Class("TPEa",
     #' If no value is provided, the CLI folder will be considered in the same
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
+    #' @param filesE Boolean. If weather files already exist
     genClimate = function(gridID=1, rcp="rcp26", year=2014, yearNb=1,
-                       modelNb="00000000000000000", path=NA, pathCLI=NA) {
+                       modelNb="00000000000000000", path=NA, pathCLI=NA,
+                       filesE=F) {
       for(i in 1:length(gridID)) {
         cat(paste("Generating climate for grid",gridID, "this may take some",
                   "time if this is the first time generating climate",
@@ -164,7 +166,8 @@ TPEa <- R6::R6Class("TPEa",
         } else {
           id <- match(gridID[[i]], private$gridnames)
         }
-        self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)
+        self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
+                                    pathCLI, filesE)
       }
     },
 
@@ -231,6 +234,7 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Run parameter estimation
+    #' @param variety A value of variety identifier (either index or name)
     #' @param maxiter A numeric value of the maximum number of iteration
     #' for DEoptim
     #' @param paramnames A vector of parameter names to be estimated
@@ -240,15 +244,15 @@ TPEa <- R6::R6Class("TPEa",
     #' @param weigh_fn Not used for the moment
     #' @import rsamara
     #' @import DEoptim
-    runEstimation = function(maxiter=2000,paramnames=NA, metric="RMSE",
+    runEstimation = function(variety=1, maxiter=2000,paramnames=NA, metric="RMSE",
                              score_fn=get_score, weigh_fn=NA) {
-
+      param <- self$parameters[variety,] #TODO: fix !
       DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
                                   NP=10*length(paramOfInterest))
 
       resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
                                    paramBounds[,2], control=DEParams,
-                                   self$environments, self$parameters,
+                                   self$environments, param,
                                    paramnames, self$weathers, self$observations,
                                    score_fn, metric, weigh_fn,
                                    fnMap=NULL)

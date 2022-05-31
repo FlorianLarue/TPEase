@@ -114,7 +114,7 @@ Set simulation result for given grid point in result matrix
 \subsection{Method \code{genClimate()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, filesE)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -131,6 +131,8 @@ Generate climate data for each point of the grid
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+
+\item{\code{filesE}}{Boolean. If weather files already exist}
 }
 \if{html}{\out{</div>}}
 }

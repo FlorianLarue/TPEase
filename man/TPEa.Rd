@@ -184,14 +184,7 @@ Confirm creation of TPE analysis object
 \subsection{Method \code{createGrid()}}{
 Create a simulation grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
-  name = "grid1",
-  res = 0.5,
-  cols = 5,
-  rows = 5,
-  lon = NA,
-  lat = NA
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(name = "g1", res = 0.5, cols = 5, rows = 5, lon = NA, lat = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -227,7 +220,8 @@ Generate climate data for one or several grids
   yearNb = 1,
   modelNb = "00000000000000000",
   path = NA,
-  pathCLI = NA
+  pathCLI = NA,
+  filesE = F
 )}\if{html}{\out{</div>}}
 }
 
@@ -255,6 +249,8 @@ For the moment, this path can not contain spaces}
 If no value is provided, the CLI folder will be considered in the same
 folder as the marksim standalone. For the moment, this path can not
 contain spaces}
+
+\item{\code{filesE}}{Boolean. If weather files already exist}
 }
 \if{html}{\out{</div>}}
 }

@@ -87,14 +87,35 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param modelNb Identifier of model to use, see \code{generateClimate}
     #' @param path Path to marksim standalone
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
-    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
-      for(i in 1:nrow(self$gridPoints)) {
-        for(j in 1:ncol(self$gridPoints)) {
-          self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                               pathCLI)
-          print(paste("Climate of point",self$test,"of total 858 generated"))
-          self$test <- self$test + 1
+    #' @param filesE Boolean. If weather files already exist
+    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, filesE) {
+      if(filesE) {
+        for(i in 1:nrow(self$gridPoints)) {
+          for(j in 1:ncol(self$gridPoints)) {
+            latF <- self$gridPoints[i,j][[1]]$lat
+            lonF <- self$gridPoints[i,j][[1]]$lon
+            if(file.size(paste0(path,"weathers/weather_",latF,"_",
+                                lonF,".csv")) > 5) {
+              weatherF <- read.csv(paste0(path,"weathers/weather_",latF,"_",
+                                          lonF,".csv"), row.names=1) #tmp
+              self$gridPoints[i,j][[1]]$weather <- weatherF
+              print(paste("Climate of point",self$test,"of total 858 generated"))
+              self$test <- self$test + 1
+            }
+          }
         }
+      } else {
+        currentPath <- getwd()
+        setwd(path)
+        for(i in 1:nrow(self$gridPoints)) {
+          for(j in 1:ncol(self$gridPoints)) {
+            self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb, path,
+                                                 pathCLI)
+            print(paste("Climate of point",self$test,"of total 858 generated"))
+            self$test <- self$test + 1
+          }
+        }
+        setwd(currentPath)
       }
     },
     #' @description Run simulation for each point of the grid
@@ -115,6 +136,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
 
     #' @description Create plot on map based on grid simulation
     #' @param mapID A numeric value of the index of the map
+    #' @import interp
+    #' @import ggplot2
     plotMap = function(mapID) {
       df <- self$parent$maps[[mapID]]
       for(i in 1:nrow(self$gridPoints)) {
@@ -128,9 +151,49 @@ TPEgrid <- R6::R6Class("TPEgrid",
              "value"] <- ifelse(self$resGrid[i,j] == 0, NA, self$resGrid[i,j])
         }
       }
-      p <- ggplot() + geom_tile(data=df, aes(x=x,y=y,fill=value), alpha=0.5)
-      self$plots[[length(self$plots)+1]] <- p
+
+      df$x <- round(df$x, digits=2)
+      df$y <- round(df$y, digits=2)
+      df2 <- df[!is.na(df$value),]
+      bbox <- c(
+        "xmin" = min(df2$x),
+        "ymin" = min(df2$y),
+        "xmax" = max(df2$x),
+        "ymax" = max(df2$y)
+      )
+      grd_template <- expand.grid(
+        x = seq(from = bbox["xmin"], to = bbox["xmax"], by = 0.1),
+        y = seq(from = bbox["ymin"], to = bbox["ymax"], by = 0.1)
+      )
+
+      fit_TIN <- interp::interp(
+        x = df2$x,
+        y = df2$y,
+        z = df2$value,
+        xo = grd_template$x,
+        yo = grd_template$y,
+        output = "points"
+      )
+      fit <- data.frame(do.call(cbind, fit_TIN))
+
+      missings <- c()
+      for(k in 1:nrow(fit)) {
+        if(nrow(df[which(round(df$x, digits=1) ==
+                                   round(fit[k,"x"], digits=1) &
+                                   round(df$y, digits=1) ==
+                                   round(fit[k,"y"], digits=1)),]) == 0) {
+          missings <- c(missings,k)
+        }
+      }
+      fit2 <- fit[-missings,]
       self$parent$maps[[mapID]] <- df
+      grid_plot <- ggplot() +
+        geom_point(data = df,
+                   mapping = aes(x = x, y = y, color = value)) +
+        geom_point(data = fit2, aes(x = x, y = y, color = z)) +
+        scale_color_gradientn(colors = c("blue", "yellow", "red"))
+
+      self$plots[[length(self$plots)+1]] <- grid_plot
     }
   )
 )
