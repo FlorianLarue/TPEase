@@ -28,7 +28,7 @@ TPE_analysis$set_weather(weather)
 TPE_analysis$set_obs(obs)
 
 # run parameter estimation, will also update the parameters of the TPE a object
-TPE_analysis$runEstimation(maxiter=5, paramnames=paramOfInterest)
+TPE_analysis$runEstimation(maxiter=500, paramnames=paramOfInterest)
 
 # create a simulation grid
 TPE_analysis$createGrid("grid1", 0.5, 39, 22, -16.59, 9.20)

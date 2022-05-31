@@ -144,11 +144,9 @@ TPEgrid <- R6::R6Class("TPEgrid",
         for(j in 1:ncol(self$gridPoints)) {
           pointLat <- round(self$gridPoints[i,j][[1]]$lat,digits=1)
           pointLon <- round(self$gridPoints[i,j][[1]]$lon,digits=1)
-          df[which(round(df$x,digits=1) %in% seq(pointLon-0.2, pointLon+0.2,
-                                                 by=0.1) &
-                   round(df$y,digits=1) %in% seq(pointLat-0.1,pointLat+0.1,
-                                                 by=0.1)),
-             "value"] <- ifelse(self$resGrid[i,j] == 0, NA, self$resGrid[i,j])
+          df[which(round(df$x,digits=1) == pointLon &
+                   round(df$y,digits=1) == pointLat),][1,"value"] <-
+            ifelse(self$resGrid[i,j] == 0, NA, self$resGrid[i,j])
         }
       }
 
