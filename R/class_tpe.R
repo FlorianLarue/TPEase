@@ -13,29 +13,23 @@ TPEa <- R6::R6Class("TPEa",
     #' @field model A character string with the name of the crop model
     #' used for simulations (only "Samara" is supported for now)
     model = NULL,
-    #' @field varieties A vector of varieties names
+    #' @field varieties A list of varieties objects
     varieties = c(),
     #' @field environments A vector of environment names used for calibration
     environments = c(),
-    #' @field genotypes A vector of alternate varieties names
-    genotypes = c(),
     #' @field grids A vector of simulation grids, will be populated by the
     #' `createGrid()` function
     grids = NULL,
-    #' @field parameters A vector or dataframe with all parameters used for
-    #' simulation with the corresponding `model`
-    parameters = NULL,
     #' @field weathers A dataframe or list of dataframe with weather data for
     #' each of the `environments`
     weathers = NULL,
     #' @field observations A dataframe or list of dataframe with observations
     #' for each of the `environments`
     observations = NULL,
-    #' @field estimParam A vector containing the values of estimated parameters
-    #' will be populated by the `runEstimation` function
-    estimParam = NULL,
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
+    #' @field test A test for dev
+    test = NA,
 
     #' @description Create a new TPE analysis object
     #' @param name A character string identifier of the TPE analysis
@@ -50,8 +44,33 @@ TPEa <- R6::R6Class("TPEa",
                           environments=NA, genotypes=NA,parameters=NA) {
       self$name <- as.character(name)
       self$model <- as.character(model)
+
+      if(length(genotypes) != length(varieties) || is.na(genotypes)) {
+        private$genotypes <- as.character(varieties)
+        warning(paste("Length of genotypes does not match",
+                      "length of varieties, name of varieties will be used."))
+      } else {
+        private$genotypes <- genotypes
+      }
+
       if(length(varieties) > 1 || !is.na(varieties)) {
-        self$varieties <- as.character(varieties)
+        private$varnames <- as.character(varieties)
+        for(i in 1:length(varieties)) {
+          self$varieties[[length(self$varieties)+1]] <- TPEvar$new(
+            name = as.character(private$varnames[i]),
+            alt = as.character(private$genotypes[i]),
+            parent = self
+          )
+          if(class(parameters) == "data.frame" & nrow(parameters) >= i) {
+            self$varieties[[i]]$set_param(parameters[i,])
+          } else {
+            warning(paste0("No parameters were provided for variety ",
+                          private$varnames[i],
+                          ". Simulations will not be possible.",
+                          "You can set parameters on the variety object ",
+                          "by running set_param() and providing a data.frame."))
+          }
+        }
       } else {
         stop("Please provide at least one variety name.")
       }
@@ -59,25 +78,6 @@ TPEa <- R6::R6Class("TPEa",
         self$environments <- environments
       } else {
         stop("Please provide at least one environment name.")
-      }
-      if(!is.na(genotypes)) {
-        if(length(genotypes != length(varieties))) {
-          stop(paste("Length of genotypes does not match length of varieties.",
-               "Please either provide an alternate name for each variety",
-               "or use genotypes=NA."))
-        } else {
-          self$genotypes <- genotypes
-        }
-      } else {
-        self$genotypes <- self$varieties
-      }
-      if(length(varieties) > 1 || !is.na(parameters)) {
-        self$parameters <- parameters
-      } else {
-        warning(paste("No parameters were provided",
-                      "estimation and grid simulation will not be possible.",
-                      "You can set parameters on this TPE analysis",
-                      "by running set_param()."))
       }
       self$initMessage()
     },
@@ -100,12 +100,6 @@ TPEa <- R6::R6Class("TPEa",
     #' of the `environments` and `varieties`
     set_obs = function(val) {
       self$observations <- val
-    },
-
-    #' @description Set parameters
-    #' @param val A vector or dataframe with all crop model parameters
-    set_param = function(val) {
-      self$parameters <- val
     },
 
     #' @description Confirm creation of TPE analysis object
@@ -173,14 +167,20 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Run simulation on one or several grids
     #' @param gridID A vector of grid identifiers (either index or name)
-    #' @param row A numeric value with the row of parameter dataframe to use
+    #' @param varID A numeric value with the row of parameter dataframe to use
     #' @param trait A character string with the trait name for grid res matrix
     #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=1, row=1, trait="GrainYieldPopFin",
+    runGridSim = function(gridID=1, varID=1, trait="GrainYieldPopFin",
                           year=2015, soilData=soil, latlonData=lat_lon) {
-      param <- self$parameters[row,]
+      if(class(varID) == "numeric") {
+        idv <- varID
+      } else {
+        idv <- match(varID, private$varnames)
+      }
+      param <- self$varieties[[idv]]$parameters
+
       for(i in 1:length(gridID)) {
         if(class(gridID) == "numeric") {
           id <- gridID[[i]]
@@ -234,7 +234,7 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Run parameter estimation
-    #' @param variety A value of variety identifier (either index or name)
+    #' @param varID A value of variety identifier (either index or name)
     #' @param maxiter A numeric value of the maximum number of iteration
     #' for DEoptim
     #' @param paramnames A vector of parameter names to be estimated
@@ -244,34 +244,32 @@ TPEa <- R6::R6Class("TPEa",
     #' @param weigh_fn Not used for the moment
     #' @import rsamara
     #' @import DEoptim
-    runEstimation = function(variety=1, maxiter=2000,paramnames=NA,
+    runEstimation = function(varID=1, maxiter=2000,paramnames=NA,
                              metric="RMSE", score_fn=get_score, weigh_fn=NA) {
-      param <- self$parameters[variety,] #TODO: fix !
-      DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
-                                  NP=10*length(paramOfInterest))
+      for(i in 1:length(varID)) {
+        if(class(varID) == "numeric") {
+          id <- varID[[i]]
+        } else {
+          id <- match(varID[[i]], private$varnames)
+        }
+        param <- self$varieties[[id]]$parameters
+        DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
+                                    NP=10*length(paramOfInterest))
 
-      resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
-                                   paramBounds[,2], control=DEParams,
-                                   self$environments, param,
-                                   paramnames, self$weathers, self$observations,
-                                   score_fn, metric, weigh_fn,
-                                   fnMap=NULL)
-      private$set_eparam(as.vector(resEstim$optim$bestmem))
-      private$update_param(self$estimParam, paramnames)
+        resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
+                                     paramBounds[,2], control=DEParams,
+                                     self$environments, param,
+                                     paramnames, self$weathers, self$observations,
+                                     score_fn, metric, weigh_fn,
+                                     fnMap=NULL)
+        self$varieties[[id]]$set_eparam(as.vector(resEstim$optim$bestmem))
+        self$varieties[[id]]$update_param(self$estimParam, paramnames)
+      }
     }
   ),
   private = list(
     gridnames = NULL,
-
-    set_eparam = function(val) {
-      self$estimParam <- val
-    },
-
-    update_param = function(val,names) {
-      for(p in 1:length(names)) {
-        self$parameters[,which(colnames(self$parameters) ==
-                                 names[[p]])] <- val[[p]]
-      }
-    }
+    varnames = NULL,
+    genotypes = NULL
   )
 )

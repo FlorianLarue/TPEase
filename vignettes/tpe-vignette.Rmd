@@ -17,9 +17,9 @@ knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
 ```{r}
 # load example data
 loadData()
-
+param[2,] <- param[1,] #TODO; remove, tmp testing
 # create a TPE analysis object
-TPE_analysis <- createTpe(varieties=c("Fadda"),
+TPE_analysis <- createTpe(varieties=c("Fadda","Grinkan"),
                  environments=c("BAMA2014S1"),
                  parameters=param)
 
@@ -28,7 +28,7 @@ TPE_analysis$set_weather(weather)
 TPE_analysis$set_obs(obs)
 
 # run parameter estimation, will also update the parameters of the TPE a object
-TPE_analysis$runEstimation(maxiter=500, paramnames=paramOfInterest)
+TPE_analysis$runEstimation(varID=c(1,2), maxiter=5, paramnames=paramOfInterest)
 
 # create a simulation grid
 TPE_analysis$createGrid("grid1", 0.5, 39, 22, -16.59, 9.20)
@@ -38,7 +38,7 @@ TPE_analysis$genClimate(gridID=1, year=2014, yearNb=1, path="D:\\Marksim\\",
                         filesE=T)
 
 # run model simulation on each point of the grid using estimated parameters
-TPE_analysis$runGridSim(gridID=1, row=1, trait="GrainYieldPopFin",
+TPE_analysis$runGridSim(gridID=1, varID=1, trait="GrainYieldPopFin",
                         year=2014, soilData=soil, latlonData=lat_lon)
 
 # create a map of the studied region in TPE anaylisis

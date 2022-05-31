@@ -17,17 +17,12 @@ TODO
 \item{\code{model}}{A character string with the name of the crop model
 used for simulations (only "Samara" is supported for now)}
 
-\item{\code{varieties}}{A vector of varieties names}
+\item{\code{varieties}}{A list of varieties objects}
 
 \item{\code{environments}}{A vector of environment names used for calibration}
 
-\item{\code{genotypes}}{A vector of alternate varieties names}
-
 \item{\code{grids}}{A vector of simulation grids, will be populated by the
 `createGrid()` function}
-
-\item{\code{parameters}}{A vector or dataframe with all parameters used for
-simulation with the corresponding `model`}
 
 \item{\code{weathers}}{A dataframe or list of dataframe with weather data for
 each of the `environments`}
@@ -35,10 +30,9 @@ each of the `environments`}
 \item{\code{observations}}{A dataframe or list of dataframe with observations
 for each of the `environments`}
 
-\item{\code{estimParam}}{A vector containing the values of estimated parameters
-will be populated by the `runEstimation` function}
-
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
+
+\item{\code{test}}{A test for dev}
 }
 \if{html}{\out{</div>}}
 }
@@ -49,7 +43,6 @@ will be populated by the `runEstimation` function}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
-\item \href{#method-TPEa-set_param}{\code{TPEa$set_param()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
@@ -152,23 +145,6 @@ of the `environments` and `varieties`}
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-set_param"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-set_param}{}}}
-\subsection{Method \code{set_param()}}{
-Set parameters
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_param(val)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{A vector or dataframe with all crop model parameters}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-initMessage}{}}}
 \subsection{Method \code{initMessage()}}{
@@ -263,7 +239,7 @@ Run simulation on one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
   gridID = 1,
-  row = 1,
+  varID = 1,
   trait = "GrainYieldPopFin",
   year = 2015,
   soilData = soil,
@@ -276,7 +252,7 @@ Run simulation on one or several grids
 \describe{
 \item{\code{gridID}}{A vector of grid identifiers (either index or name)}
 
-\item{\code{row}}{A numeric value with the row of parameter dataframe to use}
+\item{\code{varID}}{A numeric value with the row of parameter dataframe to use}
 
 \item{\code{trait}}{A character string with the trait name for grid res matrix}
 
@@ -336,7 +312,7 @@ Create plot on map
 Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
-  variety = 1,
+  varID = 1,
   maxiter = 2000,
   paramnames = NA,
   metric = "RMSE",
@@ -348,7 +324,7 @@ Run parameter estimation
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{variety}}{A value of variety identifier (either index or name)}
+\item{\code{varID}}{A value of variety identifier (either index or name)}
 
 \item{\code{maxiter}}{A numeric value of the maximum number of iteration
 for DEoptim}
