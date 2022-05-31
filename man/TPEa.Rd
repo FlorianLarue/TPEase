@@ -336,6 +336,7 @@ Create plot on map
 Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
+  variety = 1,
   maxiter = 2000,
   paramnames = NA,
   metric = "RMSE",
@@ -347,6 +348,8 @@ Run parameter estimation
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{variety}}{A value of variety identifier (either index or name)}
+
 \item{\code{maxiter}}{A numeric value of the maximum number of iteration
 for DEoptim}
 

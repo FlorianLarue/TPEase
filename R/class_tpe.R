@@ -244,8 +244,8 @@ TPEa <- R6::R6Class("TPEa",
     #' @param weigh_fn Not used for the moment
     #' @import rsamara
     #' @import DEoptim
-    runEstimation = function(variety=1, maxiter=2000,paramnames=NA, metric="RMSE",
-                             score_fn=get_score, weigh_fn=NA) {
+    runEstimation = function(variety=1, maxiter=2000,paramnames=NA,
+                             metric="RMSE", score_fn=get_score, weigh_fn=NA) {
       param <- self$parameters[variety,] #TODO: fix !
       DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
                                   NP=10*length(paramOfInterest))
