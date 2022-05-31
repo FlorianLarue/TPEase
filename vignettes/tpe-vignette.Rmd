@@ -28,7 +28,7 @@ TPE_analysis$set_weather(weather)
 TPE_analysis$set_obs(obs)
 
 # run parameter estimation, will also update the parameters of the TPE a object
-TPE_analysis$runEstimation(maxiter=50, paramnames=paramOfInterest)
+TPE_analysis$runEstimation(maxiter=5, paramnames=paramOfInterest)
 
 # create a simulation grid
 TPE_analysis$createGrid("grid1", 0.5, 39, 22, -16.59, 9.20)
@@ -41,7 +41,7 @@ TPE_analysis$runGridSim(gridID=1, row=1, trait="GrainYieldPopFin",
                         year=2014, soilData=soil, latlonData=lat_lon)
 
 # create a map of the studied region in TPE anaylisis
-TPE_analysis$createMap(res=150, bounds=c(25,20,0,-20))
+TPE_analysis$createMap(res=150, bounds=c(17,5,5,-20))
 
 # plot map
 TPE_analysis$plotMap()
