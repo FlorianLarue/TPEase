@@ -18,6 +18,10 @@ TPEvar <- R6::R6Class("TPEvar",
     parameters = NULL,
     #' @field estimParam A vector containing the values of estimated parameters
     estimParam = NULL,
+    #' @field observations A dataframe or list of dataframe with observations
+    #' for each of the `environments`. If several replicates, a list of lists
+    #' (environment x replicate)
+    observations = NULL,
 
     #' @description Create a new variety object
     #' @param name A character string identifier of the variety
@@ -30,6 +34,13 @@ TPEvar <- R6::R6Class("TPEvar",
       self$parent <- parent
     },
 
+    #' @description Set observation data
+    #' @param val A dataframe or list of dataframes with observations for each
+    #' of the `environments` (and eventually for each replicate)
+    set_obs = function(val) {
+      self$observations <- val
+    },
+
     #' @description Set parameters
     #' @param val A dataframe with all crop model parameters
     set_param = function(val) {
@@ -38,8 +49,10 @@ TPEvar <- R6::R6Class("TPEvar",
 
     #' @description Set estimated parameters
     #' @param val A vector with estimated parameter values
-    set_eparam = function(val) {
+    #' @param names A vector with estimated parameter names
+    set_eparam = function(val, names) {
       self$estimParam <- val
+      self$update_param(self$estimParam, names)
     },
 
     #' @description Set estimated parameters

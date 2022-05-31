@@ -21,6 +21,10 @@ TODO
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
 
 \item{\code{estimParam}}{A vector containing the values of estimated parameters}
+
+\item{\code{observations}}{A dataframe or list of dataframe with observations
+for each of the `environments`. If several replicates, a list of lists
+(environment x replicate)}
 }
 \if{html}{\out{</div>}}
 }
@@ -28,6 +32,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEvar-new}{\code{TPEvar$new()}}
+\item \href{#method-TPEvar-set_obs}{\code{TPEvar$set_obs()}}
 \item \href{#method-TPEvar-set_param}{\code{TPEvar$set_param()}}
 \item \href{#method-TPEvar-set_eparam}{\code{TPEvar$set_eparam()}}
 \item \href{#method-TPEvar-update_param}{\code{TPEvar$update_param()}}
@@ -59,6 +64,24 @@ A new `TPEa` object.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEvar-set_obs"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-set_obs}{}}}
+\subsection{Method \code{set_obs()}}{
+Set observation data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$set_obs(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A dataframe or list of dataframes with observations for each
+of the `environments` (and eventually for each replicate)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEvar-set_param"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEvar-set_param}{}}}
 \subsection{Method \code{set_param()}}{
@@ -81,13 +104,15 @@ Set parameters
 \subsection{Method \code{set_eparam()}}{
 Set estimated parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$set_eparam(val)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$set_eparam(val, names)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{A vector with estimated parameter values}
+
+\item{\code{names}}{A vector with estimated parameter names}
 }
 \if{html}{\out{</div>}}
 }

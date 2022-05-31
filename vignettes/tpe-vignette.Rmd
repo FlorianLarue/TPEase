@@ -25,7 +25,7 @@ TPE_analysis <- createTpe(varieties=c("Fadda","Grinkan"),
 
 # set weather data and observation data from the data loaded with loadData()
 TPE_analysis$set_weather(weather)
-TPE_analysis$set_obs(obs)
+TPE_analysis$set_obs(varID=1, obs)
 
 # run parameter estimation, will also update the parameters of the TPE a object
 TPE_analysis$runEstimation(varID=c(1,2), maxiter=5, paramnames=paramOfInterest)

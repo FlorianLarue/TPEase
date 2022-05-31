@@ -23,9 +23,6 @@ TPEa <- R6::R6Class("TPEa",
     #' @field weathers A dataframe or list of dataframe with weather data for
     #' each of the `environments`
     weathers = NULL,
-    #' @field observations A dataframe or list of dataframe with observations
-    #' for each of the `environments`
-    observations = NULL,
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
     #' @field test A test for dev
@@ -96,10 +93,16 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Set observation data
+    #' @param varID A value of variety identifier (either index or name)
     #' @param val A dataframe or list of dataframes with observations for each
-    #' of the `environments` and `varieties`
-    set_obs = function(val) {
-      self$observations <- val
+    #' of the `environments` (and eventually for each replicate)
+    set_obs = function(varID=1, val) {
+      if(class(varID) == "numeric") {
+        id <- varID
+      } else {
+        id <- match(varID, private$varnames)
+      }
+      self$varieties[[id]]$set_obs(val)
     },
 
     #' @description Confirm creation of TPE analysis object
@@ -253,17 +256,18 @@ TPEa <- R6::R6Class("TPEa",
           id <- match(varID[[i]], private$varnames)
         }
         param <- self$varieties[[id]]$parameters
+        obs <- self$varieties[[id]]$observations
         DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
                                     NP=10*length(paramOfInterest))
 
         resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
                                      paramBounds[,2], control=DEParams,
                                      self$environments, param,
-                                     paramnames, self$weathers, self$observations,
+                                     paramnames, self$weathers, obs,
                                      score_fn, metric, weigh_fn,
                                      fnMap=NULL)
-        self$varieties[[id]]$set_eparam(as.vector(resEstim$optim$bestmem))
-        self$varieties[[id]]$update_param(self$estimParam, paramnames)
+        self$varieties[[id]]$set_eparam(as.vector(resEstim$optim$bestmem),
+                                                  paramnames)
       }
     }
   ),

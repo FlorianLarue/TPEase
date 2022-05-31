@@ -27,9 +27,6 @@ used for simulations (only "Samara" is supported for now)}
 \item{\code{weathers}}{A dataframe or list of dataframe with weather data for
 each of the `environments`}
 
-\item{\code{observations}}{A dataframe or list of dataframe with observations
-for each of the `environments`}
-
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
 \item{\code{test}}{A test for dev}
@@ -132,14 +129,16 @@ of the `environments`}
 \subsection{Method \code{set_obs()}}{
 Set observation data
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_obs(val)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_obs(varID = 1, val)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{varID}}{A value of variety identifier (either index or name)}
+
 \item{\code{val}}{A dataframe or list of dataframes with observations for each
-of the `environments` and `varieties`}
+of the `environments` (and eventually for each replicate)}
 }
 \if{html}{\out{</div>}}
 }
