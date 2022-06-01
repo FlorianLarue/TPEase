@@ -24,9 +24,6 @@ used for simulations (only "Samara" is supported for now)}
 \item{\code{grids}}{A vector of simulation grids, will be populated by the
 `createGrid()` function}
 
-\item{\code{weathers}}{A dataframe or list of dataframe with weather data for
-each of the `environments`}
-
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
 \item{\code{test}}{A test for dev}
@@ -38,8 +35,8 @@ each of the `environments`}
 \itemize{
 \item \href{#method-TPEa-new}{\code{TPEa$new()}}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
-\item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
+\item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
@@ -106,24 +103,6 @@ Set crop model
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-set_weather"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-set_weather}{}}}
-\subsection{Method \code{set_weather()}}{
-Set weather data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_weather(val)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{A dataframe or list of dataframes with weather data for each
-of the `environments`}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-set_obs"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-set_obs}{}}}
 \subsection{Method \code{set_obs()}}{
@@ -139,6 +118,25 @@ Set observation data
 
 \item{\code{val}}{A dataframe or list of dataframes with observations for each
 of the `environments` (and eventually for each replicate)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_weather"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_weather}{}}}
+\subsection{Method \code{set_weather()}}{
+Set weather data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_weather(envID = 1, val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{envID}}{A value of environment identifier (either index or name)}
+
+\item{\code{val}}{A dataframe or list of dataframes with weather date}
 }
 \if{html}{\out{</div>}}
 }
@@ -312,18 +310,24 @@ Run parameter estimation
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runEstimation(
   varID = 1,
+  envID = 1,
   maxiter = 2000,
   paramnames = NA,
   metric = "RMSE",
   score_fn = get_score,
-  weigh_fn = NA
+  weigh_fn = NA,
+  bounds = NA
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{varID}}{A value of variety identifier (either index or name)}
+\item{\code{varID}}{A value or list of values of variety identifier
+(either index or name)}
+
+\item{\code{envID}}{A value or list of values of environment identifier
+(either index or name)}
 
 \item{\code{maxiter}}{A numeric value of the maximum number of iteration
 for DEoptim}
@@ -336,6 +340,9 @@ for fitness computation. Options are c("RMSE","MAE","MSE")}
 \item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
 
 \item{\code{weigh_fn}}{Not used for the moment}
+
+\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
+each of the parameters in `paramnames` (rows)}
 }
 \if{html}{\out{</div>}}
 }

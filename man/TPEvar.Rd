@@ -36,6 +36,7 @@ for each of the `environments`. If several replicates, a list of lists
 \item \href{#method-TPEvar-set_param}{\code{TPEvar$set_param()}}
 \item \href{#method-TPEvar-set_eparam}{\code{TPEvar$set_eparam()}}
 \item \href{#method-TPEvar-update_param}{\code{TPEvar$update_param()}}
+\item \href{#method-TPEvar-runEstimation}{\code{TPEvar$runEstimation()}}
 \item \href{#method-TPEvar-clone}{\code{TPEvar$clone()}}
 }
 }
@@ -60,7 +61,7 @@ Create a new variety object
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `TPEa` object.
+A new `TPEvar` object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -132,6 +133,48 @@ Set estimated parameters
 \item{\code{val}}{A vector with parameter values}
 
 \item{\code{names}}{A vector with estimated parameter names}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEvar-runEstimation"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-runEstimation}{}}}
+\subsection{Method \code{runEstimation()}}{
+Run parameter estimation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$runEstimation(
+  maxiter,
+  paramnames,
+  metric,
+  score_fn,
+  weigh_fn,
+  bounds,
+  weathers,
+  varID
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{maxiter}}{A numeric value of the maximum number of iteration
+for DEoptim}
+
+\item{\code{paramnames}}{A vector of parameter names to be estimated}
+
+\item{\code{metric}}{A character string with the name of the metric to use
+for fitness computation. Options are c("RMSE","MAE","MSE")}
+
+\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+
+\item{\code{weigh_fn}}{Not used for the moment}
+
+\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for}
+
+\item{\code{weathers}}{A list of weather data for each environment}
+
+\item{\code{varID}}{A numeric value of the index of variety currently estimating}
 }
 \if{html}{\out{</div>}}
 }

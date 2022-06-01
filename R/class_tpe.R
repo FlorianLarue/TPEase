@@ -20,9 +20,6 @@ TPEa <- R6::R6Class("TPEa",
     #' @field grids A vector of simulation grids, will be populated by the
     #' `createGrid()` function
     grids = NULL,
-    #' @field weathers A dataframe or list of dataframe with weather data for
-    #' each of the `environments`
-    weathers = NULL,
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
     #' @field test A test for dev
@@ -72,7 +69,13 @@ TPEa <- R6::R6Class("TPEa",
         stop("Please provide at least one variety name.")
       }
       if(length(environments) > 1 || !is.na(environments)) {
-        self$environments <- environments
+        private$envnames <- environments
+        for(j in 1:length(environments)) {
+          self$environments[[length(self$environments)+1]] <- TPEenv$new(
+            name = as.character(private$envnames[[1]]),
+            parent = self
+          )
+        }
       } else {
         stop("Please provide at least one environment name.")
       }
@@ -83,13 +86,6 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val New model name
     set_model = function(val) {
       self$model <- val
-    },
-
-    #' @description Set weather data
-    #' @param val A dataframe or list of dataframes with weather data for each
-    #' of the `environments`
-    set_weather = function(val) {
-      self$weathers <- val
     },
 
     #' @description Set observation data
@@ -105,13 +101,25 @@ TPEa <- R6::R6Class("TPEa",
       self$varieties[[id]]$set_obs(val)
     },
 
+    #' @description Set weather data
+    #' @param envID A value of environment identifier (either index or name)
+    #' @param val A dataframe or list of dataframes with weather date
+    set_weather = function(envID=1, val) {
+      if(class(envID) == "numeric") {
+        id <- envID
+      } else {
+        id <- match(envID, private$envnames)
+      }
+      self$environments[[id]]$set_weather(val)
+    },
+
     #' @description Confirm creation of TPE analysis object
     initMessage = function() {
-      plV <- length(self$varieties) > 1
-      plE <- length(self$environmets) > 1
+      plV <- length(private$varnames) > 1
+      plE <- length(private$envnames) > 1
       cat(paste0("TPE analysis ", self$name, " created containing ",
-                 length(self$varieties), ifelse(plV," varieties "," variety "),
-                 "and ", length(self$environments), ifelse(plE," environments",
+                 length(private$varnames), ifelse(plV," varieties "," variety "),
+                 "and ", length(private$envnames), ifelse(plE," environments",
                                                            " environment. \n")))
     },
 
@@ -237,7 +245,10 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Run parameter estimation
-    #' @param varID A value of variety identifier (either index or name)
+    #' @param varID A value or list of values of variety identifier
+    #' (either index or name)
+    #' @param envID A value or list of values of environment identifier
+    #' (either index or name)
     #' @param maxiter A numeric value of the maximum number of iteration
     #' for DEoptim
     #' @param paramnames A vector of parameter names to be estimated
@@ -245,35 +256,39 @@ TPEa <- R6::R6Class("TPEa",
     #' for fitness computation. Options are c("RMSE","MAE","MSE")
     #' @param score_fn A function to compute fitness, see \code{get_score}
     #' @param weigh_fn Not used for the moment
+    #' @param bounds A matrix with lower (col1) and upper (col2) bounds for
+    #' each of the parameters in `paramnames` (rows)
     #' @import rsamara
     #' @import DEoptim
-    runEstimation = function(varID=1, maxiter=2000,paramnames=NA,
-                             metric="RMSE", score_fn=get_score, weigh_fn=NA) {
+    runEstimation = function(varID=1, envID=1, maxiter=2000,paramnames=NA,
+                             metric="RMSE", score_fn=get_score, weigh_fn=NA,
+                             bounds=NA) {
       for(i in 1:length(varID)) {
         if(class(varID) == "numeric") {
           id <- varID[[i]]
         } else {
           id <- match(varID[[i]], private$varnames)
         }
-        param <- self$varieties[[id]]$parameters
-        obs <- self$varieties[[id]]$observations
-        DEParams <- DEoptim.control(itermax=maxiter,strategy=2,trace=1,
-                                    NP=10*length(paramOfInterest))
-
-        resEstim <- DEoptim::DEoptim(estim_param, paramBounds[,1],
-                                     paramBounds[,2], control=DEParams,
-                                     self$environments, param,
-                                     paramnames, self$weathers, obs,
-                                     score_fn, metric, weigh_fn,
-                                     fnMap=NULL)
-        self$varieties[[id]]$set_eparam(as.vector(resEstim$optim$bestmem),
-                                                  paramnames)
+        weathers <- list()
+        for(j in 1:length(envID)) {
+          if(class(envID) == "numeric") {
+            ide <- envID[[j]]
+          } else {
+            ide <- match(envID[[j]], private$envnames)
+          }
+          weathers[[length(weathers)+1]] <- self$environments[[ide]]$weather
+        }
+        self$test <- weathers
+        self$varieties[[id]]$runEstimation(maxiter, paramnames, metric,
+                                           score_fn, weigh_fn, bounds, weathers,
+                                           id)
       }
     }
   ),
   private = list(
     gridnames = NULL,
     varnames = NULL,
-    genotypes = NULL
+    genotypes = NULL,
+    envnames = NULL
   )
 )

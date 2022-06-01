@@ -6,14 +6,14 @@
 \usage{
 estim_param(
   p,
-  environments,
   param,
   paramnames,
-  weather,
+  weathers,
   obs,
   score_fn,
   metric = "RMSE",
-  weigh_fn = NA
+  weigh_fn = NA,
+  varID = 1
 )
 }
 \description{

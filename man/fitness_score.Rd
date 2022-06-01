@@ -9,7 +9,7 @@ fitness_score(
   param,
   paramnames,
   weather,
-  obs,
+  obser,
   score_fn,
   idx,
   metric = "RMSE",
@@ -25,11 +25,11 @@ fitness_score(
 
 \item{weather}{A dataframe with all weather data}
 
-\item{obs}{A dataframe or list of dataframes with all observation data}
-
 \item{score_fn}{A user-defined function to compute the error between}
 
 \item{idx}{An integer used as the simulation identifier}
+
+\item{obs}{A dataframe or list of dataframes with all observation data}
 }
 \value{
 The fitness score for the candidate parameter set

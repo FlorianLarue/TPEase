@@ -155,4 +155,16 @@ rsquared <- function(Obs, Sim) {
   return(Corr^2)
 }
 
-
+#' @title Computes the depth of a list
+#' @description Computes the depth of a list
+#'
+#' @param this List to check
+#' @return The depth of list `this`
+#' @export
+depth <- function(this) {
+  if(is.list(this) && length(this) == 0) {
+    return(0)
+  } else {
+    return(ifelse(is.list(this), 1L + max(sapply(this, depth)), 0L))
+  }
+}

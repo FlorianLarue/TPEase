@@ -99,7 +99,9 @@ TPEgrid <- R6::R6Class("TPEgrid",
               weatherF <- read.csv(paste0(path,"weathers/weather_",latF,"_",
                                           lonF,".csv"), row.names=1) #tmp
               self$gridPoints[i,j][[1]]$weather <- weatherF
-              print(paste("Climate of point",self$test,"of total 858 generated"))
+              print(paste("Climate of point",self$test,"out of",
+                          as.numeric(self$width) * as.numeric(self$length),
+                          "generated"))
               self$test <- self$test + 1
             }
           }
@@ -111,7 +113,9 @@ TPEgrid <- R6::R6Class("TPEgrid",
           for(j in 1:ncol(self$gridPoints)) {
             self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb, path,
                                                  pathCLI)
-            print(paste("Climate of point",self$test,"of total 858 generated"))
+            print(paste("Climate of point",self$test,"out of",
+                        as.numeric(self$width) * as.numeric(self$length),
+                        "generated"))
             self$test <- self$test + 1
           }
         }

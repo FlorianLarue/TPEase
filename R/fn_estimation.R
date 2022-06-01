@@ -4,11 +4,17 @@
 #' @description TODO
 #' @import rsamara
 #' @export
-estim_param <- function(p, environments, param, paramnames, weather,
-                        obs, score_fn, metric="RMSE", weigh_fn=NA) {
+estim_param <- function(p, param, paramnames, weathers,
+                        obs, score_fn, metric="RMSE", weigh_fn=NA, varID=1) {
+  if(depth(obs) > 2) {
+    obser <- obs
+  } else {
+    obser <- list(obs)
+  }
   totalScore <- 0
-  for(e in 1:length(environments)) {
-    envScore <- fitness_score(p, param, paramnames, weather, obs, score_fn, e,
+  for(e in 1:length(weathers)) {
+    envScore <- fitness_score(p, param, paramnames, weathers[[e]], obser[[e]],
+                              score_fn, as.numeric(paste0(varID,e)),
                               metric, weigh_fn)
     totalScore <- totalScore + envScore
   }
@@ -30,7 +36,7 @@ estim_param <- function(p, environments, param, paramnames, weather,
 #'
 #' @export
 #' @import rsamara
-fitness_score <- function(p, param, paramnames, weather, obs, score_fn, idx,
+fitness_score <- function(p, param, paramnames, weather, obser, score_fn, idx,
                           metric="RMSE", weigh_fn=NA) {
   # Step 1 : initiate simulation
   if(rsamara::sim_exist_idx(idx) == 0) {
@@ -43,9 +49,9 @@ fitness_score <- function(p, param, paramnames, weather, obs, score_fn, idx,
   sim <- rsamara::run_sim_idx(idx)
   # Step 4 : compute fitness
   fitScore <- 0
-  if(class(obs) == "list") {
-    for(i in length(obs)) {
-      obs <- obs[[i]]
+  if(class(obser) == "list") {
+    for(i in length(obser)) {
+      obs <- obser[[i]]
       if("leavesnumber" %in% colnames(obs)) {
         colnames(obs)[colnames(obs) == "leavesnumber"] <- "haunindex" #tmp fix
       }
@@ -55,6 +61,9 @@ fitness_score <- function(p, param, paramnames, weather, obs, score_fn, idx,
       fitScore <- fitScore + viScore
     }
   } else if(class(obs) == "data.frame") {
+    if("leavesnumber" %in% colnames(obs)) {
+      colnames(obs)[colnames(obs) == "leavesnumber"] <- "haunindex" #tmp fix
+    }
     obs <- rsamara::rcpp_reduceVobs(obs, sim)
     sim <- rsamara::rcpp_reduceResults(sim, obs)
     fitScore <- score_fn(obs,sim,metric,weigh_fn)
