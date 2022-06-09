@@ -131,9 +131,11 @@ TPEgrid <- R6::R6Class("TPEgrid",
           for(j in 1:ncol(self$gridPoints)) {
             self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb, path,
                                                  pathCLI)
-            print(paste("Climate of point", cnt, "out of",
-                        as.numeric(self$width) * as.numeric(self$length),
-                        "generated"))
+            if(verbose) {
+              print(paste("Climate of point", cnt, "out of",
+                          as.numeric(self$width) * as.numeric(self$length),
+                          "generated"))
+            }
             cnt <- cnt + 1
           }
         }
@@ -150,8 +152,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
         warning(paste("Grid", self$name, "has no variety attached to it",
                       "please provide a varID when calling runGridSim()"))
       }
-      print(paste("Starting simulation on", self$name, "grid.",
-            "This might take a while depending on the size of the grid"))
+      cat(paste("Starting simulation on", self$name, "grid.",
+            "This might take a while depending on the size of the grid \n"))
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {
           self$test <- param
@@ -168,6 +170,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @import interp
     #' @import ggplot2
     plotMap = function(mapID) {
+      cat(paste("Plotting map", mapID, "for grid", self$name, "\n"))
       df <- self$parent$maps[[mapID]]
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {

@@ -14,12 +14,12 @@ TPEa <- R6::R6Class("TPEa",
     #' used for simulations (only "Samara" is supported for now)
     model = NULL,
     #' @field varieties A list of varieties objects
-    varieties = c(),
+    varieties = list(),
     #' @field environments A vector of environment names used for calibration
-    environments = c(),
+    environments = list(),
     #' @field grids A vector of simulation grids, will be populated by the
     #' `createGrid()` function
-    grids = NULL,
+    grids = list(),
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
     #' @field test A test for dev
@@ -131,10 +131,11 @@ TPEa <- R6::R6Class("TPEa",
     initMessage = function() {
       plV <- length(private$varnames) > 1
       plE <- length(private$envnames) > 1
-      print(paste0("TPE analysis ", self$name, " created containing ",
-                 length(private$varnames), ifelse(plV," varieties "," variety ")
-                 , "and ", length(private$envnames), ifelse(plE," environments",
-                                                           " environment. \n")))
+      cat(paste("TPE analysis", self$name, "created containing",
+                 length(private$varnames), ifelse(plV,"varieties","variety"),
+                "and", length(private$envnames), ifelse(plE,"environments",
+                                                           "environment"),
+                "\n"))
     },
 
     #' @description Create a simulation grid
