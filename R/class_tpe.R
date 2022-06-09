@@ -33,16 +33,20 @@ TPEa <- R6::R6Class("TPEa",
     #' @param environments A list of environments names
     #' @param genotypes Optional. A list of alternate variety names
     #' @param parameters A vector or dataframe with all crop model parameters
+    #' @param eparameters Optional. A dataframe with environment specific
+    #' parameters
     #' @return A new `TPEa` object.
     initialize = function(name="TPEa_1", model="Samara", varieties=NA,
-                          environments=NA, genotypes=NA,parameters=NA) {
+                          environments=NA, genotypes=NA, parameters=NA,
+                          eparameters=NA) {
       self$name <- as.character(name)
       self$model <- as.character(model)
 
       if(length(genotypes) != length(varieties) || is.na(genotypes)) {
         private$genotypes <- as.character(varieties)
         warning(paste("Length of genotypes does not match",
-                      "length of varieties, name of varieties will be used."))
+                      "length of varieties, name of varieties will be used."),
+                call.=F)
       } else {
         private$genotypes <- genotypes
       }
@@ -62,7 +66,8 @@ TPEa <- R6::R6Class("TPEa",
                           private$varnames[i],
                           ". Simulations will not be possible.",
                           "You can set parameters on the variety object ",
-                          "by running set_param() and providing a data.frame."))
+                          "by running set_param() and providing a data.frame."),
+                    call.=F)
           }
         }
       } else {
@@ -75,6 +80,15 @@ TPEa <- R6::R6Class("TPEa",
             name = as.character(private$envnames[[1]]),
             parent = self
           )
+          if(class(eparameters) == "data.frame" && nrow(eparameters) >=1) {
+            self$environments[[i]]$set_param(eparameters[i,])
+          } else {
+            warning(paste0("No parameters were provided for environment ",
+                           private$envnames[j],
+                           ". Simulations will be run with parameters provided",
+                           " with the variety."),
+                    call.=F)
+          }
         }
       } else {
         stop("Please provide at least one environment name.")
@@ -117,9 +131,9 @@ TPEa <- R6::R6Class("TPEa",
     initMessage = function() {
       plV <- length(private$varnames) > 1
       plE <- length(private$envnames) > 1
-      cat(paste0("TPE analysis ", self$name, " created containing ",
-                 length(private$varnames), ifelse(plV," varieties "," variety "),
-                 "and ", length(private$envnames), ifelse(plE," environments",
+      print(paste0("TPE analysis ", self$name, " created containing ",
+                 length(private$varnames), ifelse(plV," varieties "," variety ")
+                 , "and ", length(private$envnames), ifelse(plE," environments",
                                                            " environment. \n")))
     },
 
@@ -132,14 +146,29 @@ TPEa <- R6::R6Class("TPEa",
     #' decimal degrees
     #' @param lat A numeric value of the starting latitude of the grid in
     #' decimal degrees
-    createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA) {
-        if(name %in% private$gridnames) {
+    #' @param multigrid A boolean indicating if one grid should be created
+    #' for each genotype with the same cols, rows, lon and lat.
+    createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA,
+                          multigrid=F) {
+      if(name %in% private$gridnames) {
         stop(paste("Grid with name", name,"already exists.",
-                   "Please provide a unique identifier."))
+                     "Please provide a unique identifier."))
       }
-      self$grids[[length(self$grids)+1]] <- TPEgrid$new(name, res, cols, rows,
-                                                      lon, lat, self)
-      private$gridnames <- c(private$gridnames, name)
+
+      if(!multigrid) {
+        self$grids[[length(self$grids)+1]] <- TPEgrid$new(name, res, cols, rows,
+                                                          lon, lat, self, NA)
+        private$gridnames <- c(private$gridnames, name)
+      } else {
+        for(i in 1:length(private$varnames)) {
+          gname <- paste0(name, "_", private$varnames[i])
+          self$grids[[length(self$grids)+1]] <- TPEgrid$new(gname, res, cols,
+                                                            rows, lon,
+                                                            lat, self,
+                                                            self$varieties[[i]])
+          private$gridnames <- c(private$gridnames, gname)
+        }
+      }
     },
 
     #' @description Generate climate data for one or several grids
@@ -159,46 +188,65 @@ TPEa <- R6::R6Class("TPEa",
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
     #' @param filesE Boolean. If weather files already exist
+    #' @param verbose Boolean. If messages about completing climate generation
+    #' should be shown
     genClimate = function(gridID=1, rcp="rcp26", year=2014, yearNb=1,
-                       modelNb="00000000000000000", path=NA, pathCLI=NA,
-                       filesE=F) {
-      for(i in 1:length(gridID)) {
-        cat(paste("Generating climate for grid",gridID, "this may take some",
-                  "time if this is the first time generating climate",
-                  "for this grid.\n"))
-        if(class(gridID) == "numeric") {
-          id <- gridID[[i]]
+                          modelNb="00000000000000000", path=NA, pathCLI=NA,
+                          filesE=F, verbose=F) {
+
+      #TODO: TMP fix to run on all grid without giving all gridID
+      if(gridID == 99) {
+        idg <- private$gridnames
+      } else {
+        idg <- gridID
+      }
+
+      for(i in 1:length(idg)) {
+        if(class(idg[i]) == "numeric") {
+          id <- idg[i]
         } else {
-          id <- match(gridID[[i]], private$gridnames)
+          id <- match(idg[i], private$gridnames)
         }
+        cat(paste("Generating climate for grid", private$gridnames[id],
+                  "this may take some time \n"))
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                    pathCLI, filesE)
+                                    pathCLI, filesE, verbose)
       }
     },
 
     #' @description Run simulation on one or several grids
     #' @param gridID A vector of grid identifiers (either index or name)
-    #' @param varID A numeric value with the row of parameter dataframe to use
+    #' @param varID Optional. A numeric value with the variety to use for
+    #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param trait A character string with the trait name for grid res matrix
     #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=1, varID=1, trait="GrainYieldPopFin",
+    runGridSim = function(gridID=1, varID=NA, trait="GrainYieldPopFin",
                           year=2015, soilData=soil, latlonData=lat_lon) {
-      if(class(varID) == "numeric") {
-        idv <- varID
+      #TODO: TMP fix to run on all grid without giving all gridID
+      if(gridID == 99) {
+        idg <- private$gridnames
       } else {
-        idv <- match(varID, private$varnames)
+        idg <- gridID
       }
-      param <- self$varieties[[idv]]$parameters
-
-      for(i in 1:length(gridID)) {
-        if(class(gridID) == "numeric") {
-          id <- gridID[[i]]
+      for(i in 1:length(idg)) {
+        if(class(idg) == "numeric") {
+          id <- idg[i]
         } else {
-          id <- match(gridID[[i]], private$gridnames)
+          id <- match(idg[i], private$gridnames)
         }
-        self$grids[[id]]$runGridSim(trait, year, soilData, latlonData, param)
+        #TODO: tmp fix, might need to find a better solution to not erase
+        # previous value of grid$variety
+        if(!is.na(varID)) {
+          if(class(varID) == "numeric") {
+            idv <- varID
+          } else {
+            idv <- match(varID, private$varnames)
+          }
+          self$grids[[id]]$variety <- self$varieties[[idv]]
+        }
+        self$grids[[id]]$runGridSim(trait, year, soilData, latlonData)
       }
     },
 
@@ -223,22 +271,28 @@ TPEa <- R6::R6Class("TPEa",
                      "Please provide a value for each cardinal point,",
                      "or use bounds=NA"))
       }
-        map <- as(tmpmap, "SpatialPixelsDataFrame")
-        map <- as.data.frame(map)
-        colnames(map) <- c("value", "x", "y")
-        map$value <- NA
-        self$maps[[length(self$maps)+1]] <- map
+      map <- as(tmpmap, "SpatialPixelsDataFrame")
+      map <- as.data.frame(map)
+      colnames(map) <- c("value", "x", "y")
+      map$value <- NA
+      self$maps[[length(self$maps)+1]] <- map
     },
 
     #' @description Create plot on map
     #' @param mapID A numeric value of the index of map to plot
     #' @param gridID A vector of grid identifiers (either index or name)
     plotMap = function(mapID=1, gridID=1) {
-      for(i in 1:length(gridID)) {
-        if(class(gridID) == "numeric") {
-          id <- gridID[[i]]
+      #TODO: TMP fix to run on all grid without giving all gridID
+      if(gridID == 99) {
+        idg <- private$gridnames
+      } else {
+        idg <- gridID
+      }
+      for(i in 1:length(idg)) {
+        if(class(idg) == "numeric") {
+          id <- idg[i]
         } else {
-          id <- match(gridID[[i]], private$gridnames)
+          id <- match(idg[i], private$gridnames)
         }
         self$grids[[id]]$plotMap(mapID=mapID)
       }

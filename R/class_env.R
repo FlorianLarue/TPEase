@@ -14,6 +14,8 @@ TPEenv <- R6::R6Class("TPEenv",
     parent = NULL,
     #' @field weather A dataframe with all weather data used for simulation
     weather = NULL,
+    #' @field parameters A dataframe with all parameters used for simulation
+    parameters = NULL,
 
     #' @description Create a new variety object
     #' @param name A character string identifier of the variety
@@ -28,6 +30,12 @@ TPEenv <- R6::R6Class("TPEenv",
     #' @param val A dataframe with weather data
     set_weather = function(val) {
       self$weather <- val
+    },
+
+    #' @description Set parameters
+    #' @param val A dataframe with parameter values
+    set_param = function(val) {
+      self$parameters <- val
     }
   )
 )

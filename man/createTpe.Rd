@@ -10,7 +10,8 @@ createTpe(
   varieties = NA,
   environments = NA,
   genotypes = NA,
-  parameters = NA
+  parameters = NA,
+  eparameters = NA
 )
 }
 \arguments{

@@ -59,7 +59,8 @@ Create a new TPE analysis object
   varieties = NA,
   environments = NA,
   genotypes = NA,
-  parameters = NA
+  parameters = NA,
+  eparameters = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -78,6 +79,9 @@ for simulations}
 \item{\code{genotypes}}{Optional. A list of alternate variety names}
 
 \item{\code{parameters}}{A vector or dataframe with all crop model parameters}
+
+\item{\code{eparameters}}{Optional. A dataframe with environment specific
+parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -157,7 +161,15 @@ Confirm creation of TPE analysis object
 \subsection{Method \code{createGrid()}}{
 Create a simulation grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(name = "g1", res = 0.5, cols = 5, rows = 5, lon = NA, lat = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
+  name = "g1",
+  res = 0.5,
+  cols = 5,
+  rows = 5,
+  lon = NA,
+  lat = NA,
+  multigrid = F
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -176,6 +188,9 @@ decimal degrees}
 
 \item{\code{lat}}{A numeric value of the starting latitude of the grid in
 decimal degrees}
+
+\item{\code{multigrid}}{A boolean indicating if one grid should be created
+for each genotype with the same cols, rows, lon and lat.}
 }
 \if{html}{\out{</div>}}
 }
@@ -194,7 +209,8 @@ Generate climate data for one or several grids
   modelNb = "00000000000000000",
   path = NA,
   pathCLI = NA,
-  filesE = F
+  filesE = F,
+  verbose = F
 )}\if{html}{\out{</div>}}
 }
 
@@ -224,6 +240,9 @@ folder as the marksim standalone. For the moment, this path can not
 contain spaces}
 
 \item{\code{filesE}}{Boolean. If weather files already exist}
+
+\item{\code{verbose}}{Boolean. If messages about completing climate generation
+should be shown}
 }
 \if{html}{\out{</div>}}
 }
@@ -236,7 +255,7 @@ Run simulation on one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
   gridID = 1,
-  varID = 1,
+  varID = NA,
   trait = "GrainYieldPopFin",
   year = 2015,
   soilData = soil,
@@ -249,7 +268,8 @@ Run simulation on one or several grids
 \describe{
 \item{\code{gridID}}{A vector of grid identifiers (either index or name)}
 
-\item{\code{varID}}{A numeric value with the row of parameter dataframe to use}
+\item{\code{varID}}{Optional. A numeric value with the variety to use for
+simulation on the grid. If NA, will use the variety attached to grid}
 
 \item{\code{trait}}{A character string with the trait name for grid res matrix}
 

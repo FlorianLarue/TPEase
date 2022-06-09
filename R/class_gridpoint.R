@@ -97,7 +97,8 @@ gridPoint <- R6::R6Class("gridPoint",
         }
         if(is.null(self$dateParam)) {
           warning(paste("No sowing date could be found for gridpoint",
-                      self$name, "default sowing date will be used."))
+                      self$name, "default sowing date will be used."),
+                  call.=F)
         } else {
           self$simuweather$weatherdate <- as.Date(as.character(
             self$simuweather$weatherdate), format="%d/%m/%Y")
@@ -105,7 +106,8 @@ gridPoint <- R6::R6Class("gridPoint",
       } else {
         warning(paste("Weather data for grid point", self$name,
         "is not set. Please use genClimate() on grid", self$parent$name,
-        "if this was forgotten. Otherwise you can ignore this message."))
+        "if this was forgotten. Otherwise you can ignore this message."),
+        call.=F)
       }
     },
 
@@ -118,7 +120,7 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
       climate <- generateClimate(self$lon, self$lat, rcp, year, yearNb, modelNb,
-                                 path,pathCLI)
+                                 path, pathCLI)
       self$set_weather(climate)
     },
 
@@ -152,7 +154,8 @@ gridPoint <- R6::R6Class("gridPoint",
           warning(paste("Sowing date was not extracted from weatherdata for",
                         "grid point", self$name,
                         "The current sowingdate from TPE analysis",
-                        self$parent$parent$name, "will be used."))
+                        self$parent$parent$name, "will be used."),
+                  call.=F)
         }
 
         if(!is.null(self$soilParam)) {
@@ -167,7 +170,8 @@ gridPoint <- R6::R6Class("gridPoint",
           warning(paste("Soil parameters were not extracted from HC27 for",
                         "grid point", self$name,
                         "The current soil parameters from TPE analysis",
-                        self$parent$parent$name, "will be used."))
+                        self$parent$parent$name, "will be used."),
+                  call.=F)
         }
         param$wslong <- self$lon
         param$wslat <- self$lat
@@ -178,9 +182,9 @@ gridPoint <- R6::R6Class("gridPoint",
         val <- max(self$result[,trait],na.rm=T)
         self$parent$set_resGrid(i,j,val)
       } else {
-        self$parent$test <- self$parent$test + 1
         warning(paste("No weather data on grid point", self$name, ".",
-                      "Simulation for this grid point will not be run."))
+                      "Simulation for this grid point will not be run."),
+                call.=F)
       }
     }
 

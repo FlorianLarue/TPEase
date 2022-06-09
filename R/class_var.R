@@ -101,7 +101,7 @@ TPEvar <- R6::R6Class("TPEvar",
         }
       } else {
         warning(paste("Missing parameters and/or observations for variety",
-                      self$name))
+                      self$name), call.=F)
       }
     }
   )

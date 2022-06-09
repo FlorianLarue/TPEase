@@ -17,6 +17,8 @@ TODO
 \item{\code{parent}}{TPE analysis parent}
 
 \item{\code{weather}}{A dataframe with all weather data used for simulation}
+
+\item{\code{parameters}}{A dataframe with all parameters used for simulation}
 }
 \if{html}{\out{</div>}}
 }
@@ -25,6 +27,7 @@ TODO
 \itemize{
 \item \href{#method-TPEenv-new}{\code{TPEenv$new()}}
 \item \href{#method-TPEenv-set_weather}{\code{TPEenv$set_weather()}}
+\item \href{#method-TPEenv-set_param}{\code{TPEenv$set_param()}}
 \item \href{#method-TPEenv-clone}{\code{TPEenv$clone()}}
 }
 }
@@ -63,6 +66,23 @@ Set weather
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{A dataframe with weather data}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEenv-set_param"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEenv-set_param}{}}}
+\subsection{Method \code{set_param()}}{
+Set parameters
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEenv$set_param(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A dataframe with parameter values}
 }
 \if{html}{\out{</div>}}
 }
