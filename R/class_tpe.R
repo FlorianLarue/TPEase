@@ -261,6 +261,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @importFrom raster extent
     #' @importFrom raster crs
     createMap = function(res=150, bounds=NA) {
+      cat(paste("Creating map",length(self$maps)+1),"\n")
       tmpmap <- raster(paste0("data/gis/world_",as.character(res),".tif"))
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
