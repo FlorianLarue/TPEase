@@ -64,12 +64,17 @@ TPEgrid <- R6::R6Class("TPEgrid",
           latPoint <- self$latStart + (0.35*(i-1))
           if(i < 10) {
             ii <- paste0("0",i)
+          } else {
+            ii <- i
           }
           for(j in 1:ncol(self$gridPoints)) {
             lonPoint <- self$lonStart + (res*(j-1))
             if(j < 10) {
               jj <- paste0("0",j)
+            } else {
+              jj <- j
             }
+            self$resGrid[i,j] <- paste0(ii,jj)
             self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
                                                        name=paste0(ii,jj),
                                                        lon=lonPoint,
@@ -156,8 +161,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
             "This might take a while depending on the size of the grid \n"))
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {
-          self$test <- param
-          self$gridPoints[i,j][[1]]$set_soilParam(soil, lat_lon)
+          self$gridPoints[i,j][[1]]$set_soilParam(soilData, latlonData)
           self$gridPoints[i,j][[1]]$set_dateParam(year)
           self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters,
                                                   trait, i,j)

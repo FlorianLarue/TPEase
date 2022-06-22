@@ -182,6 +182,7 @@ gridPoint <- R6::R6Class("gridPoint",
         val <- max(self$result[,trait],na.rm=T)
         self$parent$set_resGrid(i,j,val)
       } else {
+        self$parent$set_resGrid(i,j,NA)
         warning(paste("No weather data on grid point", self$name, ".",
                       "Simulation for this grid point will not be run."),
                 call.=F)

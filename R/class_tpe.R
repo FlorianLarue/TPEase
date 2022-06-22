@@ -59,7 +59,7 @@ TPEa <- R6::R6Class("TPEa",
             alt = as.character(private$genotypes[i]),
             parent = self
           )
-          if(class(parameters) == "data.frame" & nrow(parameters) >= i) {
+          if(class(parameters) == "data.frame" && nrow(parameters) >= i) {
             self$varieties[[i]]$set_param(parameters[i,])
           } else {
             warning(paste0("No parameters were provided for variety ",
@@ -256,13 +256,18 @@ TPEa <- R6::R6Class("TPEa",
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
+    #' @param path Optional. A path to the map
     #' @importFrom raster raster
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
-    createMap = function(res=150, bounds=NA) {
+    createMap = function(res=150, bounds=NA, path=NA) {
       cat(paste("Creating map",length(self$maps)+1),"\n")
-      tmpmap <- raster(paste0("data/gis/world_",as.character(res),".tif"))
+      if(is.na(path)) {
+        tmpmap <- raster(paste0("data/gis/world_",as.character(res),".tif"))
+      } else {
+        tmpmap <- raster(paste0(path,"/world_",as.character(res),".tif"))
+      }
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
                 "SpatialPolygons")
