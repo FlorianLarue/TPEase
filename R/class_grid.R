@@ -74,7 +74,6 @@ TPEgrid <- R6::R6Class("TPEgrid",
             } else {
               jj <- j
             }
-            self$resGrid[i,j] <- paste0(ii,jj)
             self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
                                                        name=paste0(ii,jj),
                                                        lon=lonPoint,
