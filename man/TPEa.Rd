@@ -299,7 +299,7 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \subsection{Method \code{createMap()}}{
 Create raster map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "Map1", res = 150, bounds = NA, path = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "Map1", res = 150, bounds = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -312,8 +312,6 @@ Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
 
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
 of north, east, south, west bounds to crop map}
-
-\item{\code{path}}{Optional. A path to the map}
 }
 \if{html}{\out{</div>}}
 }

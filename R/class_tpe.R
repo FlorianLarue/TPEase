@@ -132,6 +132,11 @@ TPEa <- R6::R6Class("TPEa",
       return(private$mapnames)
     },
 
+    #' @description Get names of all grids
+    get_gridNames = function() {
+      return(private$gridnames)
+    },
+
     #' @description Confirm creation of TPE analysis object
     initMessage = function() {
       plV <- length(private$varnames) > 1
@@ -258,11 +263,10 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create raster map
     #' @param name A character string defining the name of the map
-    #' @param res A numeric valuein sec of the resolution of world map to use
+    #' @param res A numeric value in sec of the resolution of world map to use
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
-    #' @param path Optional. A path to the map
     #' @importFrom raster raster
     #' @importFrom raster crop
     #' @importFrom raster extent
@@ -275,10 +279,9 @@ TPEa <- R6::R6Class("TPEa",
         private$mapnames <- c(private$mapnames, name)
       }
       cat(paste("Creating map",length(self$maps)+1),"\n")
-      pathMap <- system.file("extdata",paste0(path,
-                                              "/world_",as.character(res),
+      pathMap <- system.file("extdata",paste0("world_",as.character(res),
                                               ".tif"), package="CGMTPE")
-      tmpmap <- raster()
+      tmpmap <- raster(pathMap)
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
                 "SpatialPolygons")
