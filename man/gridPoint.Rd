@@ -30,7 +30,7 @@ TODO
 
 \item{\code{parent}}{Grid parent of grid point}
 
-\item{\code{test}}{Test attribute TODO: REMOVE}
+\item{\code{test}}{Test attribute}
 }
 \if{html}{\out{</div>}}
 }

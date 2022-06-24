@@ -183,7 +183,8 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Generate climate data for one or several grids
-    #' @param gridID A vector of grid identifiers (either index or name)
+    #' @param gridID Optional. A vector of grid identifiers
+    #' (either index or name). By default will run all grids
     #' @param rcp A character string with the name of the Representative
     #' Concentration Pathway to use. One of the following options
     #' c("rcp26","rcp45","rcp60","rcp85")
@@ -201,11 +202,10 @@ TPEa <- R6::R6Class("TPEa",
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about completing climate generation
     #' should be shown
-    genClimate = function(gridID=1, rcp="rcp26", year=2014, yearNb=1,
+    genClimate = function(gridID=99, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           filesE=F, verbose=F) {
 
-      #TODO: TMP fix to run on all grid without giving all gridID
       if(gridID == 99) {
         idg <- private$gridnames
       } else {
@@ -226,16 +226,16 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Run simulation on one or several grids
-    #' @param gridID A vector of grid identifiers (either index or name)
+    #' @param gridID Optional. A vector of grid identifiers
+    #' (either index or name). By default will run all grids
     #' @param varID Optional. A numeric value with the variety to use for
     #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param trait A character string with the trait name for grid res matrix
     #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=1, varID=NA, trait="GrainYieldPopFin",
+    runGridSim = function(gridID=99, varID=NA, trait="GrainYieldPopFin",
                           year=2015, soilData=soil, latlonData=lat_lon) {
-      #TODO: TMP fix to run on all grid without giving all gridID
       if(gridID == 99) {
         idg <- private$gridnames
       } else {
@@ -247,15 +247,14 @@ TPEa <- R6::R6Class("TPEa",
         } else {
           id <- match(idg[i], private$gridnames)
         }
-        #TODO: tmp fix, might need to find a better solution to not erase
-        # previous value of grid$variety
+
         if(!is.na(varID)) {
           if(class(varID) == "numeric") {
             idv <- varID
           } else {
             idv <- match(varID, private$varnames)
           }
-          self$grids[[id]]$variety <- self$varieties[[idv]]
+          self$grids[[id]]$set_var(self$varieties[[idv]])
         }
         self$grids[[id]]$runGridSim(trait, year, soilData, latlonData)
       }
@@ -301,9 +300,9 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create plot on map
     #' @param mapID A numeric value of the index of map to plot
-    #' @param gridID A vector of grid identifiers (either index or name)
-    plotMap = function(mapID=1, gridID=1) {
-      #TODO: TMP fix to run on all grid without giving all gridID
+    #' @param gridID Optional. A vector of grid identifiers
+    #' (either index or name). By default will run on all grids
+    plotMap = function(mapID=1, gridID=99) {
       if(gridID == 99) {
         idg <- private$gridnames
       } else {

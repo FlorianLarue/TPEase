@@ -26,7 +26,7 @@ gridPoint <- R6::R6Class("gridPoint",
     dateParam = NULL,
     #' @field parent Grid parent of grid point
     parent = NULL,
-    #' @field test Test attribute TODO: REMOVE
+    #' @field test Test attribute
     test = NULL,
 
     #' @description Create a new TPE grid point object

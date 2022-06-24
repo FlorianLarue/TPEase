@@ -38,6 +38,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
 \item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
+\item \href{#method-TPEa-get_gridNames}{\code{TPEa$get_gridNames()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
@@ -157,6 +158,16 @@ Get names of all maps
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_gridNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_gridNames}{}}}
+\subsection{Method \code{get_gridNames()}}{
+Get names of all grids
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_gridNames()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-initMessage}{}}}
 \subsection{Method \code{initMessage()}}{
@@ -213,7 +224,7 @@ for each genotype with the same cols, rows, lon and lat.}
 Generate climate data for one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$genClimate(
-  gridID = 1,
+  gridID = 99,
   rcp = "rcp26",
   year = 2014,
   yearNb = 1,
@@ -228,7 +239,8 @@ Generate climate data for one or several grids
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
+\item{\code{gridID}}{Optional. A vector of grid identifiers
+(either index or name). By default will run all grids}
 
 \item{\code{rcp}}{A character string with the name of the Representative
 Concentration Pathway to use. One of the following options
@@ -265,7 +277,7 @@ should be shown}
 Run simulation on one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
-  gridID = 1,
+  gridID = 99,
   varID = NA,
   trait = "GrainYieldPopFin",
   year = 2015,
@@ -277,7 +289,8 @@ Run simulation on one or several grids
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
+\item{\code{gridID}}{Optional. A vector of grid identifiers
+(either index or name). By default will run all grids}
 
 \item{\code{varID}}{Optional. A numeric value with the variety to use for
 simulation on the grid. If NA, will use the variety attached to grid}
@@ -307,7 +320,7 @@ Create raster map
 \describe{
 \item{\code{name}}{A character string defining the name of the map}
 
-\item{\code{res}}{A numeric valuein sec of the resolution of world map to use
+\item{\code{res}}{A numeric value in sec of the resolution of world map to use
 Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
 
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
@@ -322,7 +335,7 @@ of north, east, south, west bounds to crop map}
 \subsection{Method \code{plotMap()}}{
 Create plot on map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = 99)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -330,7 +343,8 @@ Create plot on map
 \describe{
 \item{\code{mapID}}{A numeric value of the index of map to plot}
 
-\item{\code{gridID}}{A vector of grid identifiers (either index or name)}
+\item{\code{gridID}}{Optional. A vector of grid identifiers
+(either index or name). By default will run on all grids}
 }
 \if{html}{\out{</div>}}
 }
