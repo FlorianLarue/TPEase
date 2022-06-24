@@ -37,6 +37,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
+\item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
 \item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
@@ -144,6 +145,16 @@ Set weather data
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_mapNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_mapNames}{}}}
+\subsection{Method \code{get_mapNames()}}{
+Get names of all maps
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_mapNames()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
@@ -288,17 +299,21 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \subsection{Method \code{createMap()}}{
 Create raster map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(res = 150, bounds = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "Map1", res = 150, bounds = NA, path = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{res}}{A numeric valuein sec of the resolution of world map to use.
+\item{\code{name}}{A character string defining the name of the map}
+
+\item{\code{res}}{A numeric valuein sec of the resolution of world map to use
 Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
 
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
 of north, east, south, west bounds to crop map}
+
+\item{\code{path}}{Optional. A path to the map}
 }
 \if{html}{\out{</div>}}
 }

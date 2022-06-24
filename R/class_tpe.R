@@ -127,6 +127,11 @@ TPEa <- R6::R6Class("TPEa",
       self$environments[[id]]$set_weather(val)
     },
 
+    #' @description Get names of all maps
+    get_mapNames = function() {
+      return(private$mapnames)
+    },
+
     #' @description Confirm creation of TPE analysis object
     initMessage = function() {
       plV <- length(private$varnames) > 1
@@ -252,7 +257,8 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Create raster map
-    #' @param res A numeric valuein sec of the resolution of world map to use.
+    #' @param name A character string defining the name of the map
+    #' @param res A numeric valuein sec of the resolution of world map to use
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
@@ -261,13 +267,18 @@ TPEa <- R6::R6Class("TPEa",
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
-    createMap = function(res=150, bounds=NA, path=NA) {
-      cat(paste("Creating map",length(self$maps)+1),"\n")
-      if(is.na(path)) {
-        tmpmap <- raster(paste0("data/gis/world_",as.character(res),".tif"))
+    createMap = function(name="Map1", res=150, bounds=NA) {
+      if(name %in% private$mapnames) {
+        stop(paste("Map with name ", name, " already exist.",
+                   "Please provide a unique name for each map"))
       } else {
-        tmpmap <- raster(paste0(path,"/world_",as.character(res),".tif"))
+        private$mapnames <- c(private$mapnames, name)
       }
+      cat(paste("Creating map",length(self$maps)+1),"\n")
+      pathMap <- system.file("extdata",paste0(path,
+                                              "/world_",as.character(res),
+                                              ".tif"), package="CGMTPE")
+      tmpmap <- raster()
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
                 "SpatialPolygons")
@@ -350,6 +361,7 @@ TPEa <- R6::R6Class("TPEa",
     gridnames = NULL,
     varnames = NULL,
     genotypes = NULL,
-    envnames = NULL
+    envnames = NULL,
+    mapnames = NULL
   )
 )
