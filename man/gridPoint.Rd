@@ -30,6 +30,8 @@ TODO
 
 \item{\code{parent}}{Grid parent of grid point}
 
+\item{\code{variety}}{Optional. Specific variety for given gridPoint}
+
 \item{\code{test}}{Test attribute}
 }
 \if{html}{\out{</div>}}
@@ -42,6 +44,7 @@ TODO
 \item \href{#method-gridPoint-set_soilParam}{\code{gridPoint$set_soilParam()}}
 \item \href{#method-gridPoint-set_dateParam}{\code{gridPoint$set_dateParam()}}
 \item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
+\item \href{#method-gridPoint-set_variety}{\code{gridPoint$set_variety()}}
 \item \href{#method-gridPoint-runSimulation}{\code{gridPoint$runSimulation()}}
 \item \href{#method-gridPoint-clone}{\code{gridPoint$clone()}}
 }
@@ -148,6 +151,23 @@ Generate climate at grid point
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-set_variety"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-set_variety}{}}}
+\subsection{Method \code{set_variety()}}{
+Set variety to this gridPoint
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_variety(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Object of type variety}
 }
 \if{html}{\out{</div>}}
 }

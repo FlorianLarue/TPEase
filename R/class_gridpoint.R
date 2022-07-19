@@ -26,6 +26,8 @@ gridPoint <- R6::R6Class("gridPoint",
     dateParam = NULL,
     #' @field parent Grid parent of grid point
     parent = NULL,
+    #' @field variety Optional. Specific variety for given gridPoint
+    variety = NULL,
     #' @field test Test attribute
     test = NULL,
 
@@ -122,6 +124,12 @@ gridPoint <- R6::R6Class("gridPoint",
       climate <- generateClimate(self$lon, self$lat, rcp, year, yearNb, modelNb,
                                  path, pathCLI)
       self$set_weather(climate)
+    },
+
+    #' @description Set variety to this gridPoint
+    #' @param val Object of type variety
+    set_variety = function(val) {
+      self$variety <- val
     },
 
     #' @description Run simulation on grid point

@@ -2,7 +2,7 @@
 % Please edit documentation in R/class_env.R
 \name{TPEenv}
 \alias{TPEenv}
-\title{#' R6 Class Representing a TPE analysis}
+\title{#' R6 Class Representing an environment}
 \description{
 TODO
 }

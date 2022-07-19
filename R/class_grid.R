@@ -181,7 +181,6 @@ TPEgrid <- R6::R6Class("TPEgrid",
                                                   trait, i,j)
           setTxtProgressBar(pbSim, cnt)
           cnt <- cnt + 1
-
         }
       }
     },

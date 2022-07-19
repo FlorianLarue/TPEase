@@ -1,4 +1,4 @@
-#'#' R6 Class Representing a TPE analysis
+#'#' R6 Class Representing an environment
 #'
 #' @description
 #' TODO
