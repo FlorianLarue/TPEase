@@ -35,6 +35,7 @@ launch_sim <- function(model="Samara", data, params) {
 #' ending simulation date
 #' @param workspace Path to the parent folder containing the subfolders obs,
 #' params, meteos
+#' @param mean TMP FIX If observations are means or blocks
 #' @return A list with parameter, weather and observation data
 #' @examples
 #' simlist <- read.table("data/samara/simulation_list.csv")
@@ -44,7 +45,7 @@ launch_sim <- function(model="Samara", data, params) {
 #' obs <- dfList[["observations"]]
 #' @export
 #' @import rsamara
-construct_data <- function(variety,genotype,itk,simlist,workspace) {
+construct_data <- function(variety,genotype,itk,simlist,workspace,mean=F) {
   varietyData <- list()
   startingDates <- simlist$startingdate
   endingDates <- simlist$endingdate
@@ -67,16 +68,32 @@ construct_data <- function(variety,genotype,itk,simlist,workspace) {
 
   # observation data
   viObservations <- list()
-  for(j in 1:length(blocks)) {
-    block <- blocks[[j]]
-    obs <- read.csv(paste0(workspace,"obs/", itk, genotype, block, ".csv"))
-    #tmp error fix, in original script also error fix for missing grainpop
-    #not sure it is useful at this point
+  viSd <- list()
+  if(!mean) {
+    for(j in 1:length(blocks)) {
+      block <- blocks[[j]]
+      obs <- read.csv(paste0(workspace,"obs/", itk, genotype, block, ".csv"))
+      #tmp error fix, in original script also error fix for missing grainpop
+      #not sure it is useful at this point
+      names(obs)[names(obs) == "grainyieldpopfin"] <- "grainyieldpop"
+      obs$plantheight = 10*obs$plantheight
+      viObservations[[j]] <- obs
+      varietyData[["observations"]] <- viObservations
+    }
+  } else {
+    obs <- read.csv(paste0(workspace,"obs_mean/", itk, genotype, ".csv"))
     names(obs)[names(obs) == "grainyieldpopfin"] <- "grainyieldpop"
     obs$plantheight = 10*obs$plantheight
-    viObservations[[j]] <- obs
+    viObservations[[1]] <- obs
+
+    sd <- read.csv(paste0(workspace,"obs_sd/", itk, genotype, ".csv"))
+    names(sd)[names(sd) == "grainyieldpopfin"] <- "grainyieldpop"
+    sd$plantheight = 10*sd$plantheight
+    viSd[[1]] <- sd
+
+    varietyData[["observations"]] <- viObservations
+    varietyData[["sd"]] <- viSd
   }
-  varietyData[["observations"]] <- viObservations
 
   return(varietyData)
 }

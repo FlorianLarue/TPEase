@@ -4,7 +4,7 @@
 \alias{construct_data}
 \title{Construct Samara dataframes}
 \usage{
-construct_data(variety, genotype, itk, simlist, workspace)
+construct_data(variety, genotype, itk, simlist, workspace, mean = F)
 }
 \arguments{
 \item{variety}{Name of the studied variety}
@@ -18,6 +18,8 @@ ending simulation date}
 
 \item{workspace}{Path to the parent folder containing the subfolders obs,
 params, meteos}
+
+\item{mean}{TMP FIX If observations are means or blocks}
 }
 \value{
 A list with parameter, weather and observation data
