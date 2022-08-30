@@ -3,6 +3,7 @@
 export(MAE)
 export(MSE)
 export(RMSE)
+export(TPEa)
 export(cmerge.all)
 export(construct_data)
 export(createTpe)

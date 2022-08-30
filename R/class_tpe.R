@@ -1,11 +1,13 @@
 #'#' R6 Class Representing a TPE analysis
 #'
 #' @description
-#' TODO
+#' The TPE Analysis object "TPEa" is an environment containing all objects
+#' used for a TPE analysis (varieties, environments, maps, etc.)
 #'
 #' @details
 #' TODO
 #' @import R6
+#' @export
 TPEa <- R6::R6Class("TPEa",
   public = list(
     #' @field name A character string identifier of the TPE analysis
@@ -17,8 +19,7 @@ TPEa <- R6::R6Class("TPEa",
     varieties = list(),
     #' @field environments A vector of environment names used for calibration
     environments = list(),
-    #' @field grids A vector of simulation grids, will be populated by the
-    #' `createGrid()` function
+    #' @field grids A vector of simulation grids
     grids = list(),
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
@@ -32,68 +33,75 @@ TPEa <- R6::R6Class("TPEa",
     #' @param varieties A list of varieties names
     #' @param environments A list of environments names
     #' @param genotypes Optional. A list of alternate variety names
-    #' @param parameters A vector or dataframe with all crop model parameters
-    #' @param eparameters Optional. A dataframe with environment specific
+    #' @param vparameters A vector or dataframe with variety specific parameters
+    #' @param eparameters A vector or dataframe with environment specific
+    #' @param parameters Optional. A vector or dataframe with all crop model
+    #' parameters (variety x environment)
     #' parameters
     #' @return A new `TPEa` object.
     initialize = function(name="TPEa_1", model="Samara", varieties=NA,
-                          environments=NA, genotypes=NA, parameters=NA,
-                          eparameters=NA) {
+                          environments=NA, genotypes=NA, vparameters=NA,
+                          eparameters=NA, parameters=NA) {
+
       self$name <- as.character(name)
       self$model <- as.character(model)
 
-      if(length(genotypes) != length(varieties) || is.na(genotypes)) {
-        private$genotypes <- as.character(varieties)
-        warning(paste("Length of genotypes does not match",
-                      "length of varieties, name of varieties will be used."),
-                call.=F)
-      } else {
-        private$genotypes <- genotypes
-      }
+      vParamMissings <- c()
 
       if(length(varieties) > 1 || !is.na(varieties)) {
         private$varnames <- as.character(varieties)
+
+        if(length(genotypes) != length(varieties) || is.na(genotypes)) {
+          private$genotypes <- as.character(varieties)
+          warning(paste("Length of genotypes does not match",
+                        "length of varieties, name of varieties will be used."),
+                  call.=F)
+        } else {
+          private$genotypes <- genotypes
+        }
+
         for(i in 1:length(varieties)) {
-          self$varieties[[length(self$varieties)+1]] <- TPEvar$new(
+          self$varieties <- append(self$varieties, TPEvar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
-            parent = self
-          )
-          if(class(parameters) == "data.frame" && nrow(parameters) >= i) {
-            self$varieties[[i]]$set_param(parameters[i,])
+            parent = self))
+
+          if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
+            self$varieties[[i]]$set_param(vparameters[i,])
           } else {
-            warning(paste0("No parameters were provided for variety ",
-                          private$varnames[i],
-                          ". Simulations will not be possible.",
-                          "You can set parameters on the variety object ",
-                          "by running set_param() and providing a data.frame."),
-                    call.=F)
+            if(class(parameters) == "data.frame" && nrow(parameters) >= i) {
+              #TODO: how to be sure of the correct row ?
+            } else {
+              vParamMissings <- c(vParamMissings, private$varnames[i])
+            }
           }
         }
       } else {
         stop("Please provide at least one variety name.")
       }
+
+      eParamMissings <- c()
       if(length(environments) > 1 || !is.na(environments)) {
         private$envnames <- environments
         for(j in 1:length(environments)) {
-          self$environments[[length(self$environments)+1]] <- TPEenv$new(
-            name = as.character(private$envnames[[1]]),
-            parent = self
-          )
-          if(class(eparameters) == "data.frame" && nrow(eparameters) >=1) {
-            self$environments[[i]]$set_param(eparameters[i,])
+          self$environments <- append(self$environments, TPEenv$new(
+            name = as.character(private$envnames[j]),
+            parent = self))
+
+          if(class(eparameters) == "data.frame" && nrow(eparameters) >= j) {
+            self$environments[[j]]$set_param(eparameters[j,])
           } else {
-            warning(paste0("No parameters were provided for environment ",
-                           private$envnames[j],
-                           ". Simulations will be run with parameters provided",
-                           " with the variety."),
-                    call.=F)
+            if(class(parameters) == "data.frame" && nrow(parameters) >= j) {
+              #TODO: how to be sure of the correct row ?
+            } else {
+              eParamMissings <- c(eParamMissings, private$envnames[j])
+            }
           }
         }
       } else {
         stop("Please provide at least one environment name.")
       }
-      self$initMessage()
+      self$initMessage(vParamMissings, eParamMissings)
     },
 
     #' @description Set crop model
@@ -138,14 +146,33 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Confirm creation of TPE analysis object
-    initMessage = function() {
-      plV <- length(private$varnames) > 1
-      plE <- length(private$envnames) > 1
-      cat(paste("TPE analysis", self$name, "created containing",
-                 length(private$varnames), ifelse(plV,"varieties","variety"),
-                "and", length(private$envnames), ifelse(plE,"environments",
-                                                           "environment"),
-                "\n"))
+    #' @param vParamMissings Name of varieties without parameters
+    #' @param eParamMissings Name of environments without parameters
+    initMessage = function(vParamMissings, eParamMissings) {
+      if(length(vParamMissings) > 0) {
+        warning(paste0("No parameters were provided for ",
+                ifelse(length(vParamMissings > 1), "varieties [", "variety ["),
+                paste0(vParamMissings, collapse=" "),
+                "]. Simulations will not be possible. ",
+                "You can set parameters by running set_param() on the ",
+                "variety object."), call.=F)
+      }
+
+      if(length(eParamMissings) > 0) {
+        warning(paste0("No parameters were provided for ",
+                       ifelse(length(eParamMissings > 1), "environments [",
+                              "environments ["),
+                       paste0(eParamMissings, collapse=" "),
+                       "]. Simulations will be run with default parameters. ",
+                       "You can set parameters by running set_param() on the ",
+                       "environment object."), call.=F)
+      }
+
+      cat(paste0("TPE analysis ", self$name, " created containing ",
+                length(private$varnames), ifelse(length(private$varnames) > 1,
+                " varieties "," variety "), "and ",
+                length(private$envnames), ifelse(length(private$envnames) > 1,
+                " environments", " environment"),"\n"))
     },
 
     #' @description Create a simulation grid

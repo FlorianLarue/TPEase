@@ -4,7 +4,8 @@
 \alias{TPEa}
 \title{#' R6 Class Representing a TPE analysis}
 \description{
-TODO
+The TPE Analysis object "TPEa" is an environment containing all objects
+used for a TPE analysis (varieties, environments, maps, etc.)
 }
 \details{
 TODO
@@ -21,8 +22,7 @@ used for simulations (only "Samara" is supported for now)}
 
 \item{\code{environments}}{A vector of environment names used for calibration}
 
-\item{\code{grids}}{A vector of simulation grids, will be populated by the
-`createGrid()` function}
+\item{\code{grids}}{A vector of simulation grids}
 
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
@@ -61,8 +61,9 @@ Create a new TPE analysis object
   varieties = NA,
   environments = NA,
   genotypes = NA,
-  parameters = NA,
-  eparameters = NA
+  vparameters = NA,
+  eparameters = NA,
+  parameters = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -80,9 +81,12 @@ for simulations}
 
 \item{\code{genotypes}}{Optional. A list of alternate variety names}
 
-\item{\code{parameters}}{A vector or dataframe with all crop model parameters}
+\item{\code{vparameters}}{A vector or dataframe with variety specific parameters}
 
-\item{\code{eparameters}}{Optional. A dataframe with environment specific
+\item{\code{eparameters}}{A vector or dataframe with environment specific}
+
+\item{\code{parameters}}{Optional. A vector or dataframe with all crop model
+parameters (variety x environment)
 parameters}
 }
 \if{html}{\out{</div>}}
@@ -173,9 +177,18 @@ Get names of all grids
 \subsection{Method \code{initMessage()}}{
 Confirm creation of TPE analysis object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage(vParamMissings, eParamMissings)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{vParamMissings}}{Name of varieties without parameters}
+
+\item{\code{eParamMissings}}{Name of environments without parameters}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-createGrid"></a>}}
