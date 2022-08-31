@@ -26,7 +26,7 @@ used for simulations (only "Samara" is supported for now)}
 
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
-\item{\code{test}}{A test for dev}
+\item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
 }
@@ -34,12 +34,20 @@ used for simulations (only "Samara" is supported for now)}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEa-new}{\code{TPEa$new()}}
+\item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
+\item \href{#method-TPEa-set_name}{\code{TPEa$set_name()}}
 \item \href{#method-TPEa-set_model}{\code{TPEa$set_model()}}
+\item \href{#method-TPEa-set_var}{\code{TPEa$set_var()}}
+\item \href{#method-TPEa-set_env}{\code{TPEa$set_env()}}
+\item \href{#method-TPEa-set_grid}{\code{TPEa$set_grid()}}
+\item \href{#method-TPEa-set_map}{\code{TPEa$set_map()}}
 \item \href{#method-TPEa-set_obs}{\code{TPEa$set_obs()}}
 \item \href{#method-TPEa-set_weather}{\code{TPEa$set_weather()}}
-\item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
 \item \href{#method-TPEa-get_gridNames}{\code{TPEa$get_gridNames()}}
-\item \href{#method-TPEa-initMessage}{\code{TPEa$initMessage()}}
+\item \href{#method-TPEa-get_varNames}{\code{TPEa$get_varNames()}}
+\item \href{#method-TPEa-get_genotypes}{\code{TPEa$get_genotypes()}}
+\item \href{#method-TPEa-get_envNames}{\code{TPEa$get_envNames()}}
+\item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
@@ -63,7 +71,8 @@ Create a new TPE analysis object
   genotypes = NA,
   vparameters = NA,
   eparameters = NA,
-  parameters = NA
+  parameters = NA,
+  vep = TRUE
 )}\if{html}{\out{</div>}}
 }
 
@@ -86,8 +95,13 @@ for simulations}
 \item{\code{eparameters}}{A vector or dataframe with environment specific}
 
 \item{\code{parameters}}{Optional. A vector or dataframe with all crop model
-parameters (variety x environment)
-parameters}
+parameters (variety x environment)}
+
+\item{\code{vep}}{Optional. If `parameters`is provided this argument
+controls in what order parameters are given, either parameters for all
+varieties of environment 1, then all for environment 2, etc. (by default,
+TRUE) or parameters for all environments for variety 1, then for variety
+2, etc. (FALSE)}
 }
 \if{html}{\out{</div>}}
 }
@@ -96,10 +110,46 @@ A new `TPEa` object.
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-initMessage}{}}}
+\subsection{Method \code{initMessage()}}{
+Confirm creation of TPE analysis object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage(vParamMissings, eParamMissings)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{vParamMissings}}{Name of varieties without parameters}
+
+\item{\code{eParamMissings}}{Name of environments without parameters}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_name"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_name}{}}}
+\subsection{Method \code{set_name()}}{
+Set TPE analysis name
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_name(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{New TPE analysis name}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-set_model"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-set_model}{}}}
 \subsection{Method \code{set_model()}}{
-Set crop model
+Set model name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$set_model(val)}\if{html}{\out{</div>}}
 }
@@ -108,6 +158,78 @@ Set crop model
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{New model name}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_var"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_var}{}}}
+\subsection{Method \code{set_var()}}{
+Set varieties, this is a list of TPEvar objects,
+use with caution
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_var(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{New varieties}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_env"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_env}{}}}
+\subsection{Method \code{set_env()}}{
+Set environments, this is a list of TPEenv objects,
+use with caution
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_env(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{New environments}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_grid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_grid}{}}}
+\subsection{Method \code{set_grid()}}{
+Set grids, this is a list of grid objects,
+use with caution
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_grid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{New grids}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-set_map"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-set_map}{}}}
+\subsection{Method \code{set_map()}}{
+Set maps, this is a list of map objects,
+use with caution
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$set_map(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{New maps}
 }
 \if{html}{\out{</div>}}
 }
@@ -152,16 +274,6 @@ Set weather data
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-get_mapNames"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-get_mapNames}{}}}
-\subsection{Method \code{get_mapNames()}}{
-Get names of all maps
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_mapNames()}\if{html}{\out{</div>}}
-}
-
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-get_gridNames"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-get_gridNames}{}}}
 \subsection{Method \code{get_gridNames()}}{
@@ -172,23 +284,44 @@ Get names of all grids
 
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEa-initMessage"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEa-initMessage}{}}}
-\subsection{Method \code{initMessage()}}{
-Confirm creation of TPE analysis object
+\if{html}{\out{<a id="method-TPEa-get_varNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_varNames}{}}}
+\subsection{Method \code{get_varNames()}}{
+Get names of all varieties
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage(vParamMissings, eParamMissings)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_varNames()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{vParamMissings}}{Name of varieties without parameters}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_genotypes"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_genotypes}{}}}
+\subsection{Method \code{get_genotypes()}}{
+Get names of all genotypes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_genotypes()}\if{html}{\out{</div>}}
+}
 
-\item{\code{eParamMissings}}{Name of environments without parameters}
 }
-\if{html}{\out{</div>}}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_envNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_envNames}{}}}
+\subsection{Method \code{get_envNames()}}{
+Get names of all environments
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_envNames()}\if{html}{\out{</div>}}
 }
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_mapNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_mapNames}{}}}
+\subsection{Method \code{get_mapNames()}}{
+Get names of all maps
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_mapNames()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-createGrid"></a>}}

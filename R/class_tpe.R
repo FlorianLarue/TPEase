@@ -23,7 +23,7 @@ TPEa <- R6::R6Class("TPEa",
     grids = list(),
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
-    #' @field test A test for dev
+    #' @field test Debug
     test = NA,
 
     #' @description Create a new TPE analysis object
@@ -37,11 +37,15 @@ TPEa <- R6::R6Class("TPEa",
     #' @param eparameters A vector or dataframe with environment specific
     #' @param parameters Optional. A vector or dataframe with all crop model
     #' parameters (variety x environment)
-    #' parameters
+    #' @param vep Optional. If `parameters`is provided this argument
+    #' controls in what order parameters are given, either parameters for all
+    #' varieties of environment 1, then all for environment 2, etc. (by default,
+    #' TRUE) or parameters for all environments for variety 1, then for variety
+    #' 2, etc. (FALSE)
     #' @return A new `TPEa` object.
     initialize = function(name="TPEa_1", model="Samara", varieties=NA,
                           environments=NA, genotypes=NA, vparameters=NA,
-                          eparameters=NA, parameters=NA) {
+                          eparameters=NA, parameters=NA, vep=TRUE) {
 
       self$name <- as.character(name)
       self$model <- as.character(model)
@@ -69,10 +73,22 @@ TPEa <- R6::R6Class("TPEa",
           if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
             self$varieties[[i]]$set_param(vparameters[i,])
           } else {
-            if(class(parameters) == "data.frame" && nrow(parameters) >= i) {
-              #TODO: how to be sure of the correct row ?
+            if(vep) {
+              if(class(parameters) == "data.frame" && nrow(parameters) >= i) {
+                self$varieties[[i]]$set_param(parameters[i,])
+              } else {
+                vParamMissings <- c(vParamMissings, private$varnames[i])
+              }
+            } else if(length(environments) > 1 || !is.na(environments)) {
+              nbEnv <- length(environments)
+              if(class(parameters) == "data.frame" &&
+                 nrow(parameters) >= nbEnv + i) {
+                self$varieties[[i]]$set_param(parameters[nbEnv + i,])
+              } else {
+                vParamMissings <- c(vParamMissings, private$varnames[i])
+              }
             } else {
-              vParamMissings <- c(vParamMissings, private$varnames[i])
+              stop("Please provide at least one environment name.")
             }
           }
         }
@@ -91,10 +107,19 @@ TPEa <- R6::R6Class("TPEa",
           if(class(eparameters) == "data.frame" && nrow(eparameters) >= j) {
             self$environments[[j]]$set_param(eparameters[j,])
           } else {
-            if(class(parameters) == "data.frame" && nrow(parameters) >= j) {
-              #TODO: how to be sure of the correct row ?
+            if(vep) {
+              nbV <- ((j-1)*length(varieties)) + 1
+              if(class(parameters) == "data.frame" && nrow(parameters) >= nbV) {
+                self$environments[[j]]$set_param(parameters[nbV,])
+              } else {
+                eParamMissings <- c(eParamMissings, private$envnames[j])
+              }
             } else {
-              eParamMissings <- c(eParamMissings, private$envnames[j])
+              if(class(parameters) == "data.frame" && nrow(parameters) >= j) {
+                self$environments[[j]]$set_param(parameters[j,])
+              } else {
+                eParamMissings <- c(eParamMissings, private$envnames[j])
+              }
             }
           }
         }
@@ -104,11 +129,82 @@ TPEa <- R6::R6Class("TPEa",
       self$initMessage(vParamMissings, eParamMissings)
     },
 
-    #' @description Set crop model
+
+    #' @description Confirm creation of TPE analysis object
+    #' @param vParamMissings Name of varieties without parameters
+    #' @param eParamMissings Name of environments without parameters
+    initMessage = function(vParamMissings, eParamMissings) {
+      if(length(vParamMissings) > 0) {
+        warning(paste0("No parameters were provided for ",
+                 ifelse(length(vParamMissings > 1), "varieties [", "variety ["),
+                 paste0(vParamMissings, collapse=" "),
+                 "]. Simulations will not be possible. ",
+                 "You can set parameters by running set_param() on the ",
+                 "variety object."), call.=F)
+      }
+
+      if(length(eParamMissings) > 0) {
+        warning(paste0("No parameters were provided for ",
+                 ifelse(length(eParamMissings > 1), "environments [",
+                        "environments ["),
+                 paste0(eParamMissings, collapse=" "),
+                 "]. Simulations will be run with default parameters. ",
+                 "You can set parameters by running set_param() on the ",
+                 "environment object."), call.=F)
+      }
+
+      cat(paste0("TPE analysis ", self$name, " created containing ",
+           length(private$varnames), ifelse(length(private$varnames) > 1,
+                                            " varieties "," variety "), "and ",
+           length(private$envnames), ifelse(length(private$envnames) > 1,
+                                            " environments", " environment"),
+           "\n"))
+    },
+
+
+    ## Setters
+
+    #' @description Set TPE analysis name
+    #' @param val New TPE analysis name
+    set_name = function(val) {
+      self$name <- val
+    },
+
+    #' @description Set model name
     #' @param val New model name
     set_model = function(val) {
       self$model <- val
     },
+
+    #' @description Set varieties, this is a list of TPEvar objects,
+    #' use with caution
+    #' @param val New varieties
+    set_var = function(val) {
+      self$varieties <- val
+    },
+
+    #' @description Set environments, this is a list of TPEenv objects,
+    #' use with caution
+    #' @param val New environments
+    set_env = function(val) {
+      self$environments <- val
+    },
+
+    #' @description Set grids, this is a list of grid objects,
+    #' use with caution
+    #' @param val New grids
+    set_grid = function(val) {
+      self$grids <- val
+    },
+
+    #' @description Set maps, this is a list of map objects,
+    #' use with caution
+    #' @param val New maps
+    set_map = function(val) {
+      self$maps <- val
+    },
+
+    ## Setters of sub-objects
 
     #' @description Set observation data
     #' @param varID A value of variety identifier (either index or name)
@@ -135,45 +231,34 @@ TPEa <- R6::R6Class("TPEa",
       self$environments[[id]]$set_weather(val)
     },
 
-    #' @description Get names of all maps
-    get_mapNames = function() {
-      return(private$mapnames)
-    },
+
+    ## Getters
 
     #' @description Get names of all grids
     get_gridNames = function() {
       return(private$gridnames)
     },
 
-    #' @description Confirm creation of TPE analysis object
-    #' @param vParamMissings Name of varieties without parameters
-    #' @param eParamMissings Name of environments without parameters
-    initMessage = function(vParamMissings, eParamMissings) {
-      if(length(vParamMissings) > 0) {
-        warning(paste0("No parameters were provided for ",
-                ifelse(length(vParamMissings > 1), "varieties [", "variety ["),
-                paste0(vParamMissings, collapse=" "),
-                "]. Simulations will not be possible. ",
-                "You can set parameters by running set_param() on the ",
-                "variety object."), call.=F)
-      }
-
-      if(length(eParamMissings) > 0) {
-        warning(paste0("No parameters were provided for ",
-                       ifelse(length(eParamMissings > 1), "environments [",
-                              "environments ["),
-                       paste0(eParamMissings, collapse=" "),
-                       "]. Simulations will be run with default parameters. ",
-                       "You can set parameters by running set_param() on the ",
-                       "environment object."), call.=F)
-      }
-
-      cat(paste0("TPE analysis ", self$name, " created containing ",
-                length(private$varnames), ifelse(length(private$varnames) > 1,
-                " varieties "," variety "), "and ",
-                length(private$envnames), ifelse(length(private$envnames) > 1,
-                " environments", " environment"),"\n"))
+    #' @description Get names of all varieties
+    get_varNames = function() {
+      return(private$varnames)
     },
+
+    #' @description Get names of all genotypes
+    get_genotypes = function() {
+      return(private$genotypes)
+    },
+
+    #' @description Get names of all environments
+    get_envNames = function() {
+      return(private$envnames)
+    },
+
+    #' @description Get names of all maps
+    get_mapNames = function() {
+      return(private$mapnames)
+    },
+
 
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
@@ -194,16 +279,15 @@ TPEa <- R6::R6Class("TPEa",
       }
 
       if(!multigrid) {
-        self$grids[[length(self$grids)+1]] <- TPEgrid$new(name, res, cols, rows,
-                                                          lon, lat, self, NA)
+        self$grids <- append(self$grids, TPEgrid$new(name, res, cols, rows, lon,
+                                                     lat, self, NA))
         private$gridnames <- c(private$gridnames, name)
       } else {
         for(i in 1:length(private$varnames)) {
           gname <- paste0(name, "_", private$varnames[i])
-          self$grids[[length(self$grids)+1]] <- TPEgrid$new(gname, res, cols,
-                                                            rows, lon,
-                                                            lat, self,
-                                                            self$varieties[[i]])
+          self$grids <- append(self$grids, TPEgrid$new(gname, res, cols, rows,
+                                                       lon, lat, self,
+                                                       self$varieties[[i]]))
           private$gridnames <- c(private$gridnames, gname)
         }
       }
@@ -229,14 +313,14 @@ TPEa <- R6::R6Class("TPEa",
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about completing climate generation
     #' should be shown
-    genClimate = function(gridID=99, rcp="rcp26", year=2014, yearNb=1,
+    genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           filesE=F, verbose=F) {
 
-      if(gridID == 99) {
+      if(sum(!is.na(gridID)) > 0) {
         idg <- private$gridnames
       } else {
-        idg <- gridID
+        idg <- gridID[!is.na(gridID)]
       }
 
       for(i in 1:length(idg)) {
