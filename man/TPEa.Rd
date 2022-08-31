@@ -48,6 +48,8 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-get_genotypes}{\code{TPEa$get_genotypes()}}
 \item \href{#method-TPEa-get_envNames}{\code{TPEa$get_envNames()}}
 \item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
+\item \href{#method-TPEa-get_gridid}{\code{TPEa$get_gridid()}}
+\item \href{#method-TPEa-get_varid}{\code{TPEa$get_varid()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
@@ -324,6 +326,40 @@ Get names of all maps
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_gridid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_gridid}{}}}
+\subsection{Method \code{get_gridid()}}{
+Get grid id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_gridid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Either grid name or a grid id (will return the grid id)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_varid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_varid}{}}}
+\subsection{Method \code{get_varid()}}{
+Get var id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_varid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Either var name or a var id (will return the var id)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-createGrid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-createGrid}{}}}
 \subsection{Method \code{createGrid()}}{
@@ -370,7 +406,7 @@ for each genotype with the same cols, rows, lon and lat.}
 Generate climate data for one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$genClimate(
-  gridID = 99,
+  gridID = NA,
   rcp = "rcp26",
   year = 2014,
   yearNb = 1,
@@ -410,7 +446,7 @@ contain spaces}
 
 \item{\code{filesE}}{Boolean. If weather files already exist}
 
-\item{\code{verbose}}{Boolean. If messages about completing climate generation
+\item{\code{verbose}}{Boolean. If messages about starting climate generation
 should be shown}
 }
 \if{html}{\out{</div>}}
@@ -423,7 +459,7 @@ should be shown}
 Run simulation on one or several grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
-  gridID = 99,
+  gridID = NA,
   varID = NA,
   trait = "GrainYieldPopFin",
   year = 2015,

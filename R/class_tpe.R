@@ -259,6 +259,29 @@ TPEa <- R6::R6Class("TPEa",
       return(private$mapnames)
     },
 
+    ## Getters of sub-objects
+
+    #' @description Get grid id
+    #' @param val Either grid name or a grid id (will return the grid id)
+    get_gridid = function(val) {
+      if(class(val) == "numeric") {
+        id <- val
+      } else {
+        id <- match(val, get_gridNames())
+      }
+      return(id)
+    },
+
+    #' @description Get var id
+    #' @param val Either var name or a var id (will return the var id)
+    get_varid = function(val) {
+      if(class(val) == "numeric") {
+        id <- varID
+      } else {
+        id <- match(varID, get_varNames())
+      }
+      return(id)
+    },
 
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
@@ -311,26 +334,23 @@ TPEa <- R6::R6Class("TPEa",
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
     #' @param filesE Boolean. If weather files already exist
-    #' @param verbose Boolean. If messages about completing climate generation
+    #' @param verbose Boolean. If messages about starting climate generation
     #' should be shown
     genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           filesE=F, verbose=F) {
-
       if(sum(!is.na(gridID)) > 0) {
-        idg <- private$gridnames
+        idg <- get_gridNames()
       } else {
         idg <- gridID[!is.na(gridID)]
       }
 
       for(i in 1:length(idg)) {
-        if(class(idg[i]) == "numeric") {
-          id <- idg[i]
-        } else {
-          id <- match(idg[i], private$gridnames)
+        id <- get_gridid(idg[i])
+        if(verbose) {
+          cat(paste("Generating climate for grid", private$gridnames[id],
+                    "this may take some time \n"))
         }
-        cat(paste("Generating climate for grid", private$gridnames[id],
-                  "this may take some time \n"))
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
                                     pathCLI, filesE, verbose)
       }
@@ -345,26 +365,18 @@ TPEa <- R6::R6Class("TPEa",
     #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=99, varID=NA, trait="GrainYieldPopFin",
+    runGridSim = function(gridID=NA, varID=NA, trait="GrainYieldPopFin",
                           year=2015, soilData=soil, latlonData=lat_lon) {
-      if(gridID == 99) {
-        idg <- private$gridnames
+      if(sum(!is.na(gridID)) > 0) {
+        idg <- get_gridNames()
       } else {
-        idg <- gridID
+        idg <- gridID[!is.na(gridID)]
       }
-      for(i in 1:length(idg)) {
-        if(class(idg) == "numeric") {
-          id <- idg[i]
-        } else {
-          id <- match(idg[i], private$gridnames)
-        }
 
+      for(i in 1:length(idg)) {
+        id <- get_gridid(idg[i])
         if(!is.na(varID)) {
-          if(class(varID) == "numeric") {
-            idv <- varID
-          } else {
-            idv <- match(varID, private$varnames)
-          }
+          idv <- get_varid(varID)
           self$grids[[id]]$set_var(self$varieties[[idv]])
         }
         self$grids[[id]]$runGridSim(trait, year, soilData, latlonData)
