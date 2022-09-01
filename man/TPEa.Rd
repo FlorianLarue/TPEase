@@ -50,6 +50,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
 \item \href{#method-TPEa-get_gridid}{\code{TPEa$get_gridid()}}
 \item \href{#method-TPEa-get_varid}{\code{TPEa$get_varid()}}
+\item \href{#method-TPEa-get_envid}{\code{TPEa$get_envid()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
@@ -360,6 +361,23 @@ Get var id
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_envid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_envid}{}}}
+\subsection{Method \code{get_envid()}}{
+Get env id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_envid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Either env name or a env id (will return the env id)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-createGrid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEa-createGrid}{}}}
 \subsection{Method \code{createGrid()}}{
@@ -517,7 +535,7 @@ of north, east, south, west bounds to crop map}
 \subsection{Method \code{plotMap()}}{
 Create plot on map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = 99)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

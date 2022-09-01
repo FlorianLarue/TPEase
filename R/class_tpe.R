@@ -276,11 +276,21 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val Either var name or a var id (will return the var id)
     get_varid = function(val) {
       if(class(val) == "numeric") {
-        id <- varID
+        id <- val
       } else {
-        id <- match(varID, get_varNames())
+        id <- match(val, get_varNames())
       }
       return(id)
+    },
+
+    #' @description Get env id
+    #' @param val Either env name or a env id (will return the env id)
+    get_envid = function(val) {
+      if(class(val) == "numeric") {
+        ide <- val
+      } else {
+        ide <- match(val, private$envnames)
+      }
     },
 
     #' @description Create a simulation grid
@@ -296,7 +306,7 @@ TPEa <- R6::R6Class("TPEa",
     #' for each genotype with the same cols, rows, lon and lat.
     createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA,
                           multigrid=F) {
-      if(name %in% private$gridnames) {
+      if(name %in% get_gridNames()) {
         stop(paste("Grid with name", name,"already exists.",
                      "Please provide a unique identifier."))
       }
@@ -394,14 +404,14 @@ TPEa <- R6::R6Class("TPEa",
     #' @importFrom raster extent
     #' @importFrom raster crs
     createMap = function(name="Map1", res=150, bounds=NA) {
-      if(name %in% private$mapnames) {
+      if(name %in% get_mapNames()) {
         stop(paste("Map with name ", name, " already exist.",
                    "Please provide a unique name for each map"))
       } else {
         private$mapnames <- c(private$mapnames, name)
       }
       cat(paste("Creating map",length(self$maps)+1),"\n")
-      pathMap <- system.file("extdata",paste0("world_",as.character(res),
+      pathMap <- system.file("extdata", paste0("world_",as.character(res),
                                               ".tif"), package="CGMTPE")
       tmpmap <- raster(pathMap)
       if(length(bounds) == 4) {
@@ -418,25 +428,21 @@ TPEa <- R6::R6Class("TPEa",
       map <- as.data.frame(map)
       colnames(map) <- c("value", "x", "y")
       map$value <- NA
-      self$maps[[length(self$maps)+1]] <- map
+      self$maps <- append(self$maps, map)
     },
 
     #' @description Create plot on map
     #' @param mapID A numeric value of the index of map to plot
     #' @param gridID Optional. A vector of grid identifiers
     #' (either index or name). By default will run on all grids
-    plotMap = function(mapID=1, gridID=99) {
-      if(gridID == 99) {
-        idg <- private$gridnames
+    plotMap = function(mapID=1, gridID=NA) {
+      if(sum(!is.na(gridID)) > 0) {
+        idg <- get_gridNames()
       } else {
-        idg <- gridID
+        idg <- gridID[!is.na(gridID)]
       }
       for(i in 1:length(idg)) {
-        if(class(idg) == "numeric") {
-          id <- idg[i]
-        } else {
-          id <- match(idg[i], private$gridnames)
-        }
+        id <- get_gridid()
         self$grids[[id]]$plotMap(mapID=mapID)
       }
     },
@@ -461,19 +467,11 @@ TPEa <- R6::R6Class("TPEa",
                              metric="RMSE", score_fn=get_score, weigh_fn=NA,
                              bounds=NA) {
       for(i in 1:length(varID)) {
-        if(class(varID) == "numeric") {
-          id <- varID[[i]]
-        } else {
-          id <- match(varID[[i]], private$varnames)
-        }
+        id <- get_varid
         weathers <- list()
         for(j in 1:length(envID)) {
-          if(class(envID) == "numeric") {
-            ide <- envID[[j]]
-          } else {
-            ide <- match(envID[[j]], private$envnames)
-          }
-          weathers[[length(weathers)+1]] <- self$environments[[ide]]$weather
+          ide <- get_envid()
+          weathers <- append(weathers, self$environments[[ide]]$weather)
         }
         self$test <- weathers
         self$varieties[[id]]$runEstimation(maxiter, paramnames, metric,
