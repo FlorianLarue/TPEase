@@ -6,6 +6,7 @@
 #' @details
 #' TODO
 #' @import R6
+#' @export
 gridPoint <- R6::R6Class("gridPoint",
   public = list(
     #' @field name Identifier of the grid point

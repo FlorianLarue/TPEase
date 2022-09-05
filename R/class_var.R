@@ -6,6 +6,7 @@
 #' @details
 #' TODO
 #' @import R6
+#' @export
 TPEvar <- R6::R6Class("TPEvar",
   public = list(
     #' @field name A character string identifier of the variety

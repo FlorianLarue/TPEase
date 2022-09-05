@@ -6,6 +6,7 @@
 #' @details
 #' TODO
 #' @import R6
+#' @export
 TPEgrid <- R6::R6Class("TPEgrid",
   public = list(
     #' @field name Identifier of the grid

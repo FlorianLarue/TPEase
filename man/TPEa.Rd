@@ -188,7 +188,7 @@ use with caution
 \if{latex}{\out{\hypertarget{method-TPEa-set_env}{}}}
 \subsection{Method \code{set_env()}}{
 Set environments, this is a list of TPEenv objects,
-use with caution
+use with caution this will overwrite existing environments
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$set_env(val)}\if{html}{\out{</div>}}
 }

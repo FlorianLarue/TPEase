@@ -6,6 +6,7 @@
 #' @details
 #' TODO
 #' @import R6
+#' @export
 TPEcm <- R6::R6Class("TPEcm",
   public = list(
     #' @field name A character string identifier of the variety

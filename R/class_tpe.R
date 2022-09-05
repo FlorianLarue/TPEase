@@ -167,41 +167,102 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Set TPE analysis name
     #' @param val New TPE analysis name
     set_name = function(val) {
-      self$name <- val
+      self$name <- as.character(val)
     },
 
     #' @description Set model name
     #' @param val New model name
     set_model = function(val) {
-      self$model <- val
+      self$model <- as.character(val)
     },
 
     #' @description Set varieties, this is a list of TPEvar objects,
     #' use with caution
     #' @param val New varieties
     set_var = function(val) {
-      self$varieties <- val
+      if(depth(val) == 0) {
+        if(class(val)[1] == "TPEvar") {
+          self$varieties <- list(val)
+        }
+      } else if(depth(val) == 1) {
+        if(sum(!(unlist(sapply(val, class)) %in% c("R6","TPEvar"))) == 0) {
+          self$varieties <- val
+        } else {
+          stop(paste0("Error. Trying to set a non variety object into ",
+                      self$name))
+        }
+      } else {
+        stop("Depth of varieties can not exceed 1")
+      }
     },
 
     #' @description Set environments, this is a list of TPEenv objects,
-    #' use with caution
+    #' use with caution this will overwrite existing environments
     #' @param val New environments
     set_env = function(val) {
-      self$environments <- val
+      if(depth(val) == 0) {
+        if(class(val)[1] == "TPEenv") {
+          self$environments <- list(val)
+        } else {
+          stop(paste0("Error. Trying to set a non environment object into ",
+                      self$name))
+        }
+      } else if(depth(val) == 1) {
+        if(sum(!(unlist(sapply(val, class)) %in% c("R6","TPEenv"))) == 0) {
+          self$environments <- val
+        } else {
+          stop(paste0("Error. Trying to set a non environment object into ",
+                      self$name))
+        }
+      } else {
+        stop("Depth of environments can not exceed 1")
+      }
     },
 
     #' @description Set grids, this is a list of grid objects,
     #' use with caution
     #' @param val New grids
     set_grid = function(val) {
-      self$grids <- val
+      if(depth(val) == 0) {
+        if(class(val)[1] == "TPEgrid") {
+          self$grids <- list(val)
+        } else {
+          stop(paste0("Error. Trying to set a non grid object into ",
+                      self$name))
+        }
+      } else if(depth(val) == 1) {
+        if(sum(!(unlist(sapply(val, class)) %in% c("R6","TPEgrid"))) == 0) {
+          self$grids <- val
+        } else {
+          stop(paste0("Error. Trying to set a non grid object into ",
+                      self$name))
+        }
+      } else {
+        stop("Depth of grids can not exceed 1")
+      }
     },
 
     #' @description Set maps, this is a list of map objects,
     #' use with caution
     #' @param val New maps
     set_map = function(val) {
-      self$maps <- val
+      if(depth(val) == 0) {
+        if(class(val)[1] == "TPEmap") {
+          self$maps <- list(val)
+        } else {
+          stop(paste0("Error. Trying to set a non map object into ",
+                      self$name))
+        }
+      } else if(depth(val) == 1) {
+        if(sum(!(unlist(sapply(val, class)) %in% c("R6","TPEmap"))) == 0) {
+          self$maps <- val
+        } else {
+          stop(paste0("Error. Trying to set a non map object into ",
+                      self$name))
+        }
+      } else {
+        stop("Depth of maps can not exceed 1")
+      }
     },
 
     ## Setters of sub-objects
@@ -211,11 +272,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val A dataframe or list of dataframes with observations for each
     #' of the `environments` (and eventually for each replicate)
     set_obs = function(varID=1, val) {
-      if(class(varID) == "numeric") {
-        id <- varID
-      } else {
-        id <- match(varID, private$varnames)
-      }
+      id <- self$get_varid(varID)
       self$varieties[[id]]$set_obs(val)
     },
 
@@ -223,14 +280,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @param envID A value of environment identifier (either index or name)
     #' @param val A dataframe or list of dataframes with weather date
     set_weather = function(envID=1, val) {
-      if(class(envID) == "numeric") {
-        id <- envID
-      } else {
-        id <- match(envID, private$envnames)
-      }
+      id <- self$get_envid(envID)
       self$environments[[id]]$set_weather(val)
     },
-
 
     ## Getters
 
@@ -265,9 +317,17 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val Either grid name or a grid id (will return the grid id)
     get_gridid = function(val) {
       if(class(val) == "numeric") {
-        id <- val
+        if(val > length(self$get_gridNames())) {
+          stop(paste0("Grid identifier ", val, " not found."), call.=F)
+        } else {
+          id <- val
+        }
       } else {
-        id <- match(val, get_gridNames())
+        if(!(val %in% self$get_gridNames())) {
+          stop(paste0("Grid identifier ", val, " not found."), call.=F)
+        } else {
+          id <- match(val, self$get_gridNames())
+        }
       }
       return(id)
     },
@@ -276,9 +336,17 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val Either var name or a var id (will return the var id)
     get_varid = function(val) {
       if(class(val) == "numeric") {
-        id <- val
+        if(val > length(self$get_varNames())) {
+          stop(paste0("Variety identifier ", val, " not found."), call.=F)
+        } else {
+          id <- val
+        }
       } else {
-        id <- match(val, get_varNames())
+        if(!(val %in% self$get_varNames())) {
+          stop(paste0("Variety identifier ", val, " not found."), call.=F)
+        } else {
+          id <- match(val, self$get_varNames())
+        }
       }
       return(id)
     },
@@ -287,10 +355,19 @@ TPEa <- R6::R6Class("TPEa",
     #' @param val Either env name or a env id (will return the env id)
     get_envid = function(val) {
       if(class(val) == "numeric") {
-        ide <- val
+        if(val > length(self$get_envNames())) {
+          stop(paste0("Environment identifier ", val, " not found."), call.=F)
+        } else {
+          id <- val
+        }
       } else {
-        ide <- match(val, private$envnames)
+        if(!(val %in% self$get_envNames())) {
+          stop(paste0("Environment identifier ", val, " not found."), call.=F)
+        } else {
+          id <- match(val, self$get_envNames())
+        }
       }
+      return(id)
     },
 
     #' @description Create a simulation grid
@@ -306,7 +383,7 @@ TPEa <- R6::R6Class("TPEa",
     #' for each genotype with the same cols, rows, lon and lat.
     createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA,
                           multigrid=F) {
-      if(name %in% get_gridNames()) {
+      if(name %in% self$get_gridNames()) {
         stop(paste("Grid with name", name,"already exists.",
                      "Please provide a unique identifier."))
       }
@@ -349,16 +426,16 @@ TPEa <- R6::R6Class("TPEa",
     genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           filesE=F, verbose=F) {
-      if(sum(!is.na(gridID)) > 0) {
-        idg <- get_gridNames()
+      if(sum(!is.na(gridID)) == 0) {
+        idg <- self$get_gridNames()
       } else {
         idg <- gridID[!is.na(gridID)]
       }
 
       for(i in 1:length(idg)) {
-        id <- get_gridid(idg[i])
+        id <- self$get_gridid(idg[i])
         if(verbose) {
-          cat(paste("Generating climate for grid", private$gridnames[id],
+          cat(paste("Generating climate for grid", self$get_gridNames()[id],
                     "this may take some time \n"))
         }
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
@@ -377,16 +454,16 @@ TPEa <- R6::R6Class("TPEa",
     #' @param latlonData Tmp for Adam et al.
     runGridSim = function(gridID=NA, varID=NA, trait="GrainYieldPopFin",
                           year=2015, soilData=soil, latlonData=lat_lon) {
-      if(sum(!is.na(gridID)) > 0) {
-        idg <- get_gridNames()
+      if(sum(!is.na(gridID)) == 0) {
+        idg <- self$get_gridNames()
       } else {
         idg <- gridID[!is.na(gridID)]
       }
 
       for(i in 1:length(idg)) {
-        id <- get_gridid(idg[i])
+        id <- self$get_gridid(idg[i])
         if(!is.na(varID)) {
-          idv <- get_varid(varID)
+          idv <- self$get_varid(varID)
           self$grids[[id]]$set_var(self$varieties[[idv]])
         }
         self$grids[[id]]$runGridSim(trait, year, soilData, latlonData)
@@ -404,7 +481,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @importFrom raster extent
     #' @importFrom raster crs
     createMap = function(name="Map1", res=150, bounds=NA) {
-      if(name %in% get_mapNames()) {
+      if(name %in% self$get_mapNames()) {
         stop(paste("Map with name ", name, " already exist.",
                    "Please provide a unique name for each map"))
       } else {
@@ -428,7 +505,7 @@ TPEa <- R6::R6Class("TPEa",
       map <- as.data.frame(map)
       colnames(map) <- c("value", "x", "y")
       map$value <- NA
-      self$maps <- append(self$maps, map)
+      self$maps <- append(self$maps, list(map))
     },
 
     #' @description Create plot on map
@@ -436,13 +513,13 @@ TPEa <- R6::R6Class("TPEa",
     #' @param gridID Optional. A vector of grid identifiers
     #' (either index or name). By default will run on all grids
     plotMap = function(mapID=1, gridID=NA) {
-      if(sum(!is.na(gridID)) > 0) {
-        idg <- get_gridNames()
+      if(sum(!is.na(gridID)) == 0) {
+        idg <- self$get_gridNames()
       } else {
         idg <- gridID[!is.na(gridID)]
       }
       for(i in 1:length(idg)) {
-        id <- get_gridid()
+        id <- self$get_gridid(idg[i])
         self$grids[[id]]$plotMap(mapID=mapID)
       }
     },
@@ -467,11 +544,11 @@ TPEa <- R6::R6Class("TPEa",
                              metric="RMSE", score_fn=get_score, weigh_fn=NA,
                              bounds=NA) {
       for(i in 1:length(varID)) {
-        id <- get_varid
+        id <- self$get_varid(varID[i])
         weathers <- list()
         for(j in 1:length(envID)) {
-          ide <- get_envid()
-          weathers <- append(weathers, self$environments[[ide]]$weather)
+          ide <- self$get_envid(envID[j])
+          weathers <- append(weathers, list(self$environments[[ide]]$weather))
         }
         self$test <- weathers
         self$varieties[[id]]$runEstimation(maxiter, paramnames, metric,
@@ -480,6 +557,7 @@ TPEa <- R6::R6Class("TPEa",
       }
     }
   ),
+
   private = list(
     gridnames = NULL,
     varnames = NULL,

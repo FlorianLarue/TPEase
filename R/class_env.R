@@ -6,6 +6,7 @@
 #' @details
 #' TODO
 #' @import R6
+#' @export
 TPEenv <- R6::R6Class("TPEenv",
   public = list(
     #' @field name A character string identifier of the variety
