@@ -220,7 +220,7 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Set grids, this is a list of grid objects,
-    #' use with caution
+    #' use with caution this will overwrite existing grids
     #' @param val New grids
     set_grid = function(val) {
       if(depth(val) == 0) {
@@ -243,7 +243,7 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Set maps, this is a list of map objects,
-    #' use with caution
+    #' use with caution, this will overwrite existing maps
     #' @param val New maps
     set_map = function(val) {
       if(depth(val) == 0) {
@@ -278,7 +278,7 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Set weather data
     #' @param envID A value of environment identifier (either index or name)
-    #' @param val A dataframe or list of dataframes with weather date
+    #' @param val New weather
     set_weather = function(envID=1, val) {
       id <- self$get_envid(envID)
       self$environments[[id]]$set_weather(val)

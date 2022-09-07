@@ -14,8 +14,8 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @field test Debug
     test = NA,
 
-    #' @description Create a new TPE analysis object
-    #' @param name A character string identifier of the TPE analysis
+    #' @description Create a new TPE map object
+    #' @param name A character string identifier of the TPE map
     #' @return A new `TPEmap` object.
     initialize = function(name="map1") {
       self$name <- as.character(name)

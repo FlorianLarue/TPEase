@@ -29,7 +29,7 @@ TODO
 \if{html}{\out{<a id="method-TPEmap-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEmap-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPE analysis object
+Create a new TPE map object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1")}\if{html}{\out{</div>}}
 }
@@ -37,7 +37,7 @@ Create a new TPE analysis object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPE analysis}
+\item{\code{name}}{A character string identifier of the TPE map}
 }
 \if{html}{\out{</div>}}
 }

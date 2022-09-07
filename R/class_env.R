@@ -13,7 +13,7 @@ TPEenv <- R6::R6Class("TPEenv",
     name = NULL,
     #' @field parent TPE analysis parent
     parent = NULL,
-    #' @field weather A dataframe with all weather data used for simulation
+    #' @field weather A TPE weather object
     weather = NULL,
     #' @field parameters A dataframe with all parameters used for simulation
     parameters = NULL,
