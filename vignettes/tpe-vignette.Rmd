@@ -45,10 +45,10 @@ TPE_analysis$runGridSim(gridID=1, varID=1, trait="GrainYieldPopFin",
                         year=2014, soilData=soil, latlonData=lat_lon)
 
 # create a map of the studied region in TPE anaylisis
-TPE_analysis$createMap(res=150, bounds=c(17,5,5,-20))
+TPE_analysis$createMap("map1", 1, 1, res=150, bounds=c(17,5,5,-20))
 
 # plot map
 TPE_analysis$plotMap()
-print(TPE_analysis$grids[[1]]$plots[[1]])
+print(TPE_analysis$maps[[1]]$plots[[1]])
 
 ```

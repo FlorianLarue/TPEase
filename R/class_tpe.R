@@ -370,6 +370,25 @@ TPEa <- R6::R6Class("TPEa",
       return(id)
     },
 
+    #' @description Get map id
+    #' @param val Either map name or a map id (will return the map id)
+    get_mapid = function(val) {
+      if(class(val) == "numeric") {
+        if(val > length(self$get_mapNames())) {
+          stop(paste0("Map identifier ", val, " not found."), call.=F)
+        } else {
+          id <- val
+        }
+      } else {
+        if(!(val %in% self$get_mapNames())) {
+          stop(paste0("Map identifier ", val, " not found."), call.=F)
+        } else {
+          id <- match(val, self$get_mapNames())
+        }
+      }
+      return(id)
+    },
+
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
     #' @param res A numeric value of the resolution of the grid
@@ -446,7 +465,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Run simulation on one or several grids
     #' @param gridID Optional. A vector of grid identifiers
     #' (either index or name). By default will run all grids
-    #' @param varID Optional. A numeric value with the variety to use for
+    #' @param varID A variety identifier to use for
     #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param trait A character string with the trait name for grid res matrix
     #' @param year A numeric value with the year to run the simulation
@@ -472,55 +491,35 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create raster map
     #' @param name A character string defining the name of the map
+    #' @param varID A variety identifier to use on the map
+    #' @param gridID A grid identifier to use on the map
     #' @param res A numeric value in sec of the resolution of world map to use
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
-    #' @importFrom raster raster
-    #' @importFrom raster crop
-    #' @importFrom raster extent
-    #' @importFrom raster crs
-    createMap = function(name="Map1", res=150, bounds=NA) {
+    createMap = function(name="map1", gridID=NA, varID=NA, res=150, bounds=NA) {
       if(name %in% self$get_mapNames()) {
         stop(paste("Map with name ", name, " already exist.",
                    "Please provide a unique name for each map"))
       } else {
         private$mapnames <- c(private$mapnames, name)
+        self$maps <- append(self$maps, TPEmap$new(name, gridID, varID, res,
+                                                  bounds, self))
       }
-      cat(paste("Creating map",length(self$maps)+1),"\n")
-      pathMap <- system.file("extdata", paste0("world_",as.character(res),
-                                              ".tif"), package="CGMTPE")
-      tmpmap <- raster(pathMap)
-      if(length(bounds) == 4) {
-        e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
-                "SpatialPolygons")
-        raster::crs(e) <- "+proj=longlat +datum=WGS84 +no_defs"
-        tmpmap <- crop(tmpmap, e)
-      } else if(!is.na(bounds)) {
-          stop(paste("Length of bounds is not 4.",
-                     "Please provide a value for each cardinal point,",
-                     "or use bounds=NA"))
-      }
-      map <- as(tmpmap, "SpatialPixelsDataFrame")
-      map <- as.data.frame(map)
-      colnames(map) <- c("value", "x", "y")
-      map$value <- NA
-      self$maps <- append(self$maps, list(map))
     },
 
     #' @description Create plot on map
-    #' @param mapID A numeric value of the index of map to plot
-    #' @param gridID Optional. A vector of grid identifiers
-    #' (either index or name). By default will run on all grids
-    plotMap = function(mapID=1, gridID=NA) {
-      if(sum(!is.na(gridID)) == 0) {
-        idg <- self$get_gridNames()
+    #' @param mapID A map identifier to plot
+    #' (either index or name). By default will run on all maps
+    plotMap = function(mapID=1) {
+      if(sum(!is.na(mapID)) == 0) {
+        idg <- self$get_mapNames()
       } else {
-        idg <- gridID[!is.na(gridID)]
+        idg <- mapID[!is.na(mapID)]
       }
       for(i in 1:length(idg)) {
-        id <- self$get_gridid(idg[i])
-        self$grids[[id]]$plotMap(mapID=mapID)
+        id <- self$get_mapid(idg[i])
+        self$maps[[id]]$plotMap()
       }
     },
 

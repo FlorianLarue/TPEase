@@ -16,7 +16,7 @@ TODO
 
 \item{\code{parent}}{TPE analysis parent}
 
-\item{\code{weather}}{A dataframe with all weather data used for simulation}
+\item{\code{weather}}{A TPE weather object}
 
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
 }

@@ -51,6 +51,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-get_gridid}{\code{TPEa$get_gridid()}}
 \item \href{#method-TPEa-get_varid}{\code{TPEa$get_varid()}}
 \item \href{#method-TPEa-get_envid}{\code{TPEa$get_envid()}}
+\item \href{#method-TPEa-get_mapid}{\code{TPEa$get_mapid()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
@@ -206,7 +207,7 @@ use with caution this will overwrite existing environments
 \if{latex}{\out{\hypertarget{method-TPEa-set_grid}{}}}
 \subsection{Method \code{set_grid()}}{
 Set grids, this is a list of grid objects,
-use with caution
+use with caution this will overwrite existing grids
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$set_grid(val)}\if{html}{\out{</div>}}
 }
@@ -224,7 +225,7 @@ use with caution
 \if{latex}{\out{\hypertarget{method-TPEa-set_map}{}}}
 \subsection{Method \code{set_map()}}{
 Set maps, this is a list of map objects,
-use with caution
+use with caution, this will overwrite existing maps
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$set_map(val)}\if{html}{\out{</div>}}
 }
@@ -271,7 +272,7 @@ Set weather data
 \describe{
 \item{\code{envID}}{A value of environment identifier (either index or name)}
 
-\item{\code{val}}{A dataframe or list of dataframes with weather date}
+\item{\code{val}}{New weather}
 }
 \if{html}{\out{</div>}}
 }
@@ -373,6 +374,23 @@ Get env id
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{Either env name or a env id (will return the env id)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_mapid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_mapid}{}}}
+\subsection{Method \code{get_mapid()}}{
+Get map id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_mapid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Either map name or a map id (will return the map id)}
 }
 \if{html}{\out{</div>}}
 }
@@ -492,7 +510,7 @@ Run simulation on one or several grids
 \item{\code{gridID}}{Optional. A vector of grid identifiers
 (either index or name). By default will run all grids}
 
-\item{\code{varID}}{Optional. A numeric value with the variety to use for
+\item{\code{varID}}{A variety identifier to use for
 simulation on the grid. If NA, will use the variety attached to grid}
 
 \item{\code{trait}}{A character string with the trait name for grid res matrix}
@@ -512,13 +530,17 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \subsection{Method \code{createMap()}}{
 Create raster map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "Map1", res = 150, bounds = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "map1", gridID = NA, varID = NA, res = 150, bounds = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{A character string defining the name of the map}
+
+\item{\code{gridID}}{A grid identifier to use on the map}
+
+\item{\code{varID}}{A variety identifier to use on the map}
 
 \item{\code{res}}{A numeric value in sec of the resolution of world map to use
 Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
@@ -535,16 +557,14 @@ of north, east, south, west bounds to crop map}
 \subsection{Method \code{plotMap()}}{
 Create plot on map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, gridID = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{mapID}}{A numeric value of the index of map to plot}
-
-\item{\code{gridID}}{Optional. A vector of grid identifiers
-(either index or name). By default will run on all grids}
+\item{\code{mapID}}{A map identifier to plot
+(either index or name). By default will run on all maps}
 }
 \if{html}{\out{</div>}}
 }
