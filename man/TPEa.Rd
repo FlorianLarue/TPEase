@@ -560,7 +560,7 @@ of north, east, south, west bounds to crop map}
 \subsection{Method \code{plotMap()}}{
 Create plot on map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

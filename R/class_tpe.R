@@ -316,7 +316,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Get grid id
     #' @param val Either grid name or a grid id (will return the grid id)
     get_gridid = function(val) {
-      if(class(val) == "numeric") {
+      if(class(val) == "numeric" || class(val) == "integer") {
         if(val > length(self$get_gridNames())) {
           stop(paste0("Grid identifier ", val, " not found."), call.=F)
         } else {
@@ -324,6 +324,9 @@ TPEa <- R6::R6Class("TPEa",
         }
       } else {
         if(!(val %in% self$get_gridNames())) {
+          print(val)
+          print(class(val))
+          print(self$get_gridNames())
           stop(paste0("Grid identifier ", val, " not found."), call.=F)
         } else {
           id <- match(val, self$get_gridNames())
@@ -515,7 +518,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Create plot on map
     #' @param mapID A map identifier to plot
     #' (either index or name). By default will run on all maps
-    plotMap = function(mapID=1) {
+    plotMap = function(mapID=NA) {
       if(sum(!is.na(mapID)) == 0) {
         idg <- self$get_mapNames()
       } else {

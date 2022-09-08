@@ -99,7 +99,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param val Variety
     set_var = function(val) {
       if(class(val)[1] == "TPEvar") {
-        self$gridVar <- val
+        self$variety <- val
       } else {
         stop(paste0("Error. Trying to set a non variety object into ",
                     self$name))
@@ -165,11 +165,11 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     runGridSim = function(trait, year, soilData, latlonData) {
-      if(is.na(self$gridVar)) {
+      if(is.na(self$variety)) {
         warning(paste("Grid", self$name, "has no variety attached to it",
                       "please provide a varID when calling runGridSim()"))
       }
-      cat(paste("Starting simulation on", self$name, "grid.",
+      cat(paste("\nStarting simulation on", self$name, "grid.",
             "This might take a while depending on the size of the grid \n"))
       cnt <- 1
       nbGP <- nrow(self$gridPoints) * ncol(self$gridPoints)
@@ -178,7 +178,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
         for(j in 1:ncol(self$gridPoints)) {
           self$gridPoints[i,j][[1]]$set_soilParam(soilData, latlonData)
           self$gridPoints[i,j][[1]]$set_dateParam(year)
-          self$gridPoints[i,j][[1]]$runSimulation(self$gridVar$parameters,
+          self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters,
                                                   trait, i,j)
           setTxtProgressBar(pbSim, cnt)
           cnt <- cnt + 1
