@@ -20,8 +20,6 @@ TODO
 
 \item{\code{grid}}{A grid object attached to the map}
 
-\item{\code{variety}}{A variety object attached to the map}
-
 \item{\code{plots}}{A list of ggplot2 plots from the map}
 
 \item{\code{test}}{Debug}
@@ -42,14 +40,7 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE map object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(
-  name = "map1",
-  grid = NA,
-  variety = NA,
-  res = 150,
-  bounds = NA,
-  parent = NA
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1", grid = NA, res = 150, bounds = NA, parent = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -58,8 +49,6 @@ Create a new TPE map object
 \item{\code{name}}{A character string identifier of the TPE map}
 
 \item{\code{grid}}{A grid identifier attached to the map}
-
-\item{\code{variety}}{A variety identifier attached to the map}
 
 \item{\code{res}}{A numeric value in sec of the resolution of world map to use
 Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}

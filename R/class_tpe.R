@@ -391,6 +391,7 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
+    #' @param varID A variety identifier to use for simulation on the grid
     #' @param res A numeric value of the resolution of the grid
     #' @param cols A numeric value of the number of columns in the grid
     #' @param rows A numeric value of the number of rows in the grid
@@ -399,24 +400,28 @@ TPEa <- R6::R6Class("TPEa",
     #' @param lat A numeric value of the starting latitude of the grid in
     #' decimal degrees
     #' @param multigrid A boolean indicating if one grid should be created
-    #' for each genotype with the same cols, rows, lon and lat.
-    createGrid = function(name="g1", res=0.5, cols=5, rows=5, lon=NA, lat=NA,
-                          multigrid=F) {
+    #' for each genotype with the same cols, rows, lon and lat. If true, varID
+    #' will be ignored
+    createGrid = function(name="g1", varID=NA, res=0.5, cols=5, rows=5, lon=NA,
+                          lat=NA, multigrid=F) {
       if(name %in% self$get_gridNames()) {
         stop(paste("Grid with name", name,"already exists.",
                      "Please provide a unique identifier."))
       }
 
       if(!multigrid) {
-        self$grids <- append(self$grids, TPEgrid$new(name, res, cols, rows, lon,
-                                                     lat, self, NA))
+        id <- get_varid(varID)
+        variety <- self$varieties[[id]]
+        self$grids <- append(self$grids, TPEgrid$new(name, variety, res, cols,
+                                                     rows, lon, lat, self))
         private$gridnames <- c(private$gridnames, name)
       } else {
         for(i in 1:length(private$varnames)) {
           gname <- paste0(name, "_", private$varnames[i])
-          self$grids <- append(self$grids, TPEgrid$new(gname, res, cols, rows,
-                                                       lon, lat, self,
-                                                       self$varieties[[i]]))
+          self$grids <- append(self$grids, TPEgrid$new(gname,
+                                                       self$varieties[[i]], res,
+                                                       cols, rows, lon, lat,
+                                                       self))
           private$gridnames <- c(private$gridnames, gname)
         }
       }
@@ -491,20 +496,19 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create raster map
     #' @param name A character string defining the name of the map
-    #' @param varID A variety identifier to use on the map
     #' @param gridID A grid identifier to use on the map
     #' @param res A numeric value in sec of the resolution of world map to use
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
-    createMap = function(name="map1", gridID=NA, varID=NA, res=150, bounds=NA) {
+    createMap = function(name="map1", gridID=NA, res=150, bounds=NA) {
       if(name %in% self$get_mapNames()) {
         stop(paste("Map with name ", name, " already exist.",
                    "Please provide a unique name for each map"))
       } else {
         private$mapnames <- c(private$mapnames, name)
-        self$maps <- append(self$maps, TPEmap$new(name, gridID, varID, res,
-                                                  bounds, self))
+        self$maps <- append(self$maps, TPEmap$new(name, gridID, res, bounds,
+                                                  self))
       }
     },
 
@@ -554,6 +558,23 @@ TPEa <- R6::R6Class("TPEa",
                                            score_fn, weigh_fn, bounds, weathers,
                                            id)
       }
+    },
+
+
+    ## Print functions
+
+    #' @description Print grid information
+    print_grids = function() {
+      pgDf <- data.frame()
+      for(i in 1:length(self$get_gridNames())) {
+        tmpGrid <- self$grids[[i]]
+        tmpDf <- data.frame(gridName = tmpGrid$name,
+                            gridVar = tmpGrid$variety$name,
+                            gridLat = tmpGrid$latStart,
+                            gridLon = tmpGrid$lonStart)
+        pgDf <- rbind(pgDf, tmpDf)
+      }
+      print(pgDf)
     }
   ),
 

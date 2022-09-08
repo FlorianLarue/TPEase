@@ -29,23 +29,21 @@ TPEgrid <- R6::R6Class("TPEgrid",
     parent = NULL,
     #' @field variety Variety to which this grid is linked to
     variety = NULL,
-    #' @field gridVar Forced variety when running grids independently
-    gridVar = NULL,
     #' @field test Debug
     test = NA,
 
     #' @description Create a new TPE grid object
     #' @param name Identifier of the grid
+    #' @param varID Identifier of the variety to which this grid is linked
     #' @param res Resolution of the grid
     #' @param width Width of the grid
     #' @param length Length of the grid
     #' @param lon Optional. Starting longitude of the grid (upper left corner)
     #' @param lat Optional. Starting latitude of the grid (upper left corner)
     #' @param parent TPE analysis parent
-    #' @param variety Optional. Variety to which this grid is linked
     #' @return A new `TPEgrid` object.
-    initialize = function(name="grid1", res=5, width=5, length=5,
-                          lon=NA, lat=NA, parent=NA, variety=NA) {
+    initialize = function(name="grid1", varID=NA, res=5, width=5, length=5,
+                          lon=NA, lat=NA, parent=NA) {
       self$name <- name
       self$width <- width
       self$length <- length
@@ -53,8 +51,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
       self$lonStart <- lon
       self$latStart <- lat
       self$parent <- parent
-      self$variety <- variety
-      self$gridVar <- variety
+      self$variety <- varID
 
       #TODO: might have to find a better solution than having list in matrix
       #TODO: need to generalize (see improvements.md)

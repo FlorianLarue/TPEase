@@ -58,6 +58,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
 \item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
 \item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
+\item \href{#method-TPEa-print_grids}{\code{TPEa$print_grids()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -403,6 +404,7 @@ Create a simulation grid
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
   name = "g1",
+  varID = NA,
   res = 0.5,
   cols = 5,
   rows = 5,
@@ -417,6 +419,8 @@ Create a simulation grid
 \describe{
 \item{\code{name}}{A character string identifier of the grid}
 
+\item{\code{varID}}{A variety identifier to use for simulation on the grid}
+
 \item{\code{res}}{A numeric value of the resolution of the grid}
 
 \item{\code{cols}}{A numeric value of the number of columns in the grid}
@@ -430,7 +434,8 @@ decimal degrees}
 decimal degrees}
 
 \item{\code{multigrid}}{A boolean indicating if one grid should be created
-for each genotype with the same cols, rows, lon and lat.}
+for each genotype with the same cols, rows, lon and lat. If true, varID
+will be ignored}
 }
 \if{html}{\out{</div>}}
 }
@@ -530,7 +535,7 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \subsection{Method \code{createMap()}}{
 Create raster map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "map1", gridID = NA, varID = NA, res = 150, bounds = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "map1", gridID = NA, res = 150, bounds = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -539,8 +544,6 @@ Create raster map
 \item{\code{name}}{A character string defining the name of the map}
 
 \item{\code{gridID}}{A grid identifier to use on the map}
-
-\item{\code{varID}}{A variety identifier to use on the map}
 
 \item{\code{res}}{A numeric value in sec of the resolution of world map to use
 Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
@@ -613,6 +616,16 @@ each of the parameters in `paramnames` (rows)}
 }
 \if{html}{\out{</div>}}
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-print_grids"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-print_grids}{}}}
+\subsection{Method \code{print_grids()}}{
+Print grid information
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$print_grids()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-clone"></a>}}

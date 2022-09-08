@@ -32,8 +32,6 @@ TODO
 
 \item{\code{variety}}{Variety to which this grid is linked to}
 
-\item{\code{gridVar}}{Forced variety when running grids independently}
-
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -57,13 +55,13 @@ Create a new TPE grid object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(
   name = "grid1",
+  varID = NA,
   res = 5,
   width = 5,
   length = 5,
   lon = NA,
   lat = NA,
-  parent = NA,
-  variety = NA
+  parent = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -71,6 +69,8 @@ Create a new TPE grid object
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{Identifier of the grid}
+
+\item{\code{varID}}{Identifier of the variety to which this grid is linked}
 
 \item{\code{res}}{Resolution of the grid}
 
@@ -83,8 +83,6 @@ Create a new TPE grid object
 \item{\code{lat}}{Optional. Starting latitude of the grid (upper left corner)}
 
 \item{\code{parent}}{TPE analysis parent}
-
-\item{\code{variety}}{Optional. Variety to which this grid is linked}
 }
 \if{html}{\out{</div>}}
 }
