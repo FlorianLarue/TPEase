@@ -24,7 +24,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
     #' @field test Debug
-    test = NA,
+    test = NULL,
 
     #' @description Create a new TPE analysis object
     #' @param name A character string identifier of the TPE analysis
@@ -395,7 +395,8 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
     #' @param varID A variety identifier to use for simulation on the grid
-    #' @param res A numeric value of the resolution of the grid
+    #' @param latres A numeric value of the latitude resolution of the grid
+    #' @param lonres A numeric value of the longitude resolution of the grid
     #' @param cols A numeric value of the number of columns in the grid
     #' @param rows A numeric value of the number of rows in the grid
     #' @param lon A numeric value of the starting longitude of the grid in
@@ -405,27 +406,34 @@ TPEa <- R6::R6Class("TPEa",
     #' @param multigrid A boolean indicating if one grid should be created
     #' for each genotype with the same cols, rows, lon and lat. If true, varID
     #' will be ignored
-    createGrid = function(name="g1", varID=NA, res=0.5, cols=5, rows=5, lon=NA,
-                          lat=NA, multigrid=F) {
-      if(name %in% self$get_gridNames()) {
-        stop(paste("Grid with name", name,"already exists.",
-                     "Please provide a unique identifier."))
-      }
-
-      if(!multigrid) {
-        id <- get_varid(varID)
-        variety <- self$varieties[[id]]
-        self$grids <- append(self$grids, TPEgrid$new(name, variety, res, cols,
-                                                     rows, lon, lat, self))
-        private$gridnames <- c(private$gridnames, name)
+    createGrid = function(name="g1", varID=NA, latres=0.35, lonres=0.5, cols=5,
+                          rows=5, lon=NA, lat=NA, multigrid=F) {
+      if(multigrid) {
+        for(i in 1:length(self$get_varNames())) {
+          gname <- paste0(name, "_", self$get_varNames()[i])
+          if(gname %in% self$get_gridNames()) {
+            stop(paste("Grid with name", gname, "already exist.",
+                       "Please provide a unique name to be attached to",
+                       "variety name."))
+          } else {
+            self$grids <- append(self$grids, TPEgrid$new(gname,
+                                                         self$varieties[[i]],
+                                                         latres, lonres, cols,
+                                                         rows, lon, lat, self))
+            private$gridnames <- c(private$gridnames, gname)
+          }
+        }
       } else {
-        for(i in 1:length(private$varnames)) {
-          gname <- paste0(name, "_", private$varnames[i])
-          self$grids <- append(self$grids, TPEgrid$new(gname,
-                                                       self$varieties[[i]], res,
-                                                       cols, rows, lon, lat,
-                                                       self))
-          private$gridnames <- c(private$gridnames, gname)
+        if(name %in% self$get_gridNames()) {
+          stop(paste("Grid with name", name,"already exists.",
+                     "Please provide a unique identifier."))
+        } else {
+          id <- self$get_varid(varID)
+          variety <- self$varieties[[id]]
+          self$grids <- append(self$grids, TPEgrid$new(name, variety, latres,
+                                                       lonres, cols, rows, lon,
+                                                       lat, self))
+          private$gridnames <- c(private$gridnames, name)
         }
       }
     },
@@ -475,12 +483,11 @@ TPEa <- R6::R6Class("TPEa",
     #' (either index or name). By default will run all grids
     #' @param varID A variety identifier to use for
     #' simulation on the grid. If NA, will use the variety attached to grid
-    #' @param trait A character string with the trait name for grid res matrix
     #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=NA, varID=NA, trait="GrainYieldPopFin",
-                          year=2015, soilData=soil, latlonData=lat_lon) {
+    runGridSim = function(gridID=NA, varID=NA, year=2015, soilData=soil,
+                          latlonData=lat_lon) {
       if(sum(!is.na(gridID)) == 0) {
         idg <- self$get_gridNames()
       } else {
@@ -493,7 +500,7 @@ TPEa <- R6::R6Class("TPEa",
           idv <- self$get_varid(varID)
           self$grids[[id]]$set_var(self$varieties[[idv]])
         }
-        self$grids[[id]]$runGridSim(trait, year, soilData, latlonData)
+        self$grids[[id]]$runGridSim(year, soilData, latlonData)
       }
     },
 
@@ -504,14 +511,39 @@ TPEa <- R6::R6Class("TPEa",
     #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
-    createMap = function(name="map1", gridID=NA, res=150, bounds=NA) {
-      if(name %in% self$get_mapNames()) {
-        stop(paste("Map with name ", name, " already exist.",
-                   "Please provide a unique name for each map"))
+    #' @param multimap A boolean indicating if one map for each grid should be
+    #' created. True by default
+    #' @param plot A boolean indicating if plots of the maps should be created.
+    #' To manually create plots of the maps see `plotMap()`.
+    #' To print the plotted maps see `print_maps()`
+    createMap = function(name="map1", gridID=NA, res=150, bounds=NA,
+                         multimap=F, plot=T) {
+      if(multimap) {
+        for(i in 1:length(self$get_gridNames())) {
+          mname <- paste0(name, "_", self$get_gridNames()[i])
+          if(mname %in% self$get_mapNames()) {
+            stop(paste("Map with name ", mname, " already exist.",
+                       "Please provide a unique name to be attached to",
+                       "grid name"))
+          } else {
+            private$mapnames <- c(private$mapnames, mname)
+            self$maps <- append(self$maps, TPEmap$new(mname, i, res, bounds,
+                                                      self))
+          }
+        }
       } else {
-        private$mapnames <- c(private$mapnames, name)
-        self$maps <- append(self$maps, TPEmap$new(name, gridID, res, bounds,
-                                                  self))
+        if(name %in% self$get_mapNames()) {
+          stop(paste("Map with name ", name, " already exist.",
+                     "Please provide a unique name for each map"))
+        } else {
+          id <- self$get_gridid(gridID)
+          private$mapnames <- c(private$mapnames, name)
+          self$maps <- append(self$maps, TPEmap$new(name, id, res, bounds,
+                                                    self))
+        }
+      }
+      if(plot) {
+        self$plotMap()
       }
     },
 
@@ -578,6 +610,56 @@ TPEa <- R6::R6Class("TPEa",
         pgDf <- rbind(pgDf, tmpDf)
       }
       print(pgDf)
+    },
+
+    #' @description Print maps
+    #' @param output A numeric value indicating what output to use (1 = default
+    #' output, 2 = png image, 3 = pdf)
+    #' @param mapID A map identifier to plot
+    #' @param multimap A boolean value indicating if all maps should be printed.
+    #' If true mapID will be ignored.
+    #' @param path A character string indicating the path where to save the
+    #' plots if output > 1
+    #' @param name A character string of the name of the file if output > 1.
+    #' By default will take the name of the map object
+    #' @param ... Additional parameters to pass to png() or pdf() functions
+    #' (if output > 1, see ?png and ?pdf)
+    print_maps = function(output=1, mapID=1, multimap=T, path=NA, name=NA,
+                          ...) {
+      if(length(self$get_mapNames()) < 1) {
+        stop(paste0("No maps have been found on the TPE object ", self$name))
+      } else {
+        if(multimap) {
+          for(i in 1:length(self$get_mapNames())) {
+            map <- self$maps[[i]]
+            if(output == 2) {
+              png(paste0(ifelse(is.na(path), "", paste0(path,"/")),
+                         ifelse(is.na(name), map$name, name), ".png"), ...)
+            } else if(output == 3) {
+              pdf(paste0(ifelse(is.na(path), "", paste0(path,"/")),
+                         ifelse(is.na(name), map$name, name), ".pdf"), ...)
+            }
+            print(map$plots[[1]])
+            if(output %in% c(2,3)) {
+              dev.off()
+            }
+          }
+        } else {
+          id <- self$get_mapid(mapID)
+          map <- self$maps[[id]]
+          if(output == 2) {
+            png(paste0(ifelse(is.na(path), "", paste0(path,"/")),
+                       ifelse(is.na(name), map$name, name), ".png"), ...)
+          } else if(output == 3) {
+            pdf(paste0(ifelse(is.na(path), "", paste0(path,"/")),
+                       ifelse(is.na(name), map$name, name), ".pdf"), ...)
+          }
+          print(map$plots[[1]])
+          if(output %in% c(2,3)) {
+            dev.off()
+          }
+        }
+      }
     }
   ),
 

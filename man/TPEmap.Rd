@@ -16,6 +16,11 @@ TODO
 
 \item{\code{data}}{A dataframe with map coordinates and values}
 
+\item{\code{PCAres}}{Principle Component Analysis result for `data`}
+
+\item{\code{HCPCres}}{Hierarchical Clustering on Principle Components result for
+`PCAres`}
+
 \item{\code{parent}}{TPE analysis parent}
 
 \item{\code{grid}}{A grid object attached to the map}
@@ -30,6 +35,8 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEmap-new}{\code{TPEmap$new()}}
+\item \href{#method-TPEmap-runPCA}{\code{TPEmap$runPCA()}}
+\item \href{#method-TPEmap-runHCPC}{\code{TPEmap$runHCPC()}}
 \item \href{#method-TPEmap-plotMap}{\code{TPEmap$plotMap()}}
 \item \href{#method-TPEmap-clone}{\code{TPEmap$clone()}}
 }
@@ -63,6 +70,36 @@ of north, east, south, west bounds to crop map}
 \subsection{Returns}{
 A new `TPEmap` object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEmap-runPCA"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEmap-runPCA}{}}}
+\subsection{Method \code{runPCA()}}{
+Run Principle Component Analysis
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runPCA(varList = NULL, nbDim = 5)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{varList}}{Optional. Vector of variables to use to perform PCA.
+By default will run on all variables of the map data}
+
+\item{\code{nbDim}}{Number of dimensions}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEmap-runHCPC"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEmap-runHCPC}{}}}
+\subsection{Method \code{runHCPC()}}{
+Run Hierarchical Clustering on Principle Components
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runHCPC()}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEmap-plotMap"></a>}}

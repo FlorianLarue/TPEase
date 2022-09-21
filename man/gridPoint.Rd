@@ -18,15 +18,11 @@ TODO
 
 \item{\code{lat}}{Latitude of the grid point}
 
-\item{\code{weather}}{Samara climate data generated from marksim}
+\item{\code{weather}}{A weather object}
 
-\item{\code{simuweather}}{Samara climate data for simulation of given year}
+\item{\code{soil}}{A soil object}
 
 \item{\code{result}}{Model simulation}
-
-\item{\code{soilParam}}{soil parameters of grid point}
-
-\item{\code{dateParam}}{sowing date of grid point}
 
 \item{\code{parent}}{Grid parent of grid point}
 
@@ -40,11 +36,12 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-gridPoint-new}{\code{gridPoint$new()}}
-\item \href{#method-gridPoint-set_weather}{\code{gridPoint$set_weather()}}
 \item \href{#method-gridPoint-set_soilParam}{\code{gridPoint$set_soilParam()}}
 \item \href{#method-gridPoint-set_dateParam}{\code{gridPoint$set_dateParam()}}
-\item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
 \item \href{#method-gridPoint-set_variety}{\code{gridPoint$set_variety()}}
+\item \href{#method-gridPoint-set_weather}{\code{gridPoint$set_weather()}}
+\item \href{#method-gridPoint-get_sim}{\code{gridPoint$get_sim()}}
+\item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
 \item \href{#method-gridPoint-runSimulation}{\code{gridPoint$runSimulation()}}
 \item \href{#method-gridPoint-clone}{\code{gridPoint$clone()}}
 }
@@ -73,23 +70,6 @@ Create a new TPE grid point object
 }
 \subsection{Returns}{
 A new `TPEgrid` object.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-gridPoint-set_weather"></a>}}
-\if{latex}{\out{\hypertarget{method-gridPoint-set_weather}{}}}
-\subsection{Method \code{set_weather()}}{
-Change weather of grid point
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_weather(weather)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{weather}}{Weather dataframe}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -129,10 +109,61 @@ Set soil parameters for grid point location
 }
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-set_variety"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-set_variety}{}}}
+\subsection{Method \code{set_variety()}}{
+Set variety to this gridPoint
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_variety(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Object of type variety}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-set_weather"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-set_weather}{}}}
+\subsection{Method \code{set_weather()}}{
+Set weather data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_weather(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A dataframe of weather data}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-get_sim"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-get_sim}{}}}
+\subsection{Method \code{get_sim()}}{
+Get simulation data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$get_sim(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Variable name to retrieve}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-gridPoint-genClimate"></a>}}
 \if{latex}{\out{\hypertarget{method-gridPoint-genClimate}{}}}
 \subsection{Method \code{genClimate()}}{
-Generate climate at grid point
+Generate climate
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{gridPoint$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
 }
@@ -156,37 +187,18 @@ Generate climate at grid point
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-gridPoint-set_variety"></a>}}
-\if{latex}{\out{\hypertarget{method-gridPoint-set_variety}{}}}
-\subsection{Method \code{set_variety()}}{
-Set variety to this gridPoint
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_variety(val)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{Object of type variety}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-gridPoint-runSimulation"></a>}}
 \if{latex}{\out{\hypertarget{method-gridPoint-runSimulation}{}}}
 \subsection{Method \code{runSimulation()}}{
 Run simulation on grid point
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, trait, i, j)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, i, j)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{param}}{Parameter values}
-
-\item{\code{trait}}{Trait name for matrix grid res}
 
 \item{\code{i}}{row position of grid point}
 

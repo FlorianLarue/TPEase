@@ -59,6 +59,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
 \item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
 \item \href{#method-TPEa-print_grids}{\code{TPEa$print_grids()}}
+\item \href{#method-TPEa-print_maps}{\code{TPEa$print_maps()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -405,7 +406,8 @@ Create a simulation grid
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$createGrid(
   name = "g1",
   varID = NA,
-  res = 0.5,
+  latres = 0.35,
+  lonres = 0.5,
   cols = 5,
   rows = 5,
   lon = NA,
@@ -421,7 +423,9 @@ Create a simulation grid
 
 \item{\code{varID}}{A variety identifier to use for simulation on the grid}
 
-\item{\code{res}}{A numeric value of the resolution of the grid}
+\item{\code{latres}}{A numeric value of the latitude resolution of the grid}
+
+\item{\code{lonres}}{A numeric value of the longitude resolution of the grid}
 
 \item{\code{cols}}{A numeric value of the number of columns in the grid}
 
@@ -502,7 +506,6 @@ Run simulation on one or several grids
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
   gridID = NA,
   varID = NA,
-  trait = "GrainYieldPopFin",
   year = 2015,
   soilData = soil,
   latlonData = lat_lon
@@ -517,8 +520,6 @@ Run simulation on one or several grids
 
 \item{\code{varID}}{A variety identifier to use for
 simulation on the grid. If NA, will use the variety attached to grid}
-
-\item{\code{trait}}{A character string with the trait name for grid res matrix}
 
 \item{\code{year}}{A numeric value with the year to run the simulation}
 
@@ -535,7 +536,14 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \subsection{Method \code{createMap()}}{
 Create raster map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(name = "map1", gridID = NA, res = 150, bounds = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(
+  name = "map1",
+  gridID = NA,
+  res = 150,
+  bounds = NA,
+  multimap = F,
+  plot = T
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -550,6 +558,13 @@ Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
 
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
 of north, east, south, west bounds to crop map}
+
+\item{\code{multimap}}{A boolean indicating if one map for each grid should be
+created. True by default}
+
+\item{\code{plot}}{A boolean indicating if plots of the maps should be created.
+To manually create plots of the maps see `plotMap()`.
+To print the plotted maps see `print_maps()`}
 }
 \if{html}{\out{</div>}}
 }
@@ -626,6 +641,38 @@ Print grid information
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$print_grids()}\if{html}{\out{</div>}}
 }
 
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-print_maps"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-print_maps}{}}}
+\subsection{Method \code{print_maps()}}{
+Print maps
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$print_maps(output = 1, mapID = 1, multimap = T, path = NA, name = NA, ...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{output}}{A numeric value indicating what output to use (1 = default
+output, 2 = png image, 3 = pdf)}
+
+\item{\code{mapID}}{A map identifier to plot}
+
+\item{\code{multimap}}{A boolean value indicating if all maps should be printed.
+If true mapID will be ignored.}
+
+\item{\code{path}}{A character string indicating the path where to save the
+plots if output > 1}
+
+\item{\code{name}}{A character string of the name of the file if output > 1.
+By default will take the name of the map object}
+
+\item{\code{...}}{Additional parameters to pass to png() or pdf() functions
+(if output > 1, see ?png and ?pdf)}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-clone"></a>}}

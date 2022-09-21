@@ -13,14 +13,19 @@ TPEmap <- R6::R6Class("TPEmap",
     name = NULL,
     #' @field data A dataframe with map coordinates and values
     data = NULL,
+    #' @field PCAres Principle Component Analysis result for `data`
+    PCAres = NULL,
+    #' @field HCPCres Hierarchical Clustering on Principle Components result for
+    #' `PCAres`
+    HCPCres = NULL,
     #' @field parent TPE analysis parent
-    parent = NA,
+    parent = NULL,
     #' @field grid A grid object attached to the map
-    grid = NA,
+    grid = NULL,
     #' @field plots A list of ggplot2 plots from the map
     plots = list(),
     #' @field test Debug
-    test = NA,
+    test = NULL,
 
     #' @description Create a new TPE map object
     #' @param name A character string identifier of the TPE map
@@ -42,7 +47,7 @@ TPEmap <- R6::R6Class("TPEmap",
 
       self$grid <- self$parent$grids[[self$parent$get_gridid(grid)]]
 
-      cat(paste("Creating map", name,"\n"))
+      cat(paste("\nCreating map", name,"\n"))
 
       pathMap <- system.file("extdata", paste0("world_",as.character(res),
                                                ".tif"), package="CGMTPE")
@@ -60,8 +65,34 @@ TPEmap <- R6::R6Class("TPEmap",
       map <- as(tmpmap, "SpatialPixelsDataFrame")
       map <- as.data.frame(map)
       colnames(map) <- c("value", "x", "y")
-      map$value <- NA
+      map <- map[, names(map) != "value"]
       self$data <- map
+    },
+
+    #' @description Run Principle Component Analysis
+    #' @import FactoMineR
+    #' @import factoextra
+    #' @param varList Optional. Vector of variables to use to perform PCA.
+    #' By default will run on all variables of the map data
+    #' @param nbDim Number of dimensions
+    runPCA = function(varList = NULL, nbDim = 5) {
+      gridRes <- self$grid$get_results(varList)
+      dfPCA <- gridRes[,varList]
+      res <- PCA(dfPCA, ncp = nbDim, graph = F)
+      self$PCAres <- res
+    },
+
+    #' @description Run Hierarchical Clustering on Principle Components
+    #' @import FactoMineR
+    #' @import factoextra
+    runHCPC = function() {
+      if(!is.null(self$resPCA)) {
+        stop(paste0("No PCA found for map ", self$name,
+                    ". Please run runPCA()"))
+      } else {
+        res <- HCPC(self$PCAres, nb.clust = -1, graph = F)
+        self$HCPCres <- res
+      }
     },
 
     #' @description Create plot on map based on grid simulation
@@ -120,7 +151,6 @@ TPEmap <- R6::R6Class("TPEmap",
         geom_point(data = fit2, aes(x = x, y = y, color = z)) +
         scale_color_gradientn(colors = c("blue", "yellow", "red"))
 
-      self$test <- grid_plot
       self$plots <- append(self$plots, list(grid_plot))
     }
   ),

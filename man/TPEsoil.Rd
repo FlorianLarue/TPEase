@@ -14,6 +14,10 @@ TODO
 \describe{
 \item{\code{name}}{A character string identifier of the weather}
 
+\item{\code{parent}}{Parent environment}
+
+\item{\code{soilParam}}{Soil parameters}
+
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -22,6 +26,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEsoil-new}{\code{TPEsoil$new()}}
+\item \href{#method-TPEsoil-set_soilParam}{\code{TPEsoil$set_soilParam()}}
 \item \href{#method-TPEsoil-clone}{\code{TPEsoil$clone()}}
 }
 }
@@ -31,18 +36,39 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE soil object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEsoil$new(name = "map1")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEsoil$new(name = "soil1", parent = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{A character string identifier of the TPE soil}
+
+\item{\code{parent}}{Parent environment}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `TPEsoil` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEsoil-set_soilParam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEsoil-set_soilParam}{}}}
+\subsection{Method \code{set_soilParam()}}{
+Set soil parameters for grid point location
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEsoil$set_soilParam(soil, lat_lon)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{soil}}{Dataframe with soil characteristics}
+
+\item{\code{lat_lon}}{Dataframe with correspondance of lat/lon with soil df}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

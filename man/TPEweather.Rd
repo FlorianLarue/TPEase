@@ -16,6 +16,12 @@ TODO
 
 \item{\code{wData}}{A dataframe with weather data}
 
+\item{\code{simuWeather}}{A dataframe with weather data for simulation}
+
+\item{\code{dateParam}}{sowing date of grid point}
+
+\item{\code{parent}}{Parent environment}
+
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -24,6 +30,9 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEweather-new}{\code{TPEweather$new()}}
+\item \href{#method-TPEweather-set_weather}{\code{TPEweather$set_weather()}}
+\item \href{#method-TPEweather-genClimate}{\code{TPEweather$genClimate()}}
+\item \href{#method-TPEweather-set_dateParam}{\code{TPEweather$set_dateParam()}}
 \item \href{#method-TPEweather-clone}{\code{TPEweather$clone()}}
 }
 }
@@ -33,18 +42,81 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE weather object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEweather$new(name = "map1")}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$new(name = "0101", parent = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{A character string identifier of the TPE weather}
+
+\item{\code{parent}}{Parent environment}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `TPEweather` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEweather-set_weather"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEweather-set_weather}{}}}
+\subsection{Method \code{set_weather()}}{
+Set weather data
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_weather(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A dataframe of weather data}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEweather-genClimate"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEweather-genClimate}{}}}
+\subsection{Method \code{genClimate()}}{
+Generate climate
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{rcp}}{Rcp scenario to use}
+
+\item{\code{year}}{Year to simulate climate}
+
+\item{\code{yearNb}}{Number of years to simulate}
+
+\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+
+\item{\code{path}}{Path to marksim standalone}
+
+\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEweather-set_dateParam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEweather-set_dateParam}{}}}
+\subsection{Method \code{set_dateParam()}}{
+Set sowing date
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_dateParam(year)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{year}}{Year of simulation}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

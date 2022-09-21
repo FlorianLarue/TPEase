@@ -11,89 +11,85 @@ TPEgrid <- R6::R6Class("TPEgrid",
   public = list(
     #' @field name Identifier of the grid
     name = NULL,
-    #' @field length Length of the grid
-    length = NULL,
-    #' @field width Width of the grid
-    width = NULL,
-    #' @field res Resolution of the grid
-    res = NULL,
+    #' @field latRes Latitude resolution of the grid
+    latRes = NULL,
+    #' @field lonRes Longitude resolution of the grid
+    lonRes = NULL,
     #' @field lonStart Starting longitude of the grid
     lonStart = NULL,
     #' @field latStart Starting latitude of the grid
     latStart = NULL,
     #' @field gridPoints Collection of each point on the grid
     gridPoints = NULL,
-    #' @field resGrid Matrix with value of simulated trait for each grid point
-    resGrid = NULL,
     #' @field parent TPE analysis parent
     parent = NULL,
     #' @field variety Variety to which this grid is linked to
     variety = NULL,
     #' @field test Debug
-    test = NA,
+    test = NULL,
 
     #' @description Create a new TPE grid object
     #' @param name Identifier of the grid
     #' @param varID Identifier of the variety to which this grid is linked
-    #' @param res Resolution of the grid
+    #' @param latres Latitude resolution of the grid (in decimal degrees)
+    #' @param lonres Longitude resolution of the grid (in decimal degrees)
     #' @param width Width of the grid
     #' @param length Length of the grid
     #' @param lon Optional. Starting longitude of the grid (upper left corner)
     #' @param lat Optional. Starting latitude of the grid (upper left corner)
     #' @param parent TPE analysis parent
     #' @return A new `TPEgrid` object.
-    initialize = function(name="grid1", varID=NA, res=5, width=5, length=5,
-                          lon=NA, lat=NA, parent=NA) {
-      self$name <- name
-      self$width <- width
-      self$length <- length
-      self$res <- res
-      self$lonStart <- lon
-      self$latStart <- lat
+    initialize = function(name="grid1", varID=NA, latres=0.35, lonres=0.5,
+                          width=5, length=5, lon=NA, lat=NA, parent=NA) {
+      self$name <- as.character(name)
+      if(!is.na(width) && is.numeric(width)) {
+        private$width <- width
+      }
+      if(!is.na(length) && is.numeric(length)) {
+        private$length <- length
+      }
+
+      if(!is.na(latres) && is.numeric(latres)) {
+        self$latRes <- latres
+      }
+
+      if(!is.na(lonres) && is.numeric(lonres)) {
+        self$lonRes <- lonres
+      }
+
+      if(!is.na(lonres) && is.numeric(lonres)) {
+        self$lonStart <- lon
+      }
+      if(!is.na(lonres) && is.numeric(lonres)) {
+        self$latStart <- lat
+      }
+
       self$parent <- parent
       self$variety <- varID
 
       #TODO: might have to find a better solution than having list in matrix
-      #TODO: need to generalize (see improvements.md)
-      #tmp solution for Adam et al.
       self$gridPoints <- matrix(list(), nrow=length, ncol=width)
-      self$resGrid <- matrix(NA, nrow=length, ncol=width)
-      if(!is.na(lon) & !is.na(lat)) {
-        for(i in 1:nrow(self$gridPoints)) {
-          latPoint <- self$latStart + (0.35*(i-1))
-          if(i < 10) {
-            ii <- paste0("0",i)
-          } else {
-            ii <- i
-          }
-          for(j in 1:ncol(self$gridPoints)) {
-            lonPoint <- self$lonStart + (res*(j-1))
-            if(j < 10) {
-              jj <- paste0("0",j)
-            } else {
-              jj <- j
-            }
-            self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
-                                                       name=paste0(ii,jj),
-                                                       lon=lonPoint,
-                                                       lat=latPoint))
-          }
-        }
+      if(!is.na(lon) & !is.na(lat) & !is.na(latres) & !is.na(lonres)) {
+        self$populateGrid()
       } else {
-        warning(paste("Missing longitude or latitude",
-                      "grid will not be populated. If needed,",
-                      "please use populateGrid() on grid",self$name),
+        varNames <- c("Latitude","Longitude","Lat Resolution","Lon Resolution")
+        missings <- varNames[is.na(c(lat, lon, latres, lonres))]
+        warning(paste("Missing [", paste0(missings, collapse=", "), "]",
+                      "grid will not be populated.",
+                      "If needed, please use populateGrid() on grid",self$name),
                 call.=F)
       }
+
+      self$initMessage()
     },
 
-    #' @description Set simulation result for given grid point in result matrix
-    #' @param i Row position of grid point
-    #' @param j Col position of grid point
-    #' @param val Value of simulation result
-    set_resGrid = function(i, j, val) {
-      self$resGrid[i,j] <- val
+    #' @description Confirm creation of Grid object
+    initMessage = function() {
+      cat(paste0("Grid ", self$name, " of size ", self$get_width(), "x",
+                 self$get_length(), " created\n"))
     },
+
+    ## Setters
 
     #' @description Set variety
     #' @param val Variety
@@ -103,6 +99,66 @@ TPEgrid <- R6::R6Class("TPEgrid",
       } else {
         stop(paste0("Error. Trying to set a non variety object into ",
                     self$name))
+      }
+    },
+
+    #' @description Set grid name
+    #' @param val Variety
+    set_name = function(val) {
+      self$name <- as.character(val)
+    },
+
+    ## Getters
+
+    #' @description Get grid width
+    get_width = function() {
+      return(private$width)
+    },
+
+    #' @description Get grid length
+    get_length = function() {
+      return(private$length)
+    },
+
+    #' @description Get grid simulation results
+    #' @param varList Vector of variable names to extract for results
+    get_results = function(varList = NA) {
+      resDf <- data.frame()
+      for(i in 1:nrow(self$gridPoints)) {
+        for(j in 1:ncol(self$gridPoints)) {
+          resDf[nrow(resDf)+1,"x"] <- self$gridPoints[i,j][[1]]$lon
+          resDf[nrow(resDf),"y"] <- self$gridPoints[i,j][[1]]$lat
+          for(v in varList) {
+            resDf[nrow(resDf),v] <- self$gridPoints[i,j][[1]]$get_sim(v)
+          }
+        }
+      }
+      return(resDf)
+    },
+
+    #' @description Create gridpoint for each point of the grid
+    #' @param lat Starting latitude of the grid (upper left corner)
+    #' @param lon Starting longitude of the grid (upper left corner)
+    populateGrid = function(lat=NA, lon=NA) {
+      if(!is.na(lat)) {
+        self$latStart <- lat
+      }
+      if(!is.na(lon)) {
+        self$lonStart <- lon
+      }
+
+      for(i in 1:nrow(self$gridPoints)) {
+        latPoint <- self$latStart + (self$latRes*(i-1))
+        latName <- sprintf("%02d", i)
+        for(j in 1:ncol(self$gridPoints)) {
+          lonPoint <- self$lonStart + (self$lonRes*(j-1))
+          lonName <- sprintf("%02d", j)
+          self$gridPoints[i,j] <- list(gridPoint$new(parent=self,
+                                                     name=paste0(latName,
+                                                                 lonName),
+                                                     lon=lonPoint,
+                                                     lat=latPoint))
+        }
       }
     },
 
@@ -118,8 +174,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' should be shown
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, filesE,
                           verbose) {
-      cnt <- 1
-      if(filesE) { #tmp solution for dev
+      if(filesE) { #TODO: tmp solution for dev, need to find generalization
         for(i in 1:nrow(self$gridPoints)) {
           for(j in 1:ncol(self$gridPoints)) {
             latF <- self$gridPoints[i,j][[1]]$lat
@@ -127,14 +182,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
             if(file.size(paste0(path,"weathers/weather_",latF,"_",
                                 lonF,".csv")) > 5) {
               weatherF <- read.csv(paste0(path,"weathers/weather_",latF,"_",
-                                          lonF,".csv"), row.names=1) #tmp
-              self$gridPoints[i,j][[1]]$weather <- weatherF
-              if(verbose) {
-                print(paste("Climate of point", cnt, "out of",
-                            as.numeric(self$width) * as.numeric(self$length),
-                            "generated"))
-              }
-              cnt <- cnt + 1
+                                          lonF,".csv"), row.names=1)
+              self$gridPoints[i,j][[1]]$set_weather(weatherF)
             }
           }
         }
@@ -147,25 +196,19 @@ TPEgrid <- R6::R6Class("TPEgrid",
           for(j in 1:ncol(self$gridPoints)) {
             self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb,
                                                  path, pathCLI)
-            if(verbose) {
-              print(paste("Climate of point", cnt, "out of",
-                          as.numeric(self$width) * as.numeric(self$length),
-                          "generated"))
-            }
             setTxtProgressBar(pbClim, cnt)
-            cnt <- cnt + 1
           }
         }
         setwd(currentPath)
       }
     },
+
     #' @description Run simulation for each point of the grid
-    #' @param trait Trait name for grid res matrix
     #' @param year Year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(trait, year, soilData, latlonData) {
-      if(is.na(self$variety)) {
+    runGridSim = function(year, soilData, latlonData) {
+      if(is.null(self$variety)) {
         warning(paste("Grid", self$name, "has no variety attached to it",
                       "please provide a varID when calling runGridSim()"))
       }
@@ -178,12 +221,16 @@ TPEgrid <- R6::R6Class("TPEgrid",
         for(j in 1:ncol(self$gridPoints)) {
           self$gridPoints[i,j][[1]]$set_soilParam(soilData, latlonData)
           self$gridPoints[i,j][[1]]$set_dateParam(year)
-          self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters,
-                                                  trait, i,j)
+          self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters, i,j)
           setTxtProgressBar(pbSim, cnt)
           cnt <- cnt + 1
         }
       }
     }
+  ),
+
+  private = list(
+    width = NULL,
+    length = NULL
   )
 )

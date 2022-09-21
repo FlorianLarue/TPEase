@@ -14,19 +14,15 @@ TODO
 \describe{
 \item{\code{name}}{Identifier of the grid}
 
-\item{\code{length}}{Length of the grid}
+\item{\code{latRes}}{Latitude resolution of the grid}
 
-\item{\code{width}}{Width of the grid}
-
-\item{\code{res}}{Resolution of the grid}
+\item{\code{lonRes}}{Longitude resolution of the grid}
 
 \item{\code{lonStart}}{Starting longitude of the grid}
 
 \item{\code{latStart}}{Starting latitude of the grid}
 
 \item{\code{gridPoints}}{Collection of each point on the grid}
-
-\item{\code{resGrid}}{Matrix with value of simulated trait for each grid point}
 
 \item{\code{parent}}{TPE analysis parent}
 
@@ -40,8 +36,13 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEgrid-new}{\code{TPEgrid$new()}}
-\item \href{#method-TPEgrid-set_resGrid}{\code{TPEgrid$set_resGrid()}}
+\item \href{#method-TPEgrid-initMessage}{\code{TPEgrid$initMessage()}}
 \item \href{#method-TPEgrid-set_var}{\code{TPEgrid$set_var()}}
+\item \href{#method-TPEgrid-set_name}{\code{TPEgrid$set_name()}}
+\item \href{#method-TPEgrid-get_width}{\code{TPEgrid$get_width()}}
+\item \href{#method-TPEgrid-get_length}{\code{TPEgrid$get_length()}}
+\item \href{#method-TPEgrid-get_results}{\code{TPEgrid$get_results()}}
+\item \href{#method-TPEgrid-populateGrid}{\code{TPEgrid$populateGrid()}}
 \item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
 \item \href{#method-TPEgrid-runGridSim}{\code{TPEgrid$runGridSim()}}
 \item \href{#method-TPEgrid-clone}{\code{TPEgrid$clone()}}
@@ -56,7 +57,8 @@ Create a new TPE grid object
 \if{html}{\out{<div class="r">}}\preformatted{TPEgrid$new(
   name = "grid1",
   varID = NA,
-  res = 5,
+  latres = 0.35,
+  lonres = 0.5,
   width = 5,
   length = 5,
   lon = NA,
@@ -72,7 +74,9 @@ Create a new TPE grid object
 
 \item{\code{varID}}{Identifier of the variety to which this grid is linked}
 
-\item{\code{res}}{Resolution of the grid}
+\item{\code{latres}}{Latitude resolution of the grid (in decimal degrees)}
+
+\item{\code{lonres}}{Longitude resolution of the grid (in decimal degrees)}
 
 \item{\code{width}}{Width of the grid}
 
@@ -91,25 +95,14 @@ A new `TPEgrid` object.
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEgrid-set_resGrid"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEgrid-set_resGrid}{}}}
-\subsection{Method \code{set_resGrid()}}{
-Set simulation result for given grid point in result matrix
+\if{html}{\out{<a id="method-TPEgrid-initMessage"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-initMessage}{}}}
+\subsection{Method \code{initMessage()}}{
+Confirm creation of Grid object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_resGrid(i, j, val)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$initMessage()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{i}}{Row position of grid point}
-
-\item{\code{j}}{Col position of grid point}
-
-\item{\code{val}}{Value of simulation result}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEgrid-set_var"></a>}}
@@ -124,6 +117,79 @@ Set variety
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{Variety}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-set_name"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-set_name}{}}}
+\subsection{Method \code{set_name()}}{
+Set grid name
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_name(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Variety}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-get_width"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-get_width}{}}}
+\subsection{Method \code{get_width()}}{
+Get grid width
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_width()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-get_length"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-get_length}{}}}
+\subsection{Method \code{get_length()}}{
+Get grid length
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_length()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-get_results"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-get_results}{}}}
+\subsection{Method \code{get_results()}}{
+Get grid simulation results
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_results(varList = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{varList}}{Vector of variable names to extract for results}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-populateGrid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-populateGrid}{}}}
+\subsection{Method \code{populateGrid()}}{
+Create gridpoint for each point of the grid
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$populateGrid(lat = NA, lon = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{lat}}{Starting latitude of the grid (upper left corner)}
+
+\item{\code{lon}}{Starting longitude of the grid (upper left corner)}
 }
 \if{html}{\out{</div>}}
 }
@@ -166,14 +232,12 @@ should be shown}
 \subsection{Method \code{runGridSim()}}{
 Run simulation for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(trait, year, soilData, latlonData)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(year, soilData, latlonData)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{trait}}{Trait name for grid res matrix}
-
 \item{\code{year}}{Year to run the simulation}
 
 \item{\code{soilData}}{Tmp for Adam et al.}
