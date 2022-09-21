@@ -21,6 +21,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
     latStart = NULL,
     #' @field gridPoints Collection of each point on the grid
     gridPoints = NULL,
+    #' @field gridRes Result dataframe (constructed during map clustering)
+    gridRes = NULL,
     #' @field parent TPE analysis parent
     parent = NULL,
     #' @field variety Variety to which this grid is linked to
@@ -106,6 +108,12 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param val Variety
     set_name = function(val) {
       self$name <- as.character(val)
+    },
+
+    #' @description Set grid result dataframe
+    #' @param val Dataframe
+    set_gridres = function(val) {
+      self$gridRes <- as.data.frame(val)
     },
 
     ## Getters

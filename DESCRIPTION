@@ -11,7 +11,7 @@ Encoding: UTF-8
 LazyData: true
 Imports: ggplot2, Rdpack
 RdMacros: Rdpack
-RoxygenNote: 7.2.0
+RoxygenNote: 7.2.1
 Suggests: 
     rmarkdown,
     knitr,

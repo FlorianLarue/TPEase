@@ -11,9 +11,9 @@ TPEmap <- R6::R6Class("TPEmap",
   public = list(
     #' @field name A character string identifier of the map
     name = NULL,
-    #' @field data A dataframe with map coordinates and values
+    #' @field data A SpatialPolygondataframe of the desired map
     data = NULL,
-    #' @field PCAres Principle Component Analysis result for `data`
+    #' @field PCAres Principle Component Analysis result for `self$grid$gridRes`
     PCAres = NULL,
     #' @field HCPCres Hierarchical Clustering on Principle Components result for
     #' `PCAres`
@@ -30,18 +30,19 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @description Create a new TPE map object
     #' @param name A character string identifier of the TPE map
     #' @param grid A grid identifier attached to the map
-    #' @param res A numeric value in sec of the resolution of world map to use
-    #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
     #' @param parent TPE parent
+    #' @param res Not active for now. A numeric value in sec of the resolution
+    #' of world map to use. Options are c(1, 150, 900) for respectively
+    #' 30sec, 2.5min, 15min
     #' @return A new `TPEmap` object.
     #' @importFrom raster raster
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
-    initialize = function(name="map1", grid=NA, res=150, bounds=NA,
-                          parent=NA) {
+    initialize = function(name="map1", grid=NA, bounds=NA,
+                          parent=NA, res=150) {
       self$name <- as.character(name)
       self$parent <- parent
 
@@ -49,9 +50,8 @@ TPEmap <- R6::R6Class("TPEmap",
 
       cat(paste("\nCreating map", name,"\n"))
 
-      pathMap <- system.file("extdata", paste0("world_",as.character(res),
-                                               ".tif"), package="CGMTPE")
-      tmpmap <- raster(pathMap)
+      pathMap <- system.file("extdata", "World.shp", package="CGMTPE")
+      tmpmap <- raster::shapefile(pathMap)
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
                 "SpatialPolygons")
@@ -62,22 +62,19 @@ TPEmap <- R6::R6Class("TPEmap",
                    "Please provide a value for each cardinal point,",
                    "or use bounds=NA"))
       }
-      map <- as(tmpmap, "SpatialPixelsDataFrame")
-      map <- as.data.frame(map)
-      colnames(map) <- c("value", "x", "y")
-      map <- map[, names(map) != "value"]
-      self$data <- map
+      self$data <- tmpmap
     },
 
     #' @description Run Principle Component Analysis
     #' @import FactoMineR
     #' @import factoextra
-    #' @param varList Optional. Vector of variables to use to perform PCA.
+    #' @param traitList Optional. Vector of variables to use to perform PCA.
     #' By default will run on all variables of the map data
     #' @param nbDim Number of dimensions
-    runPCA = function(varList = NULL, nbDim = 5) {
-      gridRes <- self$grid$get_results(varList)
-      dfPCA <- gridRes[,varList]
+    runPCA = function(traitList = NULL, nbDim = 5) {
+      gridRes <- self$grid$get_results(traitList)
+      self$grid$set_gridres(gridRes)
+      dfPCA <- gridRes[,traitList]
       res <- PCA(dfPCA, ncp = nbDim, graph = F)
       self$PCAres <- res
     },
@@ -92,66 +89,24 @@ TPEmap <- R6::R6Class("TPEmap",
       } else {
         res <- HCPC(self$PCAres, nb.clust = -1, graph = F)
         self$HCPCres <- res
+        self$grid$gridRes$cluster <- res$data.clust$clust
       }
     },
 
     #' @description Create plot on map based on grid simulation
-    #' @import interp
     #' @import ggplot2
     plotMap = function() {
-      cat(paste("Plotting map", self$name, "\n"))
-      for(i in 1:nrow(self$grid$gridPoints)) {
-        for(j in 1:ncol(self$grid$gridPoints)) {
-          pointLat <- round(self$grid$gridPoints[i,j][[1]]$lat,digits=1)
-          pointLon <- round(self$grid$gridPoints[i,j][[1]]$lon,digits=1)
-          self$data[which(round(self$data$x,digits=1) == pointLon &
-                     round(self$data$y,digits=1) == pointLat),][1,"value"] <-
-            ifelse(self$grid$resGrid[i,j] == 0, NA, self$grid$resGrid[i,j])
-        }
-      }
-
-      self$data$x <- round(self$data$x, digits=2)
-      self$data$y <- round(self$data$y, digits=2)
-      df2 <- self$data[!is.na(self$data$value),]
-      bbox <- c(
-        "xmin" = min(df2$x),
-        "ymin" = min(df2$y),
-        "xmax" = max(df2$x),
-        "ymax" = max(df2$y)
-      )
-      grd_template <- expand.grid(
-        x = seq(from = bbox["xmin"], to = bbox["xmax"], by = 0.1),
-        y = seq(from = bbox["ymin"], to = bbox["ymax"], by = 0.1)
-      )
-
-      fit_TIN <- interp::interp(
-        x = df2$x,
-        y = df2$y,
-        z = df2$value,
-        xo = grd_template$x,
-        yo = grd_template$y,
-        output = "points"
-      )
-      fit <- data.frame(do.call(cbind, fit_TIN))
-
-      missings <- c()
-      for(k in 1:nrow(fit)) {
-        if(nrow(self$data[which(round(self$data$x, digits=1) ==
-                         round(fit[k,"x"], digits=1) &
-                         round(self$data$y, digits=1) ==
-                         round(fit[k,"y"], digits=1)),]) == 0) {
-          missings <- c(missings,k)
-        }
-      }
-      fit2 <- fit[-missings,]
-
-      grid_plot <- ggplot() +
-        geom_point(data = self$data,
-                   mapping = aes(x = x, y = y, color = value)) +
-        geom_point(data = fit2, aes(x = x, y = y, color = z)) +
-        scale_color_gradientn(colors = c("blue", "yellow", "red"))
-
-      self$plots <- append(self$plots, list(grid_plot))
+      #TODO: might need to change as fortify may be deprecated in the future
+      AG <- fortify(self$data)
+      p <- ggplot() + geom_raster(data=self$grid$gridRes,
+                                  aes(x=x, y=y, fill=as.factor(cluster)),
+                                  interpolate=FALSE) +
+      geom_polygon(data=AG, aes(x=long, y=lat, group=group),
+                   size=0.3, colour="black", fill=NA) +
+        coord_cartesian() +
+        theme_bw() +
+        xlab("Longitude") + ylab("Latitude")
+      self$plots <- append(self$plots, list(p))
     }
   ),
 

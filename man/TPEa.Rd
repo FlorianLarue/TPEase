@@ -58,6 +58,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
 \item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
 \item \href{#method-TPEa-runEstimation}{\code{TPEa$runEstimation()}}
+\item \href{#method-TPEa-runClustering}{\code{TPEa$runClustering()}}
 \item \href{#method-TPEa-print_grids}{\code{TPEa$print_grids()}}
 \item \href{#method-TPEa-print_maps}{\code{TPEa$print_maps()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
@@ -539,10 +540,9 @@ Create raster map
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$createMap(
   name = "map1",
   gridID = NA,
-  res = 150,
   bounds = NA,
   multimap = F,
-  plot = T
+  res = 150
 )}\if{html}{\out{</div>}}
 }
 
@@ -553,18 +553,15 @@ Create raster map
 
 \item{\code{gridID}}{A grid identifier to use on the map}
 
-\item{\code{res}}{A numeric value in sec of the resolution of world map to use
-Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
-
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
 of north, east, south, west bounds to crop map}
 
 \item{\code{multimap}}{A boolean indicating if one map for each grid should be
 created. True by default}
 
-\item{\code{plot}}{A boolean indicating if plots of the maps should be created.
-To manually create plots of the maps see `plotMap()`.
-To print the plotted maps see `print_maps()`}
+\item{\code{res}}{Not used at the moment. A numeric value in sec of the
+resolution of world map to use. Options are c(1, 150, 900)
+for respectively 30sec, 2.5min, 15min}
 }
 \if{html}{\out{</div>}}
 }
@@ -628,6 +625,29 @@ for fitness computation. Options are c("RMSE","MAE","MSE")}
 
 \item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
 each of the parameters in `paramnames` (rows)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-runClustering"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-runClustering}{}}}
+\subsection{Method \code{runClustering()}}{
+Run TPE clustering by performing Principle Component
+Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runClustering(mapID = 1, traitList = c("GrainYieldPop"), nbDim = 5)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mapID}}{A value or list of values of map identifiers
+(either index or names)on which to perform clustering}
+
+\item{\code{traitList}}{Vector of variable names to be used for PCA}
+
+\item{\code{nbDim}}{Integer of number of dimensions to use for PCA}
 }
 \if{html}{\out{</div>}}
 }

@@ -507,17 +507,15 @@ TPEa <- R6::R6Class("TPEa",
     #' @description Create raster map
     #' @param name A character string defining the name of the map
     #' @param gridID A grid identifier to use on the map
-    #' @param res A numeric value in sec of the resolution of world map to use
-    #' Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
     #' @param multimap A boolean indicating if one map for each grid should be
     #' created. True by default
-    #' @param plot A boolean indicating if plots of the maps should be created.
-    #' To manually create plots of the maps see `plotMap()`.
-    #' To print the plotted maps see `print_maps()`
-    createMap = function(name="map1", gridID=NA, res=150, bounds=NA,
-                         multimap=F, plot=T) {
+    #' @param res Not used at the moment. A numeric value in sec of the
+    #' resolution of world map to use. Options are c(1, 150, 900)
+    #' for respectively 30sec, 2.5min, 15min
+    createMap = function(name="map1", gridID=NA, bounds=NA, multimap=F,
+                         res=150) {
       if(multimap) {
         for(i in 1:length(self$get_gridNames())) {
           mname <- paste0(name, "_", self$get_gridNames()[i])
@@ -527,8 +525,8 @@ TPEa <- R6::R6Class("TPEa",
                        "grid name"))
           } else {
             private$mapnames <- c(private$mapnames, mname)
-            self$maps <- append(self$maps, TPEmap$new(mname, i, res, bounds,
-                                                      self))
+            self$maps <- append(self$maps, TPEmap$new(mname, i, bounds,
+                                                      self, res))
           }
         }
       } else {
@@ -538,12 +536,9 @@ TPEa <- R6::R6Class("TPEa",
         } else {
           id <- self$get_gridid(gridID)
           private$mapnames <- c(private$mapnames, name)
-          self$maps <- append(self$maps, TPEmap$new(name, id, res, bounds,
-                                                    self))
+          self$maps <- append(self$maps, TPEmap$new(name, id, bounds,
+                                                    self, res))
         }
-      }
-      if(plot) {
-        self$plotMap()
       }
     },
 
@@ -592,6 +587,20 @@ TPEa <- R6::R6Class("TPEa",
         self$varieties[[id]]$runEstimation(maxiter, paramnames, metric,
                                            score_fn, weigh_fn, bounds, weathers,
                                            id)
+      }
+    },
+
+    #' @description Run TPE clustering by performing Principle Component
+    #' Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
+    #' @param mapID A value or list of values of map identifiers
+    #' (either index or names)on which to perform clustering
+    #' @param traitList Vector of variable names to be used for PCA
+    #' @param nbDim Integer of number of dimensions to use for PCA
+    runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5) {
+      for(i in 1:length(mapID)) {
+        id <- self$get_mapid(mapID[i])
+        self$maps[[id]]$runPCA(traitList, nbDim)
+        self$maps[[id]]$runHCPC()
       }
     },
 

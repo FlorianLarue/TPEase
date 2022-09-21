@@ -24,6 +24,8 @@ TODO
 
 \item{\code{gridPoints}}{Collection of each point on the grid}
 
+\item{\code{gridRes}}{Result dataframe (constructed during map clustering)}
+
 \item{\code{parent}}{TPE analysis parent}
 
 \item{\code{variety}}{Variety to which this grid is linked to}
@@ -39,6 +41,7 @@ TODO
 \item \href{#method-TPEgrid-initMessage}{\code{TPEgrid$initMessage()}}
 \item \href{#method-TPEgrid-set_var}{\code{TPEgrid$set_var()}}
 \item \href{#method-TPEgrid-set_name}{\code{TPEgrid$set_name()}}
+\item \href{#method-TPEgrid-set_gridres}{\code{TPEgrid$set_gridres()}}
 \item \href{#method-TPEgrid-get_width}{\code{TPEgrid$get_width()}}
 \item \href{#method-TPEgrid-get_length}{\code{TPEgrid$get_length()}}
 \item \href{#method-TPEgrid-get_results}{\code{TPEgrid$get_results()}}
@@ -134,6 +137,23 @@ Set grid name
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{Variety}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-set_gridres"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-set_gridres}{}}}
+\subsection{Method \code{set_gridres()}}{
+Set grid result dataframe
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$set_gridres(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Dataframe}
 }
 \if{html}{\out{</div>}}
 }

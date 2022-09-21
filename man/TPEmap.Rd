@@ -14,9 +14,9 @@ TODO
 \describe{
 \item{\code{name}}{A character string identifier of the map}
 
-\item{\code{data}}{A dataframe with map coordinates and values}
+\item{\code{data}}{A SpatialPolygondataframe of the desired map}
 
-\item{\code{PCAres}}{Principle Component Analysis result for `data`}
+\item{\code{PCAres}}{Principle Component Analysis result for `self$grid$gridRes`}
 
 \item{\code{HCPCres}}{Hierarchical Clustering on Principle Components result for
 `PCAres`}
@@ -47,7 +47,7 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE map object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1", grid = NA, res = 150, bounds = NA, parent = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1", grid = NA, bounds = NA, parent = NA, res = 150)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -57,13 +57,14 @@ Create a new TPE map object
 
 \item{\code{grid}}{A grid identifier attached to the map}
 
-\item{\code{res}}{A numeric value in sec of the resolution of world map to use
-Options are c(1, 150, 900) for respectively 30sec, 2.5min, 15min}
-
 \item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
 of north, east, south, west bounds to crop map}
 
 \item{\code{parent}}{TPE parent}
+
+\item{\code{res}}{Not active for now. A numeric value in sec of the resolution
+of world map to use. Options are c(1, 150, 900) for respectively
+30sec, 2.5min, 15min}
 }
 \if{html}{\out{</div>}}
 }
@@ -77,13 +78,13 @@ A new `TPEmap` object.
 \subsection{Method \code{runPCA()}}{
 Run Principle Component Analysis
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runPCA(varList = NULL, nbDim = 5)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runPCA(traitList = NULL, nbDim = 5)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{varList}}{Optional. Vector of variables to use to perform PCA.
+\item{\code{traitList}}{Optional. Vector of variables to use to perform PCA.
 By default will run on all variables of the map data}
 
 \item{\code{nbDim}}{Number of dimensions}
