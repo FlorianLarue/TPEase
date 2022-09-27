@@ -22,7 +22,9 @@ TODO
 
 \item{\code{soil}}{A soil object}
 
-\item{\code{result}}{Model simulation}
+\item{\code{result}}{Mean results}
+
+\item{\code{simulations}}{Model simulations}
 
 \item{\code{parent}}{Grid parent of grid point}
 
@@ -41,6 +43,7 @@ TODO
 \item \href{#method-gridPoint-set_variety}{\code{gridPoint$set_variety()}}
 \item \href{#method-gridPoint-set_weather}{\code{gridPoint$set_weather()}}
 \item \href{#method-gridPoint-get_sim}{\code{gridPoint$get_sim()}}
+\item \href{#method-gridPoint-get_meansd}{\code{gridPoint$get_meansd()}}
 \item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
 \item \href{#method-gridPoint-runSimulation}{\code{gridPoint$runSimulation()}}
 \item \href{#method-gridPoint-clone}{\code{gridPoint$clone()}}
@@ -154,7 +157,41 @@ Get simulation data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Variable name to retrieve}
+\item{\code{val}}{Variable name to retrieve
+#' @description Get mean simulation result over
+#' @param traitList Vector of variable names to extract from simulation
+#' results
+get_result = function(traitList) {
+  resDf <- data.frame()
+  for(simu in 1:length(self$simulations)) {
+    tmpDf <- data.frame(year = self$weather$yearLevels[simu])
+    for(trait in traitList) {
+      tmpDf <- cbind(tmpDf, max(as.numeric(as.character(
+        self$simulations[[simu]][,trait])), na.rm=T))
+    }
+    resDf <- rbind(resDf, tmpDf)
+  }
+  resDf <- colMeans(resDf[,-c(1)])
+  colnames(resDf) <- traitList
+  return(resDf)
+},}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-get_meansd"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-get_meansd}{}}}
+\subsection{Method \code{get_meansd()}}{
+Get mean and sd of simulation result
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$get_meansd(traitList)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{traitList}}{Vector of trait names}
 }
 \if{html}{\out{</div>}}
 }
@@ -192,7 +229,7 @@ Generate climate
 \subsection{Method \code{runSimulation()}}{
 Run simulation on grid point
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, i, j)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, i, j, soilData, latlonData, traitList, savePath)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -203,6 +240,17 @@ Run simulation on grid point
 \item{\code{i}}{row position of grid point}
 
 \item{\code{j}}{col position of grid point}
+
+\item{\code{soilData}}{Tmp for Adam et al.}
+
+\item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{traitList}}{Optionnal. Vector of trait names to extract from
+simulations. This will delete the simulations and only keep the max for
+each year}
+
+\item{\code{savePath}}{Optional. A character string of the path where to save
+simulation files. If NULL (default), will not save simulations}
 }
 \if{html}{\out{</div>}}
 }

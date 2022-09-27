@@ -184,13 +184,13 @@ Get grid length
 \subsection{Method \code{get_results()}}{
 Get grid simulation results
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_results(varList = NA)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$get_results(traitList = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{varList}}{Vector of variable names to extract for results}
+\item{\code{traitList}}{Vector of variable names to extract for results}
 }
 \if{html}{\out{</div>}}
 }
@@ -252,17 +252,22 @@ should be shown}
 \subsection{Method \code{runGridSim()}}{
 Run simulation for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(year, soilData, latlonData)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(soilData, latlonData, traitList, savePath)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{year}}{Year to run the simulation}
-
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{traitList}}{Optionnal. Vector of trait names to extract from
+simulations. This will delete the simulations and only keep the mean of
+the yearly maximum for each trait}
+
+\item{\code{savePath}}{Optional. A character string of the path where to save
+simulation files. If NULL (default), will not save simulations}
 }
 \if{html}{\out{</div>}}
 }

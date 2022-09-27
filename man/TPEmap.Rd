@@ -98,9 +98,16 @@ By default will run on all variables of the map data}
 \subsection{Method \code{runHCPC()}}{
 Run Hierarchical Clustering on Principle Components
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runHCPC()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runHCPC(nbClust)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{nbClust}}{Number of clusters}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEmap-plotMap"></a>}}

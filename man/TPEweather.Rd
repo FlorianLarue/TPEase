@@ -20,6 +20,8 @@ TODO
 
 \item{\code{dateParam}}{sowing date of grid point}
 
+\item{\code{yearLevels}}{Years of generated weather data}
+
 \item{\code{parent}}{Parent environment}
 
 \item{\code{test}}{Debug}

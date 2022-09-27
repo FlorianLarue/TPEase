@@ -17,16 +17,26 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
 
   #Extract data from worldclim
   coordinates <- cbind(lon,lat)
-  grid.tmin = getData('worldclim', var='tmin', res=0.5, lat=lat, lon=lon)
-  grid.tmax = getData('worldclim', var='tmax', res=0.5, lat=lat, lon=lon)
-  grid.prec = getData('worldclim', var='prec', res=0.5, lat=lat, lon=lon)
+  grid.tmin = raster::getData('worldclim', var='tmin', res=0.5, lat=lat,
+                              lon=lon)
+  grid.tmax = raster::getData('worldclim', var='tmax', res=0.5, lat=lat,
+                              lon=lon)
+  grid.prec = raster::getData('worldclim', var='prec', res=0.5, lat=lat,
+                              lon=lon)
   tmin=extract(grid.tmin,coordinates)
   tmax=extract(grid.tmax,coordinates)
   prec=extract(grid.prec,coordinates)
   prec[1,prec[1,]>999] <- 999
 
-  if(!is.na(tmin[1])) { #if these data exists
-    #Transform data in Marksim readable format and write the data in CLI file
+  if(!is.na(tmin[1])) {
+    #TODO: need to find solution. First, remove existing folder
+    dirpath <- paste0(pathCLI,"CLI/ANYWHE_",modelNb,"_",rcp,"_",year)
+    if(dir.exists(dirpath)) {
+      unlink(dirpath, recursive=T)
+    }
+
+    #if these data exists, transform data in Marksim readable format
+    #and write the data in CLI file
     mdata <- matrix (rep(0,7*12),nrow=12,ncol=7)
     mdata[,1] <- seq(1:12)
     mdata[,2] <- rep(-99,12)
@@ -65,10 +75,9 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
     #Transform data in Samara readable format
     tab <- data.frame()
     nlines <- c()
-    dirname <- paste0(pathCLI,"CLI/ANYWHE_",modelNb,"_",rcp,"_",year)
-    files <- dir(dirname,pattern="ANYW[0-9][0-9][0-9]")
+    files <- dir(dirpath,pattern="ANYW[0-9][0-9][0-9]")
     for(f in files) {
-      line=read.table(paste(dirname,"/",f,sep=""),head=T,skip=3)
+      line=read.table(paste(dirpath,"/",f,sep=""),head=T,skip=3)
       nlines <-c(nlines,nrow(line))
       tab <- rbind(tab,line)
     }

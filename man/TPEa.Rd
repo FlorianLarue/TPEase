@@ -460,7 +460,7 @@ Generate climate data for one or several grids
   path = NA,
   pathCLI = NA,
   filesE = F,
-  verbose = F
+  verbose = T
 )}\if{html}{\out{</div>}}
 }
 
@@ -507,9 +507,10 @@ Run simulation on one or several grids
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$runGridSim(
   gridID = NA,
   varID = NA,
-  year = 2015,
   soilData = soil,
-  latlonData = lat_lon
+  latlonData = lat_lon,
+  traitList = NULL,
+  savePath = NULL
 )}\if{html}{\out{</div>}}
 }
 
@@ -522,11 +523,16 @@ Run simulation on one or several grids
 \item{\code{varID}}{A variety identifier to use for
 simulation on the grid. If NA, will use the variety attached to grid}
 
-\item{\code{year}}{A numeric value with the year to run the simulation}
-
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{traitList}}{Optionnal. Vector of trait names to extract from
+simulations. This will delete the simulations and only keep the max for
+each year}
+
+\item{\code{savePath}}{Optional. A character string of the path where to save
+simulation files. If NULL (default), will not save simulations}
 }
 \if{html}{\out{</div>}}
 }
@@ -636,7 +642,12 @@ each of the parameters in `paramnames` (rows)}
 Run TPE clustering by performing Principle Component
 Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$runClustering(mapID = 1, traitList = c("GrainYieldPop"), nbDim = 5)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$runClustering(
+  mapID = 1,
+  traitList = c("GrainYieldPop"),
+  nbDim = 5,
+  nbClust = 3
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -648,6 +659,8 @@ Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
 \item{\code{traitList}}{Vector of variable names to be used for PCA}
 
 \item{\code{nbDim}}{Integer of number of dimensions to use for PCA}
+
+\item{\code{nbClust}}{Integer of number of clusters to use for HCPC}
 }
 \if{html}{\out{</div>}}
 }

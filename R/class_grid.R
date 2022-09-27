@@ -129,15 +129,15 @@ TPEgrid <- R6::R6Class("TPEgrid",
     },
 
     #' @description Get grid simulation results
-    #' @param varList Vector of variable names to extract for results
-    get_results = function(varList = NA) {
+    #' @param traitList Vector of variable names to extract for results
+    get_results = function(traitList = NA) {
       resDf <- data.frame()
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {
           resDf[nrow(resDf)+1,"x"] <- self$gridPoints[i,j][[1]]$lon
           resDf[nrow(resDf),"y"] <- self$gridPoints[i,j][[1]]$lat
-          for(v in varList) {
-            resDf[nrow(resDf),v] <- self$gridPoints[i,j][[1]]$get_sim(v)
+          for(t in traitList) {
+            resDf[nrow(resDf),t] <- self$gridPoints[i,j][[1]]$get_sim(t)
           }
         }
       }
@@ -180,6 +180,8 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about completing climate generation
     #' should be shown
+    #' @importFrom data.table fread
+    #' @importFrom data.table fwrite
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, filesE,
                           verbose) {
       if(filesE) { #TODO: tmp solution for dev, need to find generalization
@@ -189,8 +191,10 @@ TPEgrid <- R6::R6Class("TPEgrid",
             lonF <- self$gridPoints[i,j][[1]]$lon
             if(file.size(paste0(path,"weathers/weather_",latF,"_",
                                 lonF,".csv")) > 5) {
-              weatherF <- read.csv(paste0(path,"weathers/weather_",latF,"_",
-                                          lonF,".csv"), row.names=1)
+              weatherF <- data.frame(data.table::fread(paste0(path,
+                                                      "weathers/weather_",
+                                                      latF,"_", lonF,".csv"),
+                                                      drop=1))
               self$gridPoints[i,j][[1]]$set_weather(weatherF)
             }
           }
@@ -198,24 +202,31 @@ TPEgrid <- R6::R6Class("TPEgrid",
       } else {
         currentPath <- getwd()
         setwd(path)
+        cnt <- 0
         nbGP <- nrow(self$gridPoints) * ncol(self$gridPoints)
         pbClim <- txtProgressBar(min = 0, max = nbGP, style = 3)
         for(i in 1:nrow(self$gridPoints)) {
           for(j in 1:ncol(self$gridPoints)) {
             self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb,
                                                  path, pathCLI)
+            cnt <- cnt + 1
             setTxtProgressBar(pbClim, cnt)
           }
         }
+        cat("\n")
         setwd(currentPath)
       }
     },
 
     #' @description Run simulation for each point of the grid
-    #' @param year Year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(year, soilData, latlonData) {
+    #' @param traitList Optionnal. Vector of trait names to extract from
+    #' simulations. This will delete the simulations and only keep the mean of
+    #' the yearly maximum for each trait
+    #' @param savePath Optional. A character string of the path where to save
+    #' simulation files. If NULL (default), will not save simulations
+    runGridSim = function(soilData, latlonData, traitList, savePath) {
       if(is.null(self$variety)) {
         warning(paste("Grid", self$name, "has no variety attached to it",
                       "please provide a varID when calling runGridSim()"))
@@ -227,13 +238,14 @@ TPEgrid <- R6::R6Class("TPEgrid",
       pbSim <- txtProgressBar(min = 0, max = nbGP, style = 3)
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {
-          self$gridPoints[i,j][[1]]$set_soilParam(soilData, latlonData)
-          self$gridPoints[i,j][[1]]$set_dateParam(year)
-          self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters, i,j)
+          self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters, i,j,
+                                                  soilData, latlonData,
+                                                  traitList, savePath)
           setTxtProgressBar(pbSim, cnt)
           cnt <- cnt + 1
         }
       }
+      cat("\n")
     }
   ),
 

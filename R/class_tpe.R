@@ -460,7 +460,7 @@ TPEa <- R6::R6Class("TPEa",
     #' should be shown
     genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
-                          filesE=F, verbose=F) {
+                          filesE=F, verbose=T) {
       if(sum(!is.na(gridID)) == 0) {
         idg <- self$get_gridNames()
       } else {
@@ -483,11 +483,15 @@ TPEa <- R6::R6Class("TPEa",
     #' (either index or name). By default will run all grids
     #' @param varID A variety identifier to use for
     #' simulation on the grid. If NA, will use the variety attached to grid
-    #' @param year A numeric value with the year to run the simulation
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
-    runGridSim = function(gridID=NA, varID=NA, year=2015, soilData=soil,
-                          latlonData=lat_lon) {
+    #' @param traitList Optionnal. Vector of trait names to extract from
+    #' simulations. This will delete the simulations and only keep the max for
+    #' each year
+    #' @param savePath Optional. A character string of the path where to save
+    #' simulation files. If NULL (default), will not save simulations
+    runGridSim = function(gridID=NA,varID=NA,soilData=soil,latlonData=lat_lon,
+                          traitList=NULL, savePath=NULL) {
       if(sum(!is.na(gridID)) == 0) {
         idg <- self$get_gridNames()
       } else {
@@ -500,7 +504,7 @@ TPEa <- R6::R6Class("TPEa",
           idv <- self$get_varid(varID)
           self$grids[[id]]$set_var(self$varieties[[idv]])
         }
-        self$grids[[id]]$runGridSim(year, soilData, latlonData)
+        self$grids[[id]]$runGridSim(soilData, latlonData, traitList, savePath)
       }
     },
 
@@ -596,11 +600,13 @@ TPEa <- R6::R6Class("TPEa",
     #' (either index or names)on which to perform clustering
     #' @param traitList Vector of variable names to be used for PCA
     #' @param nbDim Integer of number of dimensions to use for PCA
-    runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5) {
+    #' @param nbClust Integer of number of clusters to use for HCPC
+    runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5,
+                             nbClust=3) {
       for(i in 1:length(mapID)) {
         id <- self$get_mapid(mapID[i])
         self$maps[[id]]$runPCA(traitList, nbDim)
-        self$maps[[id]]$runHCPC()
+        self$maps[[id]]$runHCPC(nbClust)
       }
     },
 

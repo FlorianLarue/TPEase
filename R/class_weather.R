@@ -17,6 +17,8 @@ TPEweather <- R6::R6Class("TPEweather",
     simuWeather = NULL,
     #' @field dateParam sowing date of grid point
     dateParam = NULL,
+    #' @field yearLevels Years of generated weather data
+    yearLevels = NULL,
     #' @field parent Parent environment
     parent = NULL,
     #' @field test Debug
@@ -35,6 +37,11 @@ TPEweather <- R6::R6Class("TPEweather",
     #' @param val A dataframe of weather data
     set_weather = function(val) {
       self$wData <- val
+      if(!is.null(self$wData)) {
+        yl <- unique(stringr::str_split_fixed(self$wData$weatherdate,
+                                              "/",3)[,3])
+        self$yearLevels <- yl
+      }
     },
 
     #' @description Generate climate
@@ -79,11 +86,7 @@ TPEweather <- R6::R6Class("TPEweather",
             }
           }
         }
-        if(is.null(self$dateParam)) {
-          warning(paste("No sowing date could be found for gridpoint",
-                        self$name, "default sowing date will be used."),
-                  call.=F)
-        } else {
+        if(!is.null(self$dateParam)) {
           self$simuWeather$weatherdate <- as.Date(as.character(
             self$simuWeather$weatherdate), format="%d/%m/%Y")
         }

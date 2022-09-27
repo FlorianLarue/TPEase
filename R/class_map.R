@@ -72,6 +72,7 @@ TPEmap <- R6::R6Class("TPEmap",
     #' By default will run on all variables of the map data
     #' @param nbDim Number of dimensions
     runPCA = function(traitList = NULL, nbDim = 5) {
+      cat(paste0("Running PCA on map ", self$name))
       gridRes <- self$grid$get_results(traitList)
       self$grid$set_gridres(gridRes)
       dfPCA <- gridRes[,traitList]
@@ -80,14 +81,16 @@ TPEmap <- R6::R6Class("TPEmap",
     },
 
     #' @description Run Hierarchical Clustering on Principle Components
+    #' @param nbClust Number of clusters
     #' @import FactoMineR
     #' @import factoextra
-    runHCPC = function() {
+    runHCPC = function(nbClust) {
       if(!is.null(self$resPCA)) {
         stop(paste0("No PCA found for map ", self$name,
                     ". Please run runPCA()"))
       } else {
-        res <- HCPC(self$PCAres, nb.clust = -1, graph = F)
+        cat(paste0("Running HCPC on map ", self$name, "\n"))
+        res <- HCPC(self$PCAres, nb.clust = 3, graph = F)
         self$HCPCres <- res
         self$grid$gridRes$cluster <- res$data.clust$clust
       }
@@ -96,6 +99,8 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @description Create plot on map based on grid simulation
     #' @import ggplot2
     plotMap = function() {
+      cat(paste0("Plotting map ", self$name,
+                   " see print_maps() to show the plots\n"))
       #TODO: might need to change as fortify may be deprecated in the future
       AG <- fortify(self$data)
       p <- ggplot() + geom_raster(data=self$grid$gridRes,
