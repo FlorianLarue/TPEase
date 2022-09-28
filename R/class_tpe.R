@@ -17,6 +17,8 @@ TPEa <- R6::R6Class("TPEa",
     model = NULL,
     #' @field grids A vector of simulation grids
     grids = list(),
+    #' @field results A dataframe with grid simulation results
+    results = NULL,
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
     #' @field test Debug
@@ -44,9 +46,6 @@ TPEa <- R6::R6Class("TPEa",
     initMessage = function() {
       cat(paste0("TPE analysis ", self$name, " created \n"))
     },
-
-
-    ## Setters
 
     #' @description Set TPE analysis name
     #' @param val New TPE analysis name
@@ -106,8 +105,6 @@ TPEa <- R6::R6Class("TPEa",
       }
     },
 
-    ## Getters
-
     #' @description Get names of all grids
     get_gridNames = function() {
       return(private$gridnames)
@@ -159,8 +156,17 @@ TPEa <- R6::R6Class("TPEa",
       return(id)
     },
 
-
-    ## Creators
+    #' @description Get simulation results of all grids
+    #' @param traitList List of variables to extract as results
+    get_results = function(traitList = NA) {
+      resDf <- data.frame()
+      for(i in 1:length(self$get_gridNames)) {
+        tmpDf <- self$grids[[i]]$get_results(traitList)
+        tmpDf$variety <- private$parent$get_varNames()[i]
+        resDf <- rbind(resDf, tmpDf)
+      }
+      self$results <- resDf
+    },
 
     #' @description Create a simulation grid
     #' @param name A character string identifier of the grid
@@ -303,8 +309,9 @@ TPEa <- R6::R6Class("TPEa",
     #' @param nbClust Integer of number of clusters to use for HCPC
     runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5,
                              nbClust=3) {
-        self$maps[[id]]$runPCA(dataMap, nbDim)
-        self$maps[[id]]$runHCPC(nbClust)
+      self$get_results(traitList)
+      self$maps[[id]]$runPCA(self$results, nbDim)
+      self$maps[[id]]$runHCPC(nbClust)
     }
 
   ),

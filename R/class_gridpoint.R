@@ -101,15 +101,16 @@ gridPoint <- R6::R6Class("gridPoint",
 
     #' @description Get mean and sd of simulation result
     #' @param traitList Vector of trait names
+    #' @importFrom matrixStats colSds
     get_meansd = function(traitList) {
-      df <- as.data.frame(self$result)
-      df[nrow(df)+1,] <- colMeans(df)
-      df[nrow(df)+1,] <- matrixStats::colSds(as.matrix(df[-c(nrow(df)),]))
-      colnames(df) <- traitList
-      rownames(df) <- NULL
+      resDf <- as.data.frame(self$result)
+      resDf[nrow(resDf)+1,] <- colMeans(resDf)
+      resDf[nrow(resDf)+1,] <- colSds(as.matrix(resDf[-c(nrow(resDf)),]))
+      colnames(resDf) <- traitList
+      rownames(resDf) <- NULL
       #TODO: tmp fix for dev, find another way to save sd
-      self$test <- df[nrow(df),]
-      return(df[nrow(df)-1,])
+      self$test <- resDf[nrow(resDf),]
+      return(resDf[nrow(resDf)-1,])
     },
 
     #' @description Generate climate

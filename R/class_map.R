@@ -18,8 +18,6 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @field HCPCres Hierarchical Clustering on Principle Components result for
     #' `PCAres`
     HCPCres = NULL,
-    #' @field parent TPE analysis parent
-    parent = NULL,
     #' @field plots A list of ggplot2 plots from the map
     plots = list(),
     #' @field test Debug
@@ -40,7 +38,7 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @importFrom raster crs
     initialize = function(name="map1", bounds=NA, parent=NA, res=150) {
       self$name <- as.character(name)
-      self$parent <- parent
+      private$parent <- parent
 
       cat(paste("\nCreating map", name,"\n"))
 
@@ -105,5 +103,7 @@ TPEmap <- R6::R6Class("TPEmap",
     }
   ),
 
-  private = list()
+  private = list(
+    parent = NULL
+  )
 )

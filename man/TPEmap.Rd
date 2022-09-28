@@ -21,8 +21,6 @@ TODO
 \item{\code{HCPCres}}{Hierarchical Clustering on Principle Components result for
 `PCAres`}
 
-\item{\code{parent}}{TPE analysis parent}
-
 \item{\code{plots}}{A list of ggplot2 plots from the map}
 
 \item{\code{test}}{Debug}

@@ -20,6 +20,8 @@ used for simulations (only "Samara" is supported for now)}
 
 \item{\code{grids}}{A vector of simulation grids}
 
+\item{\code{results}}{A dataframe with grid simulation results}
+
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
 \item{\code{test}}{Debug}
@@ -39,6 +41,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-get_mapNames}{\code{TPEa$get_mapNames()}}
 \item \href{#method-TPEa-get_gridid}{\code{TPEa$get_gridid()}}
 \item \href{#method-TPEa-get_mapid}{\code{TPEa$get_mapid()}}
+\item \href{#method-TPEa-get_results}{\code{TPEa$get_results()}}
 \item \href{#method-TPEa-createGrid}{\code{TPEa$createGrid()}}
 \item \href{#method-TPEa-genClimate}{\code{TPEa$genClimate()}}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
@@ -211,6 +214,23 @@ Get map id
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{Either map name or a map id (will return the map id)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-get_results"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-get_results}{}}}
+\subsection{Method \code{get_results()}}{
+Get simulation results of all grids
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$get_results(traitList = NA)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{traitList}}{List of variables to extract as results}
 }
 \if{html}{\out{</div>}}
 }
