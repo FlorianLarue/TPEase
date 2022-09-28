@@ -123,27 +123,6 @@ et0 <- function(tmin,tmax,srad){
   return(eo)
 }
 
-
-#' @title Create a TPE analysis object
-#' @description Create a TPE analysis object (from R6 class TPEa)
-#' @param name test
-#' @param model test
-#' @param varieties test
-#' @param environments test
-#' @param latStart test
-#' @param lonStart test
-#' @param genotypes test
-#' @return A R6 class TPE analysis object
-#' @examples
-#' TPE_analysis <- create_tpe("tpea1","Samara")
-#' @export
-createTpe <- function(name="TPEa_1", model="Samara", varieties=NA,
-                      environments=NA, genotypes=NA, parameters=NA,
-                      eparameters=NA) {
-  return(TPEa$new(name, model, varieties, environments, genotypes, parameters,
-                  eparameters))
-}
-
 #' @title Load data for vignette
 #' @description Load data for vignette
 #' @export

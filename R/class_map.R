@@ -20,8 +20,6 @@ TPEmap <- R6::R6Class("TPEmap",
     HCPCres = NULL,
     #' @field parent TPE analysis parent
     parent = NULL,
-    #' @field grid A grid object attached to the map
-    grid = NULL,
     #' @field plots A list of ggplot2 plots from the map
     plots = list(),
     #' @field test Debug
@@ -29,7 +27,6 @@ TPEmap <- R6::R6Class("TPEmap",
 
     #' @description Create a new TPE map object
     #' @param name A character string identifier of the TPE map
-    #' @param grid A grid identifier attached to the map
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
     #' @param parent TPE parent
@@ -41,12 +38,9 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
-    initialize = function(name="map1", grid=NA, bounds=NA,
-                          parent=NA, res=150) {
+    initialize = function(name="map1", bounds=NA, parent=NA, res=150) {
       self$name <- as.character(name)
       self$parent <- parent
-
-      self$grid <- self$parent$grids[[self$parent$get_gridid(grid)]]
 
       cat(paste("\nCreating map", name,"\n"))
 
@@ -67,15 +61,10 @@ TPEmap <- R6::R6Class("TPEmap",
 
     #' @description Run Principle Component Analysis
     #' @import FactoMineR
-    #' @import factoextra
-    #' @param traitList Optional. Vector of variables to use to perform PCA.
-    #' By default will run on all variables of the map data
+    #' @param dfPCA Data to perform PCA
     #' @param nbDim Number of dimensions
-    runPCA = function(traitList = NULL, nbDim = 5) {
+    runPCA = function(dfPCA = NULL, nbDim = 5) {
       cat(paste0("Running PCA on map ", self$name))
-      gridRes <- self$grid$get_results(traitList)
-      self$grid$set_gridres(gridRes)
-      dfPCA <- gridRes[,traitList]
       res <- PCA(dfPCA, ncp = nbDim, graph = F)
       self$PCAres <- res
     },
@@ -83,16 +72,16 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @description Run Hierarchical Clustering on Principle Components
     #' @param nbClust Number of clusters
     #' @import FactoMineR
-    #' @import factoextra
     runHCPC = function(nbClust) {
       if(!is.null(self$resPCA)) {
         stop(paste0("No PCA found for map ", self$name,
                     ". Please run runPCA()"))
       } else {
         cat(paste0("Running HCPC on map ", self$name, "\n"))
-        res <- HCPC(self$PCAres, nb.clust = 3, graph = F)
+        res <- HCPC(self$PCAres, nb.clust = nbClust, graph = F)
         self$HCPCres <- res
-        self$grid$gridRes$cluster <- res$data.clust$clust
+        #TODO: get it to the correct object
+        #self$grid$gridRes$cluster <- res$data.clust$clust
       }
     },
 
@@ -103,6 +92,7 @@ TPEmap <- R6::R6Class("TPEmap",
                    " see print_maps() to show the plots\n"))
       #TODO: might need to change as fortify may be deprecated in the future
       AG <- fortify(self$data)
+      #TODO: get correct data
       p <- ggplot() + geom_raster(data=self$grid$gridRes,
                                   aes(x=x, y=y, fill=as.factor(cluster)),
                                   interpolate=FALSE) +
