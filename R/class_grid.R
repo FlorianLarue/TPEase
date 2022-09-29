@@ -222,12 +222,13 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @description Run simulation for each point of the grid
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
+    #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. Vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the mean of
     #' the yearly maximum for each trait
     #' @param savePath Optional. A character string of the path where to save
     #' simulation files. If NULL (default), will not save simulations
-    runGridSim = function(soilData, latlonData, traitList, savePath) {
+    runGridSim = function(soilData, latlonData, cumulP, traitList, savePath) {
       if(is.null(self$variety)) {
         warning(paste("Grid", self$name, "has no variety attached to it",
                       "please provide a varID when calling runGridSim()"))
@@ -240,7 +241,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
       for(i in 1:nrow(self$gridPoints)) {
         for(j in 1:ncol(self$gridPoints)) {
           self$gridPoints[i,j][[1]]$runSimulation(self$variety$parameters, i,j,
-                                                  soilData, latlonData,
+                                                  soilData, latlonData, cumulP,
                                                   traitList, savePath)
           setTxtProgressBar(pbSim, cnt)
           cnt <- cnt + 1

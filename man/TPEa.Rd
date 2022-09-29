@@ -353,6 +353,7 @@ Run simulation on one or several grids
   varID = NA,
   soilData = soil,
   latlonData = lat_lon,
+  cumulP = cumul,
   traitList = NULL,
   savePath = NULL
 )}\if{html}{\out{</div>}}
@@ -370,6 +371,8 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{cumulP}}{Tmp for Adam et al.}
 
 \item{\code{traitList}}{Optionnal. Vector of trait names to extract from
 simulations. This will delete the simulations and only keep the max for
@@ -468,7 +471,11 @@ simulations on observed sites
   modelNb = "00000000000000000",
   path = NA,
   pathCLI = NA,
-  seed = 1337
+  seed = 1337,
+  soilData,
+  latlonData,
+  cumulP,
+  traitList
 )}\if{html}{\out{</div>}}
 }
 
@@ -500,6 +507,14 @@ folder as the marksim standalone. For the moment, this path can not
 contain spaces}
 
 \item{\code{seed}}{Integer number to use as seed for marksim weather generator}
+
+\item{\code{soilData}}{Tmp fix for Adam et al.}
+
+\item{\code{latlonData}}{Tmp fix for Adam et al.}
+
+\item{\code{cumulP}}{Tmp fix for Adam et al.}
+
+\item{\code{traitList}}{Vector of variable names}
 }
 \if{html}{\out{</div>}}
 }

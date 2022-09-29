@@ -54,8 +54,9 @@ gridPoint <- R6::R6Class("gridPoint",
 
     #' @description Set soil parameters for grid point location
     #' @param year Year of simulation
-    set_dateParam = function(year) {  #TODO: generalize tmp fix for Adam et al
-      self$weather$set_dateParam(year)
+    #' @param cumulP Tmp for Adam et al.
+    set_dateParam = function(year, cumulP) {  #TODO: generalize tmp fix for Adam et al
+      self$weather$set_dateParam(year, cumulP)
     },
 
     #' @description Set variety to this gridPoint
@@ -134,6 +135,7 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param j col position of grid point
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
+    #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. Vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the max for
     #' each year
@@ -142,12 +144,12 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
-    runSimulation = function(param, i, j, soilData, latlonData, traitList,
-                             savePath) {
+    runSimulation = function(param, i, j, soilData, latlonData, cumulP,
+                             traitList, savePath) {
       self$set_soilParam(soilData, latlonData)
       if(!is.null(self$weather$yearLevels)) {
         for(year in self$weather$yearLevels) {
-          self$set_dateParam(year)
+          self$set_dateParam(year, cumulP)
           if(!is.null(self$weather$dateParam)) {
             param$startingdate <- self$weather$dateParam[1]
             param$endingdate <- self$weather$dateParam[2]
@@ -217,8 +219,6 @@ gridPoint <- R6::R6Class("gridPoint",
         warning(paste0("No weather data on grid point ", self$name, ".",
                       "Simulation for this grid point will not be run."),
                 call.=F)
-        self$set_soilParam(soilData, latlonData)
-
       }
     },
 
@@ -227,17 +227,65 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param param Parameter values
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
+    #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. Vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the max for
     #' each year
+    #' @param startingYear Starting year of bootstrap climate gen
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
-    runBSSimulation = function(param, i, j, soilData, latlonData, traitList,
-                             savePath) {
+    runBSSimulation = function(param, soilData, latlonData, cumulP, traitList,
+                               startingYear) {
+      self$set_soilParam(soilData, latlonData)
       for(i in 1:self$weather$yearLevels) {
         run <- ((i - 1) %/% 99) + 1
-        year <- i - (99 * (run-1))
+        index <- i - (99 * (run-1))
+        years <- startingYear:(startingYear+98)
+        year <- years[index]
+
+        self$weather$wData <- self$weather$wList[[run]]
+
+        self$set_dateParam(year, cumulP)
+
+        if(!is.null(self$weather$dateParam)) {
+          param$startingdate <- self$weather$dateParam[1]
+          param$endingdate <- self$weather$dateParam[2]
+          param$sowing <- self$weather$dateParam[3]
+        } else {
+          warning(paste("Sowing date was not extracted from weatherdata for",
+                        "grid point", self$name, "for year", year),
+                  call.=F)
+        }
+
+        if(!is.null(self$soil$soilParam)) {
+          param$stockinisurf <- self$soil$soilParam[1]
+          param$stockiniprof <- self$soil$soilParam[2]
+          param$epaisseursurf <- self$soil$soilParam[3]
+          param$epaisseurprof <- self$soil$soilParam[4]
+          param$humpf <- self$soil$soilParam[5]
+          param$humsat <- self$soil$soilParam[6]
+          param$humfc <- self$soil$soilParam[7]
+        }
+        param$wslong <- self$lon
+        param$wslat <- self$lat
+
+        if(!is.null(self$weather$dateParam)) {
+          rsamara::init_sim_idx_simple(as.numeric(paste0(self$name, year)),
+                                       param, self$weather$simuWeather)
+          sim <- rsamara::run_sim_idx(as.numeric(paste0(self$name, year)))
+        } else {
+          sim <- NA
+        }
+
+        if(!is.null(traitList) && !is.na(sim)) {
+          tmpRes <- matrixStats::colMaxs(as.matrix(sim[,traitList]))
+          tmpRes <- as.data.frame(as.list(tmpRes))
+          colnames(tmpRes) <- traitList
+          tmpRes$year <- year
+          tmpRes$run <- run
+          self$result <- rbind(self$result, tmpRes)
+        }
       }
     }
   )

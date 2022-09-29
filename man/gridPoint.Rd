@@ -46,6 +46,7 @@ TODO
 \item \href{#method-gridPoint-get_meansd}{\code{gridPoint$get_meansd()}}
 \item \href{#method-gridPoint-genClimate}{\code{gridPoint$genClimate()}}
 \item \href{#method-gridPoint-runSimulation}{\code{gridPoint$runSimulation()}}
+\item \href{#method-gridPoint-runBSSimulation}{\code{gridPoint$runBSSimulation()}}
 \item \href{#method-gridPoint-clone}{\code{gridPoint$clone()}}
 }
 }
@@ -100,13 +101,15 @@ Set soil parameters for grid point location
 \subsection{Method \code{set_dateParam()}}{
 Set soil parameters for grid point location
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year, cumulP)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{year}}{Year of simulation}
+
+\item{\code{cumulP}}{Tmp for Adam et al.}
 }
 \if{html}{\out{</div>}}
 }
@@ -233,7 +236,16 @@ Generate climate
 \subsection{Method \code{runSimulation()}}{
 Run simulation on grid point
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(param, i, j, soilData, latlonData, traitList, savePath)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runSimulation(
+  param,
+  i,
+  j,
+  soilData,
+  latlonData,
+  cumulP,
+  traitList,
+  savePath
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -249,12 +261,50 @@ Run simulation on grid point
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
 
+\item{\code{cumulP}}{Tmp for Adam et al.}
+
 \item{\code{traitList}}{Optionnal. Vector of trait names to extract from
 simulations. This will delete the simulations and only keep the max for
 each year}
 
 \item{\code{savePath}}{Optional. A character string of the path where to save
 simulation files. If NULL (default), will not save simulations}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-gridPoint-runBSSimulation"></a>}}
+\if{latex}{\out{\hypertarget{method-gridPoint-runBSSimulation}{}}}
+\subsection{Method \code{runBSSimulation()}}{
+Run simulation on grid point
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$runBSSimulation(
+  param,
+  soilData,
+  latlonData,
+  cumulP,
+  traitList,
+  startingYear
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{param}}{Parameter values}
+
+\item{\code{soilData}}{Tmp for Adam et al.}
+
+\item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{cumulP}}{Tmp for Adam et al.}
+
+\item{\code{traitList}}{Optionnal. Vector of trait names to extract from
+simulations. This will delete the simulations and only keep the max for
+each year}
+
+\item{\code{startingYear}}{Starting year of bootstrap climate gen}
 }
 \if{html}{\out{</div>}}
 }

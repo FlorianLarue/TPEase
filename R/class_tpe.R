@@ -264,13 +264,14 @@ TPEa <- R6::R6Class("TPEa",
     #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
+    #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. Vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the max for
     #' each year
     #' @param savePath Optional. A character string of the path where to save
     #' simulation files. If NULL (default), will not save simulations
     runGridSim = function(gridID=NA,varID=NA,soilData=soil,latlonData=lat_lon,
-                          traitList=NULL, savePath=NULL) {
+                          cumulP=cumul, traitList=NULL, savePath=NULL) {
       if(sum(!is.na(gridID)) == 0) {
         idg <- self$get_gridNames()
       } else {
@@ -283,7 +284,8 @@ TPEa <- R6::R6Class("TPEa",
           idv <- self$get_varid(varID)
           self$grids[[id]]$set_var(self$varieties[[idv]])
         }
-        self$grids[[id]]$runGridSim(soilData, latlonData, traitList, savePath)
+        self$grids[[id]]$runGridSim(soilData, latlonData, cumulP, traitList,
+                                    savePath)
       }
     },
 
@@ -343,9 +345,13 @@ TPEa <- R6::R6Class("TPEa",
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
     #' @param seed Integer number to use as seed for marksim weather generator
+    #' @param soilData Tmp fix for Adam et al.
+    #' @param latlonData Tmp fix for Adam et al.
+    #' @param cumulP Tmp fix for Adam et al.
+    #' @param traitList Vector of variable names
     bootstrap = function(latList, lonList, rcp="rcp26", year=2014, yearNb=1,
                          modelNb="00000000000000000", path=NA, pathCLI=NA,
-                         seed=1337) {
+                         seed=1337, soilData, latlonData, cumulP, traitList) {
       currentPath <- getwd()
       setwd(path)
 
@@ -368,11 +374,14 @@ TPEa <- R6::R6Class("TPEa",
                          "\n"))
               self$bootstrapGP[[v]][[i]]$genClimate(rcp, year, 99, modelNb,
                                                     path, pathCLI, lSeed, bs=T)
-              self$bootstrapGP[[v]][[i]]$runSimulation()
             }
+
+            param <- private$parent$varieties[[v]]$parameters
+            self$bootstrapGP[[v]][[i]]$runBSSimulation(param, soilData,
+                                                       latlonData, cumulP,
+                                                       traitList, year)
           } else {
-            self$bootstrapGP[[v]][[i]]$genClimate(rcp, year, yearNb, modelNb,
-                                                  path, pathCLI, seed, bs=T)
+            cat("Please select more than 99 years \n")
           }
         }
       }

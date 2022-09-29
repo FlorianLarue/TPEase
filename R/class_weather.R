@@ -69,7 +69,8 @@ TPEweather <- R6::R6Class("TPEweather",
 
     #' @description Set sowing date
     #' @param year Year of simulation
-    set_dateParam = function(year) {  #TODO: generalize tmp fix for Adam et al
+    #' @param cumulP Tmp fix for Adam et al.
+    set_dateParam = function(year, cumulP) {  #TODO: generalize tmp fix for Adam et al
       if(!is.null(self$wData)) {
         self$simuWeather <- self$wData[which(stringr::str_split_fixed(
           self$wData$weatherdate, "/",3)[,3] == year),]
@@ -86,12 +87,24 @@ TPEweather <- R6::R6Class("TPEweather",
               }
             }
             if(stop == FALSE) {
-              self$dateParam <- c(rsamara::toJulianDayCalcC(paste0(
-                "01/01/", year), format="DMY",sep="/"),
-                rsamara::toJulianDayCalcC(paste0("31/12/", year),
-                                          format="DMY",sep="/"),
-                rsamara::toJulianDayCalcC(rainfall[i,"weatherdate"],
-                                          format="DMY",sep="/"))
+              cP <- cumul[which(cumul$X1 == round(self$parent$lat,digits=2) &
+                                   cumul$X2 == round(self$parent$lon,digits=2)),
+                          "cumul_pluvio"]
+              sowing <- rsamara::toJulianDayCalcC(rainfall[i,"weatherdate"],
+                                                  format="DMY",sep="/")
+              #Tmp for Adam et al.
+              if(cP >= 800) {
+                sowing <- sowing + 15
+              }
+              self$dateParam <- c(rsamara::toJulianDayCalcC(paste0("01/01/",
+                                                                   year),
+                                                            format="DMY",
+                                                            sep="/"),
+                                  rsamara::toJulianDayCalcC(paste0("31/12/",
+                                                                   year),
+                                                            format="DMY",
+                                                            sep="/"),
+                                  sowing)
               break
             }
           }

@@ -264,7 +264,7 @@ should be shown}
 \subsection{Method \code{runGridSim()}}{
 Run simulation for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(soilData, latlonData, traitList, savePath)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$runGridSim(soilData, latlonData, cumulP, traitList, savePath)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -273,6 +273,8 @@ Run simulation for each point of the grid
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{cumulP}}{Tmp for Adam et al.}
 
 \item{\code{traitList}}{Optionnal. Vector of trait names to extract from
 simulations. This will delete the simulations and only keep the mean of

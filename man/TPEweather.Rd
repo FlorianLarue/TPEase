@@ -117,13 +117,15 @@ Generate climate
 \subsection{Method \code{set_dateParam()}}{
 Set sowing date
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_dateParam(year)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_dateParam(year, cumulP)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{year}}{Year of simulation}
+
+\item{\code{cumulP}}{Tmp fix for Adam et al.}
 }
 \if{html}{\out{</div>}}
 }
