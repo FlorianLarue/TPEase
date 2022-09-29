@@ -348,27 +348,32 @@ TPEa <- R6::R6Class("TPEa",
                          seed=1337) {
       currentPath <- getwd()
       setwd(path)
-      for(i in 1:length(latList)) {
-        self$bootstrapGP <- append(self$bootstrapGP,
-                                   gridPoint$new(parent=self, name=i,
-                                                 lon=lonList[[i]],
-                                                 lat=latList[[i]]))
 
-        if(yearNb > 99) {
-          nbRun <- yearNb %/% 99
-          lSeed <- (2*sample(seed:seed*10, 1))+1 # seed needs to be odd
-          for(j in 1:nbRun) {
-            cat(paste0("Generating run ", j, "\n"))
-            self$bootstrapGP[[i]]$genClimate(rcp, year, 99, modelNb, path,
-                                            pathCLI, lSeed, bs=T)
-            #TODO
-            self$bootstrapGP[[i]]$runSimulation(self$variety$parameters, i,j,
-                                                    soilData, latlonData,
-                                                    traitList, savePath)
+      nbVar <- length(private$parent$get_varNames())
+      self$bootstrapGP <- vector(mode="list", length=nbVar)
+
+      for(v in 1:nbVar) {
+        for(i in 1:length(latList)) {
+          self$bootstrapGP[[v]] <- append(self$bootstrapGP[[v]],
+                                     gridPoint$new(parent=self, name=i,
+                                                   lon=lonList[[i]],
+                                                   lat=latList[[i]]))
+
+          if(yearNb > 99) {
+            nbRun <- yearNb %/% 99
+            lSeed <- (2*sample(seed:seed*10, 1))+1 # seed needs to be odd
+            for(j in 1:nbRun) {
+              cat(paste0("Generating run ", j, " of point ", i,
+                         " for variety ", private$parent$get_varNames()[[v]],
+                         "\n"))
+              self$bootstrapGP[[v]][[i]]$genClimate(rcp, year, 99, modelNb,
+                                                    path, pathCLI, lSeed, bs=T)
+              self$bootstrapGP[[v]][[i]]$runSimulation()
+            }
+          } else {
+            self$bootstrapGP[[v]][[i]]$genClimate(rcp, year, yearNb, modelNb,
+                                                  path, pathCLI, seed, bs=T)
           }
-        } else {
-          self$bootstrapGP[[i]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                          pathCLI, seed, bs=T)
         }
       }
       setwd(currentPath)

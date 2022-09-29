@@ -217,6 +217,27 @@ gridPoint <- R6::R6Class("gridPoint",
         warning(paste0("No weather data on grid point ", self$name, ".",
                       "Simulation for this grid point will not be run."),
                 call.=F)
+        self$set_soilParam(soilData, latlonData)
+
+      }
+    },
+
+
+    #' @description Run simulation on grid point
+    #' @param param Parameter values
+    #' @param soilData Tmp for Adam et al.
+    #' @param latlonData Tmp for Adam et al.
+    #' @param traitList Optionnal. Vector of trait names to extract from
+    #' simulations. This will delete the simulations and only keep the max for
+    #' each year
+    #' @importFrom stringr str_split_fixed
+    #' @importFrom matrixStats colMaxs
+    #' @importFrom data.table fwrite
+    runBSSimulation = function(param, i, j, soilData, latlonData, traitList,
+                             savePath) {
+      for(i in 1:self$weather$yearLevels) {
+        run <- ((i - 1) %/% 99) + 1
+        year <- i - (99 * (run-1))
       }
     }
   )
