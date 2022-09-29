@@ -220,7 +220,17 @@ Create gridpoint for each point of the grid
 \subsection{Method \code{genClimate()}}{
 Generate climate data for each point of the grid
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, filesE, verbose)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$genClimate(
+  rcp,
+  year,
+  yearNb,
+  modelNb,
+  path,
+  pathCLI,
+  filesE,
+  verbose,
+  seed
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -242,6 +252,8 @@ Generate climate data for each point of the grid
 
 \item{\code{verbose}}{Boolean. If messages about completing climate generation
 should be shown}
+
+\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
 }
 \if{html}{\out{</div>}}
 }

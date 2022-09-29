@@ -24,6 +24,8 @@ used for simulations (only "Samara" is supported for now)}
 
 \item{\code{maps}}{A list of raster maps for each of the `grids`}
 
+\item{\code{bootstrapGP}}{A list of gridpoints to perform bootstrap}
+
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -48,6 +50,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
 \item \href{#method-TPEa-runClustering}{\code{TPEa$runClustering()}}
 \item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
+\item \href{#method-TPEa-bootstrap}{\code{TPEa$bootstrap()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -298,7 +301,8 @@ Generate climate data for one or several grids
   path = NA,
   pathCLI = NA,
   filesE = F,
-  verbose = T
+  verbose = T,
+  seed = 1337
 )}\if{html}{\out{</div>}}
 }
 
@@ -332,6 +336,8 @@ contain spaces}
 
 \item{\code{verbose}}{Boolean. If messages about starting climate generation
 should be shown}
+
+\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
 }
 \if{html}{\out{</div>}}
 }
@@ -442,6 +448,58 @@ Create plot on map based on grid simulation
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{mapID}}{Id of map to plot}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-bootstrap"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-bootstrap}{}}}
+\subsection{Method \code{bootstrap()}}{
+Bootstrap to test if gridded simulations are close to
+simulations on observed sites
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$bootstrap(
+  latList,
+  lonList,
+  rcp = "rcp26",
+  year = 2014,
+  yearNb = 1,
+  modelNb = "00000000000000000",
+  path = NA,
+  pathCLI = NA,
+  seed = 1337
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{latList}}{List of latitudes of sites to test}
+
+\item{\code{lonList}}{List of longitudes of sites to test}
+
+\item{\code{rcp}}{A character string with the name of the Representative
+Concentration Pathway to use. One of the following options
+c("rcp26","rcp45","rcp60","rcp85")}
+
+\item{\code{year}}{A numeric value of the year to simulate climate
+(this can include years from 2013 to 2099)}
+
+\item{\code{yearNb}}{A numeric value of the number of years to simulate}
+
+\item{\code{modelNb}}{A character string of the  general circulation model
+identifier to use, see \code{generateClimate}}
+
+\item{\code{path}}{A character string with the path to the marksim standalone.
+For the moment, this path can not contain spaces}
+
+\item{\code{pathCLI}}{Optional. A character string with the path to CLI folder.
+If no value is provided, the CLI folder will be considered in the same
+folder as the marksim standalone. For the moment, this path can not
+contain spaces}
+
+\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
 }
 \if{html}{\out{</div>}}
 }

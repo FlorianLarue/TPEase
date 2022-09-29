@@ -4,7 +4,17 @@
 \alias{generateClimate}
 \title{Generate weather file for Samara from Marksim}
 \usage{
-generateClimate(lon, lat, rcp, year, yearNb, modelNb, path, pathCLI = NA)
+generateClimate(
+  lon,
+  lat,
+  rcp,
+  year,
+  yearNb,
+  modelNb,
+  path,
+  pathCLI = NA,
+  seed = 1337
+)
 }
 \arguments{
 \item{variety}{test}

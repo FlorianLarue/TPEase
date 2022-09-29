@@ -13,6 +13,9 @@ TPEweather <- R6::R6Class("TPEweather",
     name = NULL,
     #' @field wData A dataframe with weather data
     wData = NULL,
+    #' @field wList A list of weather dataframes to use when multiple weathers
+    #' are generated
+    wList = list(),
     #' @field simuWeather A dataframe with weather data for simulation
     simuWeather = NULL,
     #' @field dateParam sowing date of grid point
@@ -51,10 +54,17 @@ TPEweather <- R6::R6Class("TPEweather",
     #' @param modelNb Identifier of model to use, see \code{generateClimate}
     #' @param path Path to marksim standalone
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
-    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
+    #' @param seed Integer number to use as seed for marksim weather generator
+    #' @param bs Boolean. Should weathers be stored for bootstrap
+    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, seed,
+                          bs=F) {
       climate <- generateClimate(self$parent$lon, self$parent$lat, rcp, year,
-                                 yearNb, modelNb, path, pathCLI)
+                                 yearNb, modelNb, path, pathCLI, seed)
       self$set_weather(climate)
+      if(bs) {
+        self$wList <- append(self$wList, list(self$wData))
+        self$yearLevels <- 99*length(self$wList)
+      }
     },
 
     #' @description Set sowing date

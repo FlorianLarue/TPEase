@@ -202,7 +202,7 @@ Get mean and sd of simulation result
 \subsection{Method \code{genClimate()}}{
 Generate climate
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, seed, bs = F)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -219,6 +219,10 @@ Generate climate
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+
+\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
+
+\item{\code{bs}}{Boolean. Should weathers be stored for bootstrap}
 }
 \if{html}{\out{</div>}}
 }

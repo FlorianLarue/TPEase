@@ -120,8 +120,12 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param modelNb Identifier of model to use, see \code{generateClimate}
     #' @param path Path to marksim standalone
     #' @param pathCLI Optional. Path to CLI folder for marksim standalone
-    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI) {
-      self$weather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)
+    #' @param seed Integer number to use as seed for marksim weather generator
+    #' @param bs Boolean. Should weathers be stored for bootstrap
+    genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, seed,
+                          bs=F) {
+      self$weather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, seed,
+                              bs)
     },
 
     #' @description Run simulation on grid point
@@ -199,10 +203,9 @@ gridPoint <- R6::R6Class("gridPoint",
             self$result <- rbind(self$result, matrixStats::colMaxs(
               as.matrix(sim[,traitList])))
           } else {
-            #TODO: remove comment
-            # if(is.null(savePath)) {
-            #   self$simulations <- append(self$simulations, list(sim))
-            # }
+            if(is.null(savePath)) {
+              self$simulations <- append(self$simulations, list(sim))
+            }
           }
         }
 

@@ -16,6 +16,9 @@ TODO
 
 \item{\code{wData}}{A dataframe with weather data}
 
+\item{\code{wList}}{A list of weather dataframes to use when multiple weathers
+are generated}
+
 \item{\code{simuWeather}}{A dataframe with weather data for simulation}
 
 \item{\code{dateParam}}{sowing date of grid point}
@@ -83,7 +86,7 @@ Set weather data
 \subsection{Method \code{genClimate()}}{
 Generate climate
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEweather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, seed, bs = F)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -100,6 +103,10 @@ Generate climate
 \item{\code{path}}{Path to marksim standalone}
 
 \item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+
+\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
+
+\item{\code{bs}}{Boolean. Should weathers be stored for bootstrap}
 }
 \if{html}{\out{</div>}}
 }

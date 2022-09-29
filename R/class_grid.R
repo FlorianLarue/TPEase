@@ -180,10 +180,11 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about completing climate generation
     #' should be shown
+    #' @param seed Integer number to use as seed for marksim weather generator
     #' @importFrom data.table fread
     #' @importFrom data.table fwrite
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, filesE,
-                          verbose) {
+                          verbose, seed) {
       if(filesE) { #TODO: tmp solution for dev, need to find generalization
         for(i in 1:nrow(self$gridPoints)) {
           for(j in 1:ncol(self$gridPoints)) {
@@ -208,7 +209,7 @@ TPEgrid <- R6::R6Class("TPEgrid",
         for(i in 1:nrow(self$gridPoints)) {
           for(j in 1:ncol(self$gridPoints)) {
             self$gridPoints[i,j][[1]]$genClimate(rcp, year, yearNb, modelNb,
-                                                 path, pathCLI)
+                                                 path, pathCLI, seed)
             cnt <- cnt + 1
             setTxtProgressBar(pbClim, cnt)
           }

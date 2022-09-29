@@ -21,6 +21,8 @@ TPEa <- R6::R6Class("TPEa",
     results = NULL,
     #' @field maps A list of raster maps for each of the `grids`
     maps = list(),
+    #' @field bootstrapGP A list of gridpoints to perform bootstrap
+    bootstrapGP = list(),
     #' @field test Debug
     test = NULL,
 
@@ -234,9 +236,10 @@ TPEa <- R6::R6Class("TPEa",
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about starting climate generation
     #' should be shown
+    #' @param seed Integer number to use as seed for marksim weather generator
     genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
-                          filesE=F, verbose=T) {
+                          filesE=F, verbose=T, seed=1337) {
       if(sum(!is.na(gridID)) == 0) {
         idg <- self$get_gridNames()
       } else {
@@ -250,7 +253,7 @@ TPEa <- R6::R6Class("TPEa",
                     "this may take some time \n"))
         }
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                    pathCLI, filesE, verbose)
+                                    pathCLI, filesE, verbose, seed)
       }
     },
 
@@ -319,8 +322,57 @@ TPEa <- R6::R6Class("TPEa",
     #' @import ggplot2
     plotMap = function(mapID=1) {
       self$maps[[mapID]]$plotMap()
-    }
+    },
 
+    #' @description Bootstrap to test if gridded simulations are close to
+    #' simulations on observed sites
+    #' @param latList List of latitudes of sites to test
+    #' @param lonList List of longitudes of sites to test
+    #' @param rcp A character string with the name of the Representative
+    #' Concentration Pathway to use. One of the following options
+    #' c("rcp26","rcp45","rcp60","rcp85")
+    #' @param year A numeric value of the year to simulate climate
+    #' (this can include years from 2013 to 2099)
+    #' @param yearNb A numeric value of the number of years to simulate
+    #' @param modelNb A character string of the  general circulation model
+    #' identifier to use, see \code{generateClimate}
+    #' @param path A character string with the path to the marksim standalone.
+    #' For the moment, this path can not contain spaces
+    #' @param pathCLI Optional. A character string with the path to CLI folder.
+    #' If no value is provided, the CLI folder will be considered in the same
+    #' folder as the marksim standalone. For the moment, this path can not
+    #' contain spaces
+    #' @param seed Integer number to use as seed for marksim weather generator
+    bootstrap = function(latList, lonList, rcp="rcp26", year=2014, yearNb=1,
+                         modelNb="00000000000000000", path=NA, pathCLI=NA,
+                         seed=1337) {
+      currentPath <- getwd()
+      setwd(path)
+      for(i in 1:length(latList)) {
+        self$bootstrapGP <- append(self$bootstrapGP,
+                                   gridPoint$new(parent=self, name=i,
+                                                 lon=lonList[[i]],
+                                                 lat=latList[[i]]))
+
+        if(yearNb > 99) {
+          nbRun <- yearNb %/% 99
+          lSeed <- (2*sample(seed:seed*10, 1))+1 # seed needs to be odd
+          for(j in 1:nbRun) {
+            cat(paste0("Generating run ", j, "\n"))
+            self$bootstrapGP[[i]]$genClimate(rcp, year, 99, modelNb, path,
+                                            pathCLI, lSeed, bs=T)
+            #TODO
+            self$bootstrapGP[[i]]$runSimulation(self$variety$parameters, i,j,
+                                                    soilData, latlonData,
+                                                    traitList, savePath)
+          }
+        } else {
+          self$bootstrapGP[[i]]$genClimate(rcp, year, yearNb, modelNb, path,
+                                          pathCLI, seed, bs=T)
+        }
+      }
+      setwd(currentPath)
+    }
   ),
 
   private = list(

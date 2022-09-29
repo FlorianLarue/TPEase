@@ -10,7 +10,7 @@
 #' @importFrom raster getData
 #' @importFrom raster extract
 generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
-                            pathCLI=NA) {
+                            pathCLI=NA, seed=1337) {
   if(is.na(pathCLI)) {
     pathCLI <- path
   }
@@ -68,8 +68,8 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
 
     #Run marksim with user parameters
     cmd <- paste("MarkSim_Standalone_v2.exe ", path, "Data ", pathCLI,
-               "CLI ", modelNb, " ", rcp, " ", year, " ", yearNb, " 1337",
-               sep="")
+                 "CLI ", modelNb, " ", rcp, " ", year, " ", yearNb, " ", seed,
+                 sep="")
     shell(cmd)
 
     #Transform data in Samara readable format
