@@ -47,6 +47,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-runGridSim}{\code{TPEa$runGridSim()}}
 \item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
 \item \href{#method-TPEa-runClustering}{\code{TPEa$runClustering()}}
+\item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
 }
@@ -424,6 +425,23 @@ Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
 \item{\code{nbDim}}{Integer of number of dimensions to use for PCA}
 
 \item{\code{nbClust}}{Integer of number of clusters to use for HCPC}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-plotMap"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-plotMap}{}}}
+\subsection{Method \code{plotMap()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mapID}}{Id of map to plot}
 }
 \if{html}{\out{</div>}}
 }

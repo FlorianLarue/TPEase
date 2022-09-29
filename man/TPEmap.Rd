@@ -72,7 +72,7 @@ A new `TPEmap` object.
 \subsection{Method \code{runPCA()}}{
 Run Principle Component Analysis
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runPCA(dfPCA = NULL, nbDim = 5)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$runPCA(dfPCA = NULL, nbDim = 5, traitList)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -81,6 +81,8 @@ Run Principle Component Analysis
 \item{\code{dfPCA}}{Data to perform PCA}
 
 \item{\code{nbDim}}{Number of dimensions}
+
+\item{\code{traitList}}{Vector of trait names to use for PCA}
 }
 \if{html}{\out{</div>}}
 }

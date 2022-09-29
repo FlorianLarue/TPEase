@@ -199,9 +199,10 @@ gridPoint <- R6::R6Class("gridPoint",
             self$result <- rbind(self$result, matrixStats::colMaxs(
               as.matrix(sim[,traitList])))
           } else {
-            if(is.null(savePath)) {
-              self$simulations <- append(self$simulations, list(sim))
-            }
+            #TODO: remove comment
+            # if(is.null(savePath)) {
+            #   self$simulations <- append(self$simulations, list(sim))
+            # }
           }
         }
 

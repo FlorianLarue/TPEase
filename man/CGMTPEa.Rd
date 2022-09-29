@@ -44,6 +44,8 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-CGMTPEa-genClimate}{\code{CGMTPEa$genClimate()}}
 \item \href{#method-CGMTPEa-runGridSim}{\code{CGMTPEa$runGridSim()}}
 \item \href{#method-CGMTPEa-createMap}{\code{CGMTPEa$createMap()}}
+\item \href{#method-CGMTPEa-runClustering}{\code{CGMTPEa$runClustering()}}
+\item \href{#method-CGMTPEa-plotMap}{\code{CGMTPEa$plotMap()}}
 \item \href{#method-CGMTPEa-clone}{\code{CGMTPEa$clone()}}
 }
 }
@@ -375,6 +377,58 @@ of north, east, south, west bounds to crop map}
 \item{\code{res}}{Not used at the moment. A numeric value in sec of the
 resolution of world map to use. Options are c(1, 150, 900)
 for respectively 30sec, 2.5min, 15min}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-CGMTPEa-runClustering"></a>}}
+\if{latex}{\out{\hypertarget{method-CGMTPEa-runClustering}{}}}
+\subsection{Method \code{runClustering()}}{
+Run TPE clustering by performing Principle Component
+Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$runClustering(
+  tpeID = 1,
+  mapID = 1,
+  traitList = c("GrainYieldPop"),
+  nbDim = 5,
+  nbClust = 3
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tpeID}}{A TPE analysis identifier on which to create grid}
+
+\item{\code{mapID}}{A value or list of values of map identifiers
+(either index or names)on which to perform clustering}
+
+\item{\code{traitList}}{Vector of variable names to be used for PCA}
+
+\item{\code{nbDim}}{Integer of number of dimensions to use for PCA}
+
+\item{\code{nbClust}}{Integer of number of clusters to use for HCPC}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-CGMTPEa-plotMap"></a>}}
+\if{latex}{\out{\hypertarget{method-CGMTPEa-plotMap}{}}}
+\subsection{Method \code{plotMap()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$plotMap(tpeID = 1, mapID = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tpeID}}{A TPE analysis identifier on which to create grid}
+
+\item{\code{mapID}}{Id of map to plot}
 }
 \if{html}{\out{</div>}}
 }

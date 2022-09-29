@@ -160,7 +160,7 @@ TPEa <- R6::R6Class("TPEa",
     #' @param traitList List of variables to extract as results
     get_results = function(traitList = NA) {
       resDf <- data.frame()
-      for(i in 1:length(self$get_gridNames)) {
+      for(i in 1:length(self$get_gridNames())) {
         tmpDf <- self$grids[[i]]$get_results(traitList)
         tmpDf$variety <- private$parent$get_varNames()[i]
         resDf <- rbind(resDf, tmpDf)
@@ -310,8 +310,15 @@ TPEa <- R6::R6Class("TPEa",
     runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5,
                              nbClust=3) {
       self$get_results(traitList)
-      self$maps[[id]]$runPCA(self$results, nbDim)
-      self$maps[[id]]$runHCPC(nbClust)
+      self$maps[[mapID]]$runPCA(self$results, nbDim, traitList)
+      self$maps[[mapID]]$runHCPC(nbClust)
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param mapID Id of map to plot
+    #' @import ggplot2
+    plotMap = function(mapID=1) {
+      self$maps[[mapID]]$plotMap()
     }
 
   ),

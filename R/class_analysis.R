@@ -243,6 +243,27 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' for respectively 30sec, 2.5min, 15min
     createMap = function(tpeID=1, name="map1", bounds=NA, res=150) {
       self$TPEanalysis[[tpeID]]$createMap(name, bounds, res)
+    },
+
+    #' @description Run TPE clustering by performing Principle Component
+    #' Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
+    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param mapID A value or list of values of map identifiers
+    #' (either index or names)on which to perform clustering
+    #' @param traitList Vector of variable names to be used for PCA
+    #' @param nbDim Integer of number of dimensions to use for PCA
+    #' @param nbClust Integer of number of clusters to use for HCPC
+    runClustering = function(tpeID=1, mapID=1, traitList=c("GrainYieldPop"),
+                             nbDim=5, nbClust=3) {
+      self$TPEanalysis[[tpeID]]$runClustering(mapID, traitList, nbDim, nbClust)
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param mapID Id of map to plot
+    #' @import ggplot2
+    plotMap = function(tpeID=1, mapID=1) {
+      self$TPEanalysis[[tpeID]]$plotMap(mapID)
     }
   ),
 

@@ -61,9 +61,11 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @import FactoMineR
     #' @param dfPCA Data to perform PCA
     #' @param nbDim Number of dimensions
-    runPCA = function(dfPCA = NULL, nbDim = 5) {
-      cat(paste0("Running PCA on map ", self$name))
-      res <- PCA(dfPCA, ncp = nbDim, graph = F)
+    #' @param traitList Vector of trait names to use for PCA
+    runPCA = function(dfPCA = NULL, nbDim = 5, traitList) {
+      cat(paste0("Running PCA on map ", self$name, "\n"))
+      dfPC <- dfPCA[,traitList]
+      res <- PCA(dfPC, ncp = nbDim, graph = F)
       self$PCAres <- res
     },
 
@@ -78,8 +80,8 @@ TPEmap <- R6::R6Class("TPEmap",
         cat(paste0("Running HCPC on map ", self$name, "\n"))
         res <- HCPC(self$PCAres, nb.clust = nbClust, graph = F)
         self$HCPCres <- res
-        #TODO: get it to the correct object
-        #self$grid$gridRes$cluster <- res$data.clust$clust
+        #TODO: save at correct spot
+        private$parent$results$cluster <- res$data.clust$clust
       }
     },
 
@@ -91,12 +93,16 @@ TPEmap <- R6::R6Class("TPEmap",
       #TODO: might need to change as fortify may be deprecated in the future
       AG <- fortify(self$data)
       #TODO: get correct data
-      p <- ggplot() + geom_raster(data=self$grid$gridRes,
+      #TODO: tmp fix, find better solution
+      private$parent$results <- private$parent$results[!is.na(private$parent$results$CstrPhase2),]
+      p <- ggplot() +
+        geom_raster(data=private$parent$results,
                                   aes(x=x, y=y, fill=as.factor(cluster)),
                                   interpolate=FALSE) +
-      geom_polygon(data=AG, aes(x=long, y=lat, group=group),
+        geom_polygon(data=AG, aes(x=long, y=lat, group=group),
                    size=0.3, colour="black", fill=NA) +
         coord_cartesian() +
+        facet_wrap(~ variety)
         theme_bw() +
         xlab("Longitude") + ylab("Latitude")
       self$plots <- append(self$plots, list(p))
