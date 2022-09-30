@@ -14,11 +14,13 @@ TODO
 \describe{
 \item{\code{name}}{A character string identifier of the variety}
 
-\item{\code{parent}}{TPE analysis parent}
+\item{\code{parent}}{Estimation parent}
 
 \item{\code{weather}}{A TPE weather object}
 
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
+
+\item{\code{observations}}{A list of dataframes of observations}
 }
 \if{html}{\out{</div>}}
 }
@@ -35,17 +37,21 @@ TODO
 \if{html}{\out{<a id="method-TPEenv-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEenv-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new variety object
+Create a new environment object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEenv$new(name = "e1", parent)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEenv$new(name = "e1", parent, parameters, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the variety}
+\item{\code{name}}{A character string identifier of the environment}
 
-\item{\code{parent}}{TPE analysis parent}
+\item{\code{parent}}{Estimation parent}
+
+\item{\code{parameters}}{TPE analysis parent}
+
+\item{\code{observations}}{TPE analysis parent}
 }
 \if{html}{\out{</div>}}
 }

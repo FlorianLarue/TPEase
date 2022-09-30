@@ -16,15 +16,11 @@ TODO
 
 \item{\code{alt}}{A character string alternate adientifier of the variety}
 
-\item{\code{parent}}{TPE analysis parent}
+\item{\code{parent}}{analysis parent}
 
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
 
-\item{\code{estimParam}}{A vector containing the values of estimated parameters}
-
-\item{\code{observations}}{A dataframe or list of dataframe with observations
-for each of the `environments`. If several replicates, a list of lists
-(environment x replicate)}
+\item{\code{estimations}}{A list of estimation objects}
 }
 \if{html}{\out{</div>}}
 }
@@ -32,11 +28,9 @@ for each of the `environments`. If several replicates, a list of lists
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEvar-new}{\code{TPEvar$new()}}
-\item \href{#method-TPEvar-set_obs}{\code{TPEvar$set_obs()}}
 \item \href{#method-TPEvar-set_param}{\code{TPEvar$set_param()}}
-\item \href{#method-TPEvar-set_eparam}{\code{TPEvar$set_eparam()}}
 \item \href{#method-TPEvar-update_param}{\code{TPEvar$update_param()}}
-\item \href{#method-TPEvar-runEstimation}{\code{TPEvar$runEstimation()}}
+\item \href{#method-TPEvar-createEstim}{\code{TPEvar$createEstim()}}
 \item \href{#method-TPEvar-clone}{\code{TPEvar$clone()}}
 }
 }
@@ -46,7 +40,15 @@ for each of the `environments`. If several replicates, a list of lists
 \subsection{Method \code{new()}}{
 Create a new variety object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$new(name = "v1", alt = "G1", parent)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$new(
+  name = "v1",
+  alt = "G1",
+  eName = "estim1",
+  environments = NA,
+  eparam = NA,
+  observations = NA,
+  parent = NA
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -56,30 +58,21 @@ Create a new variety object
 
 \item{\code{alt}}{A character string alternate identifier of the variety}
 
+\item{\code{eName}}{Name of initial estimation object}
+
+\item{\code{environments}}{List of environment names}
+
+\item{\code{eparam}}{Environment parameters}
+
+\item{\code{observations}}{List of dataframes of observations
+(each entry is for one environment)}
+
 \item{\code{parent}}{TPE analysis parent}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
 A new `TPEvar` object.
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEvar-set_obs"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEvar-set_obs}{}}}
-\subsection{Method \code{set_obs()}}{
-Set observation data
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$set_obs(val)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{A dataframe or list of dataframes with observations for each
-of the `environments` (and eventually for each replicate)}
-}
-\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -95,25 +88,6 @@ Set parameters
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{val}}{A dataframe with all crop model parameters}
-}
-\if{html}{\out{</div>}}
-}
-}
-\if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEvar-set_eparam"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEvar-set_eparam}{}}}
-\subsection{Method \code{set_eparam()}}{
-Set estimated parameters
-\subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$set_eparam(val, names)}\if{html}{\out{</div>}}
-}
-
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{A vector with estimated parameter values}
-
-\item{\code{names}}{A vector with estimated parameter names}
 }
 \if{html}{\out{</div>}}
 }
@@ -138,43 +112,26 @@ Set estimated parameters
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEvar-runEstimation"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEvar-runEstimation}{}}}
-\subsection{Method \code{runEstimation()}}{
-Run parameter estimation
+\if{html}{\out{<a id="method-TPEvar-createEstim"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-createEstim}{}}}
+\subsection{Method \code{createEstim()}}{
+Create estimation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$runEstimation(
-  maxiter,
-  paramnames,
-  metric,
-  score_fn,
-  weigh_fn,
-  bounds,
-  weathers,
-  varID
-)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$createEstim(name, parent, environments, eparam, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{maxiter}}{A numeric value of the maximum number of iteration
-for DEoptim}
+\item{\code{name}}{Name of estimation}
 
-\item{\code{paramnames}}{A vector of parameter names to be estimated}
+\item{\code{parent}}{Parent variety}
 
-\item{\code{metric}}{A character string with the name of the metric to use
-for fitness computation. Options are c("RMSE","MAE","MSE")}
+\item{\code{environments}}{Name of environments}
 
-\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+\item{\code{eparam}}{Parameters of environments}
 
-\item{\code{weigh_fn}}{Not used for the moment}
-
-\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for}
-
-\item{\code{weathers}}{A list of weather data for each environment}
-
-\item{\code{varID}}{A numeric value of the index of variety currently estimating}
+\item{\code{observations}}{Observations of environments}
 }
 \if{html}{\out{</div>}}
 }

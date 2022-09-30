@@ -5,7 +5,7 @@
 \title{#' R6 Class Representing a TPE analysis}
 \description{
 The TPE Analysis object "TPEa" is an environment containing all objects
-used for a TPE analysis (varieties, environments, maps, etc.)
+used for a TPE analysis (grid, maps, etc.)
 }
 \details{
 TODO
@@ -88,15 +88,6 @@ Confirm creation of TPE analysis object
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$initMessage()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{vParamMissings}}{Name of varieties without parameters}
-
-\item{\code{eParamMissings}}{Name of environments without parameters}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEa-set_name"></a>}}
@@ -463,6 +454,7 @@ Bootstrap to test if gridded simulations are close to
 simulations on observed sites
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEa$bootstrap(
+  nameList,
   latList,
   lonList,
   rcp = "rcp26",
@@ -482,6 +474,8 @@ simulations on observed sites
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
+\item{\code{nameList}}{List of names of sites to test}
+
 \item{\code{latList}}{List of latitudes of sites to test}
 
 \item{\code{lonList}}{List of longitudes of sites to test}

@@ -2,7 +2,7 @@
 #'
 #' @description
 #' The TPE Analysis object "TPEa" is an environment containing all objects
-#' used for a TPE analysis (varieties, environments, maps, etc.)
+#' used for a TPE analysis (grid, maps, etc.)
 #'
 #' @details
 #' TODO
@@ -43,8 +43,6 @@ TPEa <- R6::R6Class("TPEa",
     },
 
     #' @description Confirm creation of TPE analysis object
-    #' @param vParamMissings Name of varieties without parameters
-    #' @param eParamMissings Name of environments without parameters
     initMessage = function() {
       cat(paste0("TPE analysis ", self$name, " created \n"))
     },
@@ -328,6 +326,7 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Bootstrap to test if gridded simulations are close to
     #' simulations on observed sites
+    #' @param nameList List of names of sites to test
     #' @param latList List of latitudes of sites to test
     #' @param lonList List of longitudes of sites to test
     #' @param rcp A character string with the name of the Representative
@@ -349,9 +348,10 @@ TPEa <- R6::R6Class("TPEa",
     #' @param latlonData Tmp fix for Adam et al.
     #' @param cumulP Tmp fix for Adam et al.
     #' @param traitList Vector of variable names
-    bootstrap = function(latList, lonList, rcp="rcp26", year=2014, yearNb=1,
-                         modelNb="00000000000000000", path=NA, pathCLI=NA,
-                         seed=1337, soilData, latlonData, cumulP, traitList) {
+    bootstrap = function(nameList, latList, lonList, rcp="rcp26", year=2014,
+                         yearNb=1, modelNb="00000000000000000", path=NA,
+                         pathCLI=NA, seed=1337, soilData, latlonData, cumulP,
+                         traitList) {
       currentPath <- getwd()
       setwd(path)
 
@@ -361,7 +361,8 @@ TPEa <- R6::R6Class("TPEa",
       for(v in 1:nbVar) {
         for(i in 1:length(latList)) {
           self$bootstrapGP[[v]] <- append(self$bootstrapGP[[v]],
-                                     gridPoint$new(parent=self, name=i,
+                                     gridPoint$new(parent=self,
+                                                   name=nameList[[i]],
                                                    lon=lonList[[i]],
                                                    lat=latList[[i]]))
 
@@ -381,6 +382,7 @@ TPEa <- R6::R6Class("TPEa",
                                                        latlonData, cumulP,
                                                        traitList, year)
           } else {
+            #Tmp fix
             cat("Please select more than 99 years \n")
           }
         }

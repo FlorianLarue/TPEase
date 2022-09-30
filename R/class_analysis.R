@@ -36,9 +36,17 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @param varieties A list of varieties names
     #' @param genotypes Optional. A list of alternate variety names
     #' @param vparameters A vector or dataframe with variety specific parameters
+    #' @param environments A list of environments names
+    #' @param eparameters A vector or dataframe with environment specific
+    #' parameters
+    #' @param eName A character string identifier of the initial estimation
+    #' object
+    #' @param observations A list (each entry is a variety) of lists
+    #' (each entry is an environment) of dataframes with observations
     #' @return A new `CGMTPEa` object.
     initialize = function(name="CGMTPE_analysis", model="Samara", varieties=NA,
-                          genotypes=NA, vparameters=NA) {
+                          genotypes=NA, vparameters=NA, environments=NA,
+                          eparameters=NA, eName="estim1", observations=NA) {
 
       self$name <- as.character(name)
       self$model <- as.character(model)
@@ -62,6 +70,10 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
           self$varieties <- append(self$varieties, TPEvar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
+            eName = as.character(eName),
+            environments = environments,
+            eparam = eparameters,
+            observations = observations[[i]],
             parent = self))
 
           if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
@@ -271,7 +283,6 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     gridnames = NULL,
     varnames = NULL,
     genotypes = NULL,
-    envnames = NULL,
     mapnames = NULL
   )
 )

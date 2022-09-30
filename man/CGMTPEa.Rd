@@ -60,7 +60,11 @@ Create a new TPE analysis object
   model = "Samara",
   varieties = NA,
   genotypes = NA,
-  vparameters = NA
+  vparameters = NA,
+  environments = NA,
+  eparameters = NA,
+  eName = "estim1",
+  observations = NA
 )}\if{html}{\out{</div>}}
 }
 
@@ -77,6 +81,17 @@ for simulations}
 \item{\code{genotypes}}{Optional. A list of alternate variety names}
 
 \item{\code{vparameters}}{A vector or dataframe with variety specific parameters}
+
+\item{\code{environments}}{A list of environments names}
+
+\item{\code{eparameters}}{A vector or dataframe with environment specific
+parameters}
+
+\item{\code{eName}}{A character string identifier of the initial estimation
+object}
+
+\item{\code{observations}}{A list (each entry is a variety) of lists
+(each entry is an environment) of dataframes with observations}
 }
 \if{html}{\out{</div>}}
 }

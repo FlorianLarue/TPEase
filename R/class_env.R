@@ -11,20 +11,26 @@ TPEenv <- R6::R6Class("TPEenv",
   public = list(
     #' @field name A character string identifier of the variety
     name = NULL,
-    #' @field parent TPE analysis parent
+    #' @field parent Estimation parent
     parent = NULL,
     #' @field weather A TPE weather object
     weather = NULL,
     #' @field parameters A dataframe with all parameters used for simulation
     parameters = NULL,
+    #' @field observations A list of dataframes of observations
+    observations = list(),
 
-    #' @description Create a new variety object
-    #' @param name A character string identifier of the variety
-    #' @param parent TPE analysis parent
+    #' @description Create a new environment object
+    #' @param name A character string identifier of the environment
+    #' @param parent Estimation parent
+    #' @param parameters TPE analysis parent
+    #' @param observations TPE analysis parent
     #' @return A new `TPEenv` object.
-    initialize = function(name="e1", parent) {
+    initialize = function(name="e1", parent, parameters, observations) {
       self$name <- name
       self$parent <- parent
+      self$parameters <- parameters
+      self$observations <- observations
     },
 
     #' @description Set weather

@@ -271,9 +271,9 @@ gridPoint <- R6::R6Class("gridPoint",
         param$wslat <- self$lat
 
         if(!is.null(self$weather$dateParam)) {
-          rsamara::init_sim_idx_simple(as.numeric(paste0(self$name, year)),
+          rsamara::init_sim_idx_simple(as.numeric(paste0(run, year)),
                                        param, self$weather$simuWeather)
-          sim <- rsamara::run_sim_idx(as.numeric(paste0(self$name, year)))
+          sim <- rsamara::run_sim_idx(as.numeric(paste0(run, year)))
         } else {
           sim <- NA
         }
