@@ -368,7 +368,7 @@ TPEa <- R6::R6Class("TPEa",
 
           if(yearNb > 99) {
             nbRun <- yearNb %/% 99
-            lSeed <- (2*sample(seed:seed*10, 1))+1 # seed needs to be odd
+            lSeed <- seed[nbRun] #TODO: Tmp fix
             for(j in 1:nbRun) {
               cat(paste0("Generating run ", j, " of point ", i,
                          " for variety ", private$parent$get_varNames()[[v]],
