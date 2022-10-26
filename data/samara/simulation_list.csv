@@ -1,2 +1,9 @@
-itkcode,fieldcode,wscode,startingdate,endingdate,type,country,variety,genotype
-BAMA2014S1,BAM_SOL,5,01/06/2014,06/12/2014,calibration,BF,Fadda,G1
+simcode;itkcode;fieldcode;wscode;startingdate;endingdate;type;country;variety;genotype
+;SINT2014S1;SIN1_SOL;4;01/06/2014;15/12/2014;calibration;SN;621B;G9
+;SINT2016S1;SIN1_SOL;4;01/06/2016;06/12/2016;calibration;SN;Soumba;G8
+;BAMA2014S1;BAM_SOL;5;01/06/2014;06/12/2014;calibration;BF;IS15401;G3
+;BAMA2014S2;BAM_SOL;5;01/06/2014;06/12/2014;calibration;BF;CSM63E;G5
+;BAMA2014S3;BAM_SOL;5;01/06/2014;06/12/2014;calibration;BF;Fadda;G1
+;SMK2013S1;SMK_SOL;3;01/06/2013;06/12/2013;calibration;ML;Grinkan;G7
+;SMK2014S1;SMK_SOL;3;01/06/2014;06/12/2014;calibration;ML;Nieleni;G2
+;SMK2014S2;SMK_SOL;3;01/06/2014;06/12/2014;calibration;ML;Pablo;G4

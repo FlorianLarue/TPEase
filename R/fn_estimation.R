@@ -13,8 +13,8 @@ estim_param <- function(p, param, paramnames, weathers,
   }
   totalScore <- 0
   for(e in 1:length(weathers)) {
-    envScore <- fitness_score(p, param, paramnames, weathers[[e]], obser[[e]],
-                              score_fn, as.numeric(paste0(varID,e)),
+    envScore <- fitness_score(p, param, tolower(paramnames), weathers[[e]],
+                              obser[[e]], score_fn, as.numeric(paste0(varID,e)),
                               metric, weigh_fn)
     totalScore <- totalScore + envScore
   }
@@ -76,12 +76,12 @@ fitness_score <- function(p, param, paramnames, weather, obser, score_fn, idx,
 #' @param obs Dataframe of observations
 #' @param sim Dataframe of simulations
 #' @param metric Either a single value of the chosen metric to compute fitness
-#' (RMSE, MAE) or a vector with a metric for each column of \code{obs}
+#' (RMSE, MAE) or a vector with a metric for each column of \code{obs}. TODO
 #' @param weight_fn Optionnal. TODO
 #' @examples get_score(obs, sim, metric, weight_fn)
 #' @import rsamara
 #' @export
-get_score <- function(obs, sim, metric, weight_fn) {
+get_score <- function(obs, sim, metric=NA, weight_fn=NA) {
   if(class(obs) != "data.frame" || class(sim) != "data.frame") {
     print("Please provide a dataframe for observations and simulations")
   } else {

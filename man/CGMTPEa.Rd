@@ -46,6 +46,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-CGMTPEa-createMap}{\code{CGMTPEa$createMap()}}
 \item \href{#method-CGMTPEa-runClustering}{\code{CGMTPEa$runClustering()}}
 \item \href{#method-CGMTPEa-plotMap}{\code{CGMTPEa$plotMap()}}
+\item \href{#method-CGMTPEa-runEstimation}{\code{CGMTPEa$runEstimation()}}
 \item \href{#method-CGMTPEa-clone}{\code{CGMTPEa$clone()}}
 }
 }
@@ -64,6 +65,7 @@ Create a new TPE analysis object
   environments = NA,
   eparameters = NA,
   eName = "estim1",
+  weathers = NA,
   observations = NA
 )}\if{html}{\out{</div>}}
 }
@@ -89,6 +91,9 @@ parameters}
 
 \item{\code{eName}}{A character string identifier of the initial estimation
 object}
+
+\item{\code{weathers}}{A list (each entry is an environment)
+of dataframes with weather data}
 
 \item{\code{observations}}{A list (each entry is a variety) of lists
 (each entry is an environment) of dataframes with observations}
@@ -444,6 +449,56 @@ Create plot on map based on grid simulation
 \item{\code{tpeID}}{A TPE analysis identifier on which to create grid}
 
 \item{\code{mapID}}{Id of map to plot}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-CGMTPEa-runEstimation"></a>}}
+\if{latex}{\out{\hypertarget{method-CGMTPEa-runEstimation}{}}}
+\subsection{Method \code{runEstimation()}}{
+Run parameter estimation
+
+
+Run parameter estimation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$runEstimation(
+  varID = 1,
+  estimID = 1,
+  maxiter = 2000,
+  paramnames = NA,
+  metric = "RMSE",
+  score_fn = get_score,
+  weigh_fn = NA,
+  bounds = NA,
+  ...
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{varID}}{A value or list of values of variety identifier
+(either index or name)}
+
+\item{\code{estimID}}{A value of estimation identifier (either index or name)}
+
+\item{\code{maxiter}}{A numeric value of the maximum number of iteration
+for DEoptim}
+
+\item{\code{paramnames}}{A vector of parameter names to be estimated}
+
+\item{\code{metric}}{A character string with the name of the metric to use
+for fitness computation. Options are c("RMSE","MAE","MSE")}
+
+\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+
+\item{\code{weigh_fn}}{Not used for the moment}
+
+\item{\code{bounds}}{A matrix with lower (row1) and upper (row2) bounds for
+each of the parameters in `paramnames` (cols)}
+
+\item{\code{...}}{Additional parameters to be passed to DEoptim.control}
 }
 \if{html}{\out{</div>}}
 }

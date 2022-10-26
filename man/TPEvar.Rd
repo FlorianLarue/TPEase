@@ -28,9 +28,12 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEvar-new}{\code{TPEvar$new()}}
+\item \href{#method-TPEvar-get_estimNames}{\code{TPEvar$get_estimNames()}}
+\item \href{#method-TPEvar-get_estimid}{\code{TPEvar$get_estimid()}}
 \item \href{#method-TPEvar-set_param}{\code{TPEvar$set_param()}}
 \item \href{#method-TPEvar-update_param}{\code{TPEvar$update_param()}}
 \item \href{#method-TPEvar-createEstim}{\code{TPEvar$createEstim()}}
+\item \href{#method-TPEvar-runEstimation}{\code{TPEvar$runEstimation()}}
 \item \href{#method-TPEvar-clone}{\code{TPEvar$clone()}}
 }
 }
@@ -43,9 +46,11 @@ Create a new variety object
 \if{html}{\out{<div class="r">}}\preformatted{TPEvar$new(
   name = "v1",
   alt = "G1",
+  parameters = NA,
   eName = "estim1",
   environments = NA,
   eparam = NA,
+  weathers = NA,
   observations = NA,
   parent = NA
 )}\if{html}{\out{</div>}}
@@ -58,11 +63,16 @@ Create a new variety object
 
 \item{\code{alt}}{A character string alternate identifier of the variety}
 
+\item{\code{parameters}}{A dataframe with variety parameters}
+
 \item{\code{eName}}{Name of initial estimation object}
 
 \item{\code{environments}}{List of environment names}
 
 \item{\code{eparam}}{Environment parameters}
+
+\item{\code{weathers}}{List of dataframes of weathers
+(each entry is for one environment)}
 
 \item{\code{observations}}{List of dataframes of observations
 (each entry is for one environment)}
@@ -73,6 +83,33 @@ Create a new variety object
 }
 \subsection{Returns}{
 A new `TPEvar` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEvar-get_estimNames"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-get_estimNames}{}}}
+\subsection{Method \code{get_estimNames()}}{
+Get names of all estimations
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$get_estimNames()}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEvar-get_estimid"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-get_estimid}{}}}
+\subsection{Method \code{get_estimid()}}{
+Get estimation id
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$get_estimid(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{Either estim name or a estim id (will return the estim id)}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
@@ -117,7 +154,7 @@ Set estimated parameters
 \subsection{Method \code{createEstim()}}{
 Create estimation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$createEstim(name, parent, environments, eparam, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$createEstim(name, parent, environments, eparam, weathers, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -131,7 +168,55 @@ Create estimation
 
 \item{\code{eparam}}{Parameters of environments}
 
+\item{\code{weathers}}{Weathers of environments}
+
 \item{\code{observations}}{Observations of environments}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEvar-runEstimation"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-runEstimation}{}}}
+\subsection{Method \code{runEstimation()}}{
+Run parameter estimation
+
+
+Run parameter estimation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$runEstimation(
+  estimID = 1,
+  maxiter = 2000,
+  paramnames = NA,
+  metric = "RMSE",
+  score_fn = get_score,
+  weigh_fn = NA,
+  bounds = NA,
+  args
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{estimID}}{A value of estimation identifier (either index or name)}
+
+\item{\code{maxiter}}{A numeric value of the maximum number of iteration
+for DEoptim}
+
+\item{\code{paramnames}}{A vector of parameter names to be estimated}
+
+\item{\code{metric}}{A character string with the name of the metric to use
+for fitness computation. Options are c("RMSE","MAE","MSE")}
+
+\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+
+\item{\code{weigh_fn}}{Not used for the moment}
+
+\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
+each of the parameters in `paramnames` (rows)}
+
+\item{\code{args}}{Additional parameters to be passed to DEoptim.control}
 }
 \if{html}{\out{</div>}}
 }

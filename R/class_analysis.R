@@ -41,12 +41,15 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' parameters
     #' @param eName A character string identifier of the initial estimation
     #' object
+    #' @param weathers A list (each entry is an environment)
+    #'  of dataframes with weather data
     #' @param observations A list (each entry is a variety) of lists
     #' (each entry is an environment) of dataframes with observations
     #' @return A new `CGMTPEa` object.
     initialize = function(name="CGMTPE_analysis", model="Samara", varieties=NA,
                           genotypes=NA, vparameters=NA, environments=NA,
-                          eparameters=NA, eName="estim1", observations=NA) {
+                          eparameters=NA, eName="estim1", weathers=NA,
+                          observations=NA) {
 
       self$name <- as.character(name)
       self$model <- as.character(model)
@@ -67,20 +70,24 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
 
         for(i in 1:length(varieties)) {
           #TODO: change name of TPEvar class
+          if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
+            param <- vparameters[i,]
+            rownames(param) <- NULL
+          } else {
+            vParamMissings <- c(vParamMissings, private$varnames[i])
+            param <- NULL
+          }
+
           self$varieties <- append(self$varieties, TPEvar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
+            parameters = param,
             eName = as.character(eName),
             environments = environments,
             eparam = eparameters,
+            weathers = weathers,
             observations = observations[[i]],
             parent = self))
-
-          if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
-            self$varieties[[i]]$set_param(vparameters[i,])
-          } else {
-            vParamMissings <- c(vParamMissings, private$varnames[i])
-          }
         }
       } else {
         stop("Please provide at least one variety name.")
@@ -276,7 +283,35 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @import ggplot2
     plotMap = function(tpeID=1, mapID=1) {
       self$TPEanalysis[[tpeID]]$plotMap(mapID)
+    },
+
+    #' @description Run parameter estimation
+    #' @import DEoptim
+    #' @description Run parameter estimation
+    #' @param varID A value or list of values of variety identifier
+    #' (either index or name)
+    #' @param estimID A value of estimation identifier (either index or name)
+    #' @param maxiter A numeric value of the maximum number of iteration
+    #' for DEoptim
+    #' @param paramnames A vector of parameter names to be estimated
+    #' @param metric A character string with the name of the metric to use
+    #' for fitness computation. Options are c("RMSE","MAE","MSE")
+    #' @param score_fn A function to compute fitness, see \code{get_score}
+    #' @param weigh_fn Not used for the moment
+    #' @param bounds A matrix with lower (row1) and upper (row2) bounds for
+    #' each of the parameters in `paramnames` (cols)
+    #' @param ... Additional parameters to be passed to DEoptim.control
+    runEstimation = function(varID=1, estimID=1, maxiter=2000, paramnames=NA,
+                             metric="RMSE", score_fn=get_score, weigh_fn=NA,
+                             bounds=NA, ...) {
+      args <- list(...)
+      for(i in 1:length(varID)) {
+        id <- self$get_varid(varID[i])
+        self$varieties[[id]]$runEstimation(estimID, maxiter, paramnames, metric,
+                                           score_fn, weigh_fn, bounds, args)
+      }
     }
+
   ),
 
   private = list(

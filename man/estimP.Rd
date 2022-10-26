@@ -18,6 +18,14 @@ TODO
 
 \item{\code{environments}}{List of environments to use for estimation}
 
+\item{\code{parameters}}{A dataframe with all parameters (variety x environment)
+used for simulation, each line is one environment}
+
+\item{\code{DEparams}}{A DEoptim.control object with parameters used for DEoptim
+parameter estimation}
+
+\item{\code{paramNames}}{A vector of estimated parameter names}
+
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -27,6 +35,7 @@ TODO
 \itemize{
 \item \href{#method-estimP-new}{\code{estimP$new()}}
 \item \href{#method-estimP-createEnv}{\code{estimP$createEnv()}}
+\item \href{#method-estimP-runEstimation}{\code{estimP$runEstimation()}}
 \item \href{#method-estimP-clone}{\code{estimP$clone()}}
 }
 }
@@ -36,7 +45,14 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE soil object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{estimP$new(name = "estim1", parent, environments, eparam, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{estimP$new(
+  name = "estim1",
+  parent,
+  environments,
+  eparam,
+  weathers,
+  observations
+)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -49,6 +65,8 @@ Create a new TPE soil object
 \item{\code{environments}}{List of environment names}
 
 \item{\code{eparam}}{Parameters of environment}
+
+\item{\code{weathers}}{Weather of environment}
 
 \item{\code{observations}}{Observations of environment}
 }
@@ -64,7 +82,7 @@ A new `TPEsoil` object.
 \subsection{Method \code{createEnv()}}{
 Create environment
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{estimP$createEnv(name, eparam, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{estimP$createEnv(name, eparam, weather, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -74,7 +92,52 @@ Create environment
 
 \item{\code{eparam}}{Parameters of environment}
 
+\item{\code{weather}}{Weather of environment}
+
 \item{\code{observations}}{Observations of environment}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-estimP-runEstimation"></a>}}
+\if{latex}{\out{\hypertarget{method-estimP-runEstimation}{}}}
+\subsection{Method \code{runEstimation()}}{
+Run parameter estimation
+
+
+Run parameter estimation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{estimP$runEstimation(
+  maxiter = 2000,
+  paramnames = NA,
+  metric = "RMSE",
+  score_fn = get_score,
+  weigh_fn = NA,
+  bounds = NA,
+  args
+)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{maxiter}}{A numeric value of the maximum number of iteration
+for DEoptim}
+
+\item{\code{paramnames}}{A vector of parameter names to be estimated}
+
+\item{\code{metric}}{A character string with the name of the metric to use
+for fitness computation. Options are c("RMSE","MAE","MSE")}
+
+\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+
+\item{\code{weigh_fn}}{Not used for the moment}
+
+\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
+each of the parameters in `paramnames` (rows)}
+
+\item{\code{args}}{Additional parameters to be passed to DEoptim.control}
 }
 \if{html}{\out{</div>}}
 }

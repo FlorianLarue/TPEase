@@ -24,6 +24,8 @@ TPEweather <- R6::R6Class("TPEweather",
     yearLevels = NULL,
     #' @field parent Parent environment
     parent = NULL,
+    #' @field dateParamDF sowing date of grid point
+    dateParamDF = data.frame(),
     #' @field test Debug
     test = NA,
 
@@ -70,11 +72,13 @@ TPEweather <- R6::R6Class("TPEweather",
     #' @description Set sowing date
     #' @param year Year of simulation
     #' @param cumulP Tmp fix for Adam et al.
-    set_dateParam = function(year, cumulP) {  #TODO: generalize tmp fix for Adam et al
+    #' @param run Tmp fix for Adam et al.
+    set_dateParam = function(year, cumulP, run) {
+      #TODO: generalize tmp fix for Adam et al
       if(!is.null(self$wData)) {
         self$simuWeather <- self$wData[which(stringr::str_split_fixed(
           self$wData$weatherdate, "/",3)[,3] == year),]
-        rainfall <- self$simuWeather[149:nrow(self$simuWeather),
+        rainfall <- self$simuWeather[149:245,
                                      c("weatherdate", "rainfall")]
         # sowing date  using  criteria from Balme et al.
         for(i in 4:nrow(rainfall)) {
@@ -92,7 +96,6 @@ TPEweather <- R6::R6Class("TPEweather",
                           "cumul_pluvio"]
               sowing <- rsamara::toJulianDayCalcC(rainfall[i,"weatherdate"],
                                                   format="DMY",sep="/")
-              #Tmp for Adam et al.
               if(cP >= 800) {
                 sowing <- sowing + 15
               }
@@ -105,15 +108,19 @@ TPEweather <- R6::R6Class("TPEweather",
                                                             format="DMY",
                                                             sep="/"),
                                   sowing)
+              tmpdf <- data.frame(year = year, run = run, sowing = sowing)
+              self$dateParamDF <- rbind(self$dateParamDF, tmpdf)
               break
             }
           }
         }
+
         if(!is.null(self$dateParam)) {
           self$simuWeather$weatherdate <- as.Date(as.character(
             self$simuWeather$weatherdate), format="%d/%m/%Y")
         }
       } else {
+        self$simuWeather <- NULL
         warning(paste("Weather data for grid point", self$name,
                       "is not set. Please use genClimate() on grid",
                       self$parent$parent$name, "if this was forgotten.",

@@ -348,10 +348,11 @@ TPEa <- R6::R6Class("TPEa",
     #' @param latlonData Tmp fix for Adam et al.
     #' @param cumulP Tmp fix for Adam et al.
     #' @param traitList Vector of variable names
+    #' @param savePath Path to save simu
     bootstrap = function(nameList, latList, lonList, rcp="rcp26", year=2014,
                          yearNb=1, modelNb="00000000000000000", path=NA,
                          pathCLI=NA, seed=1337, soilData, latlonData, cumulP,
-                         traitList) {
+                         traitList, savePath) {
       currentPath <- getwd()
       setwd(path)
 
@@ -368,8 +369,8 @@ TPEa <- R6::R6Class("TPEa",
 
           if(yearNb > 99) {
             nbRun <- yearNb %/% 99
-            lSeed <- seed[nbRun] #TODO: Tmp fix
             for(j in 1:nbRun) {
+              lSeed <- seed[j] #TODO: Tmp fix
               cat(paste0("Generating run ", j, " of point ", i,
                          " for variety ", private$parent$get_varNames()[[v]],
                          "\n"))
@@ -380,7 +381,7 @@ TPEa <- R6::R6Class("TPEa",
             param <- private$parent$varieties[[v]]$parameters
             self$bootstrapGP[[v]][[i]]$runBSSimulation(param, soilData,
                                                        latlonData, cumulP,
-                                                       traitList, year)
+                                                       traitList, year, savePath)
           } else {
             #Tmp fix
             cat("Please select more than 99 years \n")

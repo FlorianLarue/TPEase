@@ -27,6 +27,8 @@ are generated}
 
 \item{\code{parent}}{Parent environment}
 
+\item{\code{dateParamDF}}{sowing date of grid point}
+
 \item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
@@ -117,7 +119,7 @@ Generate climate
 \subsection{Method \code{set_dateParam()}}{
 Set sowing date
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_dateParam(year, cumulP)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEweather$set_dateParam(year, cumulP, run)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -126,6 +128,8 @@ Set sowing date
 \item{\code{year}}{Year of simulation}
 
 \item{\code{cumulP}}{Tmp fix for Adam et al.}
+
+\item{\code{run}}{Tmp fix for Adam et al.}
 }
 \if{html}{\out{</div>}}
 }

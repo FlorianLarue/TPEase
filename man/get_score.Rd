@@ -4,7 +4,7 @@
 \alias{get_score}
 \title{Compute fitness score between observations and simulations}
 \usage{
-get_score(obs, sim, metric, weight_fn)
+get_score(obs, sim, metric = NA, weight_fn = NA)
 }
 \arguments{
 \item{obs}{Dataframe of observations}
@@ -12,7 +12,7 @@ get_score(obs, sim, metric, weight_fn)
 \item{sim}{Dataframe of simulations}
 
 \item{metric}{Either a single value of the chosen metric to compute fitness
-(RMSE, MAE) or a vector with a metric for each column of \code{obs}}
+(RMSE, MAE) or a vector with a metric for each column of \code{obs}. TODO}
 
 \item{weight_fn}{Optionnal. TODO}
 }

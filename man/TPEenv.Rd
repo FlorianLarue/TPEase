@@ -18,6 +18,8 @@ TODO
 
 \item{\code{weather}}{A TPE weather object}
 
+\item{\code{soil}}{A soil object}
+
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
 
 \item{\code{observations}}{A list of dataframes of observations}
@@ -39,7 +41,7 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new environment object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEenv$new(name = "e1", parent, parameters, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEenv$new(name = "e1", parent, parameters, weather, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -51,7 +53,9 @@ Create a new environment object
 
 \item{\code{parameters}}{TPE analysis parent}
 
-\item{\code{observations}}{TPE analysis parent}
+\item{\code{weather}}{Weather}
+
+\item{\code{observations}}{Observations}
 }
 \if{html}{\out{</div>}}
 }

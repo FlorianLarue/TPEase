@@ -31,6 +31,8 @@ TODO
 \item{\code{variety}}{Optional. Specific variety for given gridPoint}
 
 \item{\code{test}}{Test attribute}
+
+\item{\code{param}}{Test attribute}
 }
 \if{html}{\out{</div>}}
 }
@@ -101,7 +103,7 @@ Set soil parameters for grid point location
 \subsection{Method \code{set_dateParam()}}{
 Set soil parameters for grid point location
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year, cumulP)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year, cumulP, run)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -110,6 +112,8 @@ Set soil parameters for grid point location
 \item{\code{year}}{Year of simulation}
 
 \item{\code{cumulP}}{Tmp for Adam et al.}
+
+\item{\code{run}}{Tmp for Adam et al.}
 }
 \if{html}{\out{</div>}}
 }
@@ -160,24 +164,7 @@ Get simulation data
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Variable name to retrieve
-#' @description Get mean simulation result over
-#' @param traitList Vector of variable names to extract from simulation
-#' results
-get_result = function(traitList) {
-  resDf <- data.frame()
-  for(simu in 1:length(self$simulations)) {
-    tmpDf <- data.frame(year = self$weather$yearLevels[simu])
-    for(trait in traitList) {
-      tmpDf <- cbind(tmpDf, max(as.numeric(as.character(
-        self$simulations[[simu]][,trait])), na.rm=T))
-    }
-    resDf <- rbind(resDf, tmpDf)
-  }
-  resDf <- colMeans(resDf[,-c(1)])
-  colnames(resDf) <- traitList
-  return(resDf)
-},}
+\item{\code{val}}{Variable name to retrieve}
 }
 \if{html}{\out{</div>}}
 }
@@ -285,7 +272,8 @@ Run simulation on grid point
   latlonData,
   cumulP,
   traitList,
-  startingYear
+  startingYear,
+  savePath
 )}\if{html}{\out{</div>}}
 }
 
@@ -305,6 +293,9 @@ simulations. This will delete the simulations and only keep the max for
 each year}
 
 \item{\code{startingYear}}{Starting year of bootstrap climate gen}
+
+\item{\code{savePath}}{Optional. A character string of the path where to save
+simulation files. If NULL (default), will not save simulations}
 }
 \if{html}{\out{</div>}}
 }

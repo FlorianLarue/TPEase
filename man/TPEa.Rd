@@ -467,7 +467,8 @@ simulations on observed sites
   soilData,
   latlonData,
   cumulP,
-  traitList
+  traitList,
+  savePath
 )}\if{html}{\out{</div>}}
 }
 
@@ -509,6 +510,8 @@ contain spaces}
 \item{\code{cumulP}}{Tmp fix for Adam et al.}
 
 \item{\code{traitList}}{Vector of variable names}
+
+\item{\code{savePath}}{Path to save simu}
 }
 \if{html}{\out{</div>}}
 }
