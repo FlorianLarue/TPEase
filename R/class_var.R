@@ -33,16 +33,17 @@ TPEvar <- R6::R6Class("TPEvar",
     #' (each entry is for one environment)
     #' @param parent TPE analysis parent
     #' @return A new `TPEvar` object.
-    initialize = function(name="v1", alt="G1", parameters=NA, eName="estim1",
+    initialize = function(name="v1", alt="G1", parameters=NA, eName=NA,
                           environments=NA, eparam=NA, weathers=NA,
                           observations=NA, parent=NA) {
       self$name <- name
       self$alt <- alt
       self$parameters <- parameters
       self$parent <- parent
-
-      self$createEstim(eName, self, environments, eparam, weathers,
-                       observations)
+      if(!is.na(eName)) {
+        self$createEstim(eName, self, environments, eparam, weathers,
+                         observations)
+      }
     },
 
     #' @description Get names of all estimations

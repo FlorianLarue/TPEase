@@ -25,6 +25,8 @@ estimP <- R6::R6Class("estimP",
    paramNames = NULL,
    #' @field test Debug
    test = NA,
+   #' @field test2 Debug
+   test2 = NA,
 
    #' @description Create a new TPE soil object
    #' @param name A character string identifier of estimation
@@ -88,7 +90,7 @@ estimP <- R6::R6Class("estimP",
        self$DEparams <- do.call(DEoptim.control, c(args,itermax=maxiter))
        estimResult <- DEoptim(private$fitness, lower=bounds[1,],
                               upper=bounds[2,], control=self$DEparams,
-                              score_fn=score_fn, idv=idv)
+                              score_fn=score_fn, idv=idv, metric=metric)
      }
    }
   ),
@@ -98,7 +100,7 @@ estimP <- R6::R6Class("estimP",
 
     #' @import DEoptim
     #' @import rsamara
-    fitness = function(p, score_fn, idv) {
+    fitness = function(p, score_fn, idv, metric) {
       self$test <- self$test + 1
       if(length(self$environments) > 0) {
         sum_score <- 0
@@ -116,7 +118,9 @@ estimP <- R6::R6Class("estimP",
           sim <- rsamara::run_sim_idx(i)
           obs <- rcpp_reduceVobs(self$environments[[i]]$observations, sim)
           res <- rcpp_reduceResults(sim, obs)
-          score <- score_fn(obs, res)
+          self$test <- obs
+          self$test2 <- res
+          score <- score_fn(obs, res, metric)
           sum_score <- sum_score + score
         }
         return(sum_score/length(self$environments))

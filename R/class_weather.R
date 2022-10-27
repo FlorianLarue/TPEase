@@ -96,7 +96,7 @@ TPEweather <- R6::R6Class("TPEweather",
                           "cumul_pluvio"]
               sowing <- rsamara::toJulianDayCalcC(rainfall[i,"weatherdate"],
                                                   format="DMY",sep="/")
-              if(cP >= 800) {
+              if(length(cP) > 0 && cP >= 800) {
                 sowing <- sowing + 15
               }
               self$dateParam <- c(rsamara::toJulianDayCalcC(paste0("01/01/",
@@ -108,8 +108,10 @@ TPEweather <- R6::R6Class("TPEweather",
                                                             format="DMY",
                                                             sep="/"),
                                   sowing)
-              tmpdf <- data.frame(year = year, run = run, sowing = sowing)
-              self$dateParamDF <- rbind(self$dateParamDF, tmpdf)
+              if(!is.na(run)) {
+                tmpdf <- data.frame(year = year, run = run, sowing = sowing)
+                self$dateParamDF <- rbind(self$dateParamDF, tmpdf)
+              }
               break
             }
           }

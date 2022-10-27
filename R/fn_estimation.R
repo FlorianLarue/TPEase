@@ -75,8 +75,8 @@ fitness_score <- function(p, param, paramnames, weather, obser, score_fn, idx,
 #' @description TODO
 #' @param obs Dataframe of observations
 #' @param sim Dataframe of simulations
-#' @param metric Either a single value of the chosen metric to compute fitness
-#' (RMSE, MAE) or a vector with a metric for each column of \code{obs}. TODO
+#' @param metric Character string of the metric to use as computation of the
+#' score (choices are : MAE, RMSE, MSE, rMAE, rRMSE)
 #' @param weight_fn Optionnal. TODO
 #' @examples get_score(obs, sim, metric, weight_fn)
 #' @import rsamara
@@ -85,7 +85,14 @@ get_score <- function(obs, sim, metric=NA, weight_fn=NA) {
   if(class(obs) != "data.frame" || class(sim) != "data.frame") {
     print("Please provide a dataframe for observations and simulations")
   } else {
-    score <- MAE(obs,sim)
+    score <- switch(
+      metric,
+      "MAE" = MAE(obs, sim),
+      "RMSE" = RMSE(obs, sim),
+      "rMAE" = rMAE(obs, sim),
+      "MSE" = MSE(obs, sim),
+      "rRMSE" = rRMSE(obs,sim)
+    )
     return(score)
   }
 }

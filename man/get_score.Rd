@@ -11,8 +11,8 @@ get_score(obs, sim, metric = NA, weight_fn = NA)
 
 \item{sim}{Dataframe of simulations}
 
-\item{metric}{Either a single value of the chosen metric to compute fitness
-(RMSE, MAE) or a vector with a metric for each column of \code{obs}. TODO}
+\item{metric}{Character string of the metric to use as computation of the
+score (choices are : MAE, RMSE, MSE, rMAE, rRMSE)}
 
 \item{weight_fn}{Optionnal. TODO}
 }

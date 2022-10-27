@@ -27,6 +27,8 @@ parameter estimation}
 \item{\code{paramNames}}{A vector of estimated parameter names}
 
 \item{\code{test}}{Debug}
+
+\item{\code{test2}}{Debug}
 }
 \if{html}{\out{</div>}}
 }

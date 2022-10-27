@@ -345,6 +345,7 @@ Run simulation on one or several grids
   varID = NA,
   soilData = soil,
   latlonData = lat_lon,
+  cumulP = cumul,
   traitList = NULL,
   savePath = NULL
 )}\if{html}{\out{</div>}}
@@ -364,6 +365,8 @@ simulation on the grid. If NA, will use the variety attached to grid}
 \item{\code{soilData}}{Tmp for Adam et al.}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
+
+\item{\code{cumulP}}{Tmp for Adam et al.}
 
 \item{\code{traitList}}{Optionnal. Vector of trait names to extract from
 simulations. This will delete the simulations and only keep the max for

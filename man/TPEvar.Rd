@@ -47,7 +47,7 @@ Create a new variety object
   name = "v1",
   alt = "G1",
   parameters = NA,
-  eName = "estim1",
+  eName = NA,
   environments = NA,
   eparam = NA,
   weathers = NA,

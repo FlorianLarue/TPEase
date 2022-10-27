@@ -240,16 +240,18 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
+    #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. Vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the max for
     #' each year
     #' @param savePath Optional. A character string of the path where to save
     #' simulation files. If NULL (default), will not save simulations
     runGridSim = function(tpeID=1, gridID=NA, varID=NA, soilData=soil,
-                          latlonData=lat_lon, traitList=NULL, savePath=NULL) {
+                          latlonData=lat_lon, cumulP=cumul,
+                          traitList=NULL, savePath=NULL) {
 
       self$TPEanalysis[[tpeID]]$runGridSim(gridID, varID, soilData, latlonData,
-                                           traitList, savePath)
+                                           cumulP, traitList, savePath)
     },
 
     #' @description Create raster map

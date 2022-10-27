@@ -103,7 +103,7 @@ Set soil parameters for grid point location
 \subsection{Method \code{set_dateParam()}}{
 Set soil parameters for grid point location
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year, cumulP, run)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{gridPoint$set_dateParam(year, cumulP, run = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

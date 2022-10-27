@@ -58,7 +58,7 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @param year Year of simulation
     #' @param cumulP Tmp for Adam et al.
     #' @param run Tmp for Adam et al.
-    set_dateParam = function(year, cumulP, run) {  #TODO: generalize tmp fix for Adam et al
+    set_dateParam = function(year, cumulP, run=NA) {  #TODO: generalize tmp fix for Adam et al
       self$weather$set_dateParam(year, cumulP, run)
     },
 
@@ -162,18 +162,17 @@ gridPoint <- R6::R6Class("gridPoint",
                                          self$param, self$weather$simuWeather)
             sim <- rsamara::run_sim_idx(as.numeric(paste0(self$name, year)))
 
-            if(!is.null(savePath)) {
+            if(!is.null(savePath) && !is.na(sim)) {
               fwrite(sim, paste0(savePath,"/sim_",self$name,"_",self$variety$name,
                                  year,".csv"))
-            } else if(is.null(traitList)) {
+            } else if(is.null(traitList) && !is.na(sim)) {
               self$simulations <- append(self$simulations, list(sim))
             }
 
-            if(!is.null(traitList)) {
+            if(!is.null(traitList) && !is.na(sim)) {
               self$result <- rbind(self$result, matrixStats::colMaxs(
                 as.matrix(sim[,traitList])))
             }
-
 
           } else {
             warning(paste("Sowing date was not extracted from weatherdata for",
@@ -186,6 +185,7 @@ gridPoint <- R6::R6Class("gridPoint",
         if(!is.null(traitList)) {
           self$result <- self$get_meansd(traitList)
         }
+
         self$weather$simuWeather <- NULL
       } else {
         warning(paste0("No weather data on grid point ", self$name, ".",
