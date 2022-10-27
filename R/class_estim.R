@@ -131,6 +131,8 @@ estimP <- R6::R6Class("estimP",
             score <- score_fn(obs[,j], res[,j], metric)
             if(!is.nan(score)) {
               col_score <- col_score + score
+            } else {
+              col_score <- col_score + 999999
             }
           }
           sum_score <- sum_score + col_score
