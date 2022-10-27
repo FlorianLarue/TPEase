@@ -21,12 +21,12 @@ estimP <- R6::R6Class("estimP",
    #' @field DEparams A DEoptim.control object with parameters used for DEoptim
    #' parameter estimation
    DEparams = NULL,
+   #' @field DEresult A DEoptim result object
+   DEresult = NULL,
    #' @field paramNames A vector of estimated parameter names
    paramNames = NULL,
    #' @field test Debug
    test = NA,
-   #' @field test2 Debug
-   test2 = NA,
 
    #' @description Create a new TPE soil object
    #' @param name A character string identifier of estimation
@@ -91,6 +91,13 @@ estimP <- R6::R6Class("estimP",
        estimResult <- DEoptim(private$fitness, lower=bounds[1,],
                               upper=bounds[2,], control=self$DEparams,
                               score_fn=score_fn, idv=idv, metric=metric)
+       self$DEresult <- estimResult
+       self$parent$update_param(estimResult$optim$bestmem, tolower(paramnames))
+       cat(paste0("Estimation ", self$name, " is done. ",
+                  "The final fitness score is ",
+                  estimResult$optim$bestval,
+                  " and parameters have been updated on variety ",
+                  self$parent$name))
      }
    }
   ),
@@ -100,6 +107,7 @@ estimP <- R6::R6Class("estimP",
 
     #' @import DEoptim
     #' @import rsamara
+    #' @import tictoc
     fitness = function(p, score_fn, idv, metric) {
       self$test <- self$test + 1
       if(length(self$environments) > 0) {
@@ -118,10 +126,15 @@ estimP <- R6::R6Class("estimP",
           sim <- rsamara::run_sim_idx(i)
           obs <- rcpp_reduceVobs(self$environments[[i]]$observations, sim)
           res <- rcpp_reduceResults(sim, obs)
-          self$test <- obs
-          self$test2 <- res
-          score <- score_fn(obs, res, metric)
-          sum_score <- sum_score + score
+          col_score <- 0
+          for(j in 1:ncol(obs)) {
+            score <- score_fn(obs[,j], res[,j], metric)
+            if(!is.nan(score)) {
+              col_score <- col_score + score
+            }
+          }
+          sum_score <- sum_score + col_score
+          self$test <- c(self$test, col_score)
         }
         return(sum_score/length(self$environments))
       } else {

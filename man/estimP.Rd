@@ -24,11 +24,11 @@ used for simulation, each line is one environment}
 \item{\code{DEparams}}{A DEoptim.control object with parameters used for DEoptim
 parameter estimation}
 
+\item{\code{DEresult}}{A DEoptim result object}
+
 \item{\code{paramNames}}{A vector of estimated parameter names}
 
 \item{\code{test}}{Debug}
-
-\item{\code{test2}}{Debug}
 }
 \if{html}{\out{</div>}}
 }

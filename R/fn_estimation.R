@@ -82,9 +82,9 @@ fitness_score <- function(p, param, paramnames, weather, obser, score_fn, idx,
 #' @import rsamara
 #' @export
 get_score <- function(obs, sim, metric=NA, weight_fn=NA) {
-  if(class(obs) != "data.frame" || class(sim) != "data.frame") {
-    print("Please provide a dataframe for observations and simulations")
-  } else {
+  # if(class(obs) != "data.frame" || class(sim) != "data.frame") {
+  #   print("Please provide a dataframe for observations and simulations")
+  # } else {
     score <- switch(
       metric,
       "MAE" = MAE(obs, sim),
@@ -94,5 +94,5 @@ get_score <- function(obs, sim, metric=NA, weight_fn=NA) {
       "rRMSE" = rRMSE(obs,sim)
     )
     return(score)
-  }
+  #}
 }
