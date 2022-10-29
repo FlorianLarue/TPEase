@@ -16,7 +16,10 @@ TODO
 
 \item{\code{parent}}{Parent environment}
 
-\item{\code{soilParam}}{Soil parameters}
+\item{\code{parameters}}{Soil parameters}
+
+\item{\code{soilParam}}{Boolean indicating if soil parameters were extracted
+from HC27}
 
 \item{\code{test}}{Debug}
 }

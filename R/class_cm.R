@@ -9,19 +9,32 @@
 #' @export
 TPEcm <- R6::R6Class("TPEcm",
   public = list(
-    #' @field name A character string identifier of the variety
+    #' @field name A character string identifier of the crop management
     name = NULL,
-    #' @field soilParam soil parameters of grid point
-    soilParam = NULL,
-    #' @field dateParam sowing date of grid point
-    dateParam = NULL,
+    #' @field parameters A dataframe with crop management parameters
+    parameters = NULL,
 
     #' @description Create a new variety object
     #' @param name A character string identifier of the variety
     #' @param parent TPE analysis parent
     #' @return A new `TPEenv` object.
+    #' @importFrom data.table fread
     initialize = function(name="e1", parent) {
       self$name <- name
+      parampath <- system.file("extdata", "management.csv", package="CGMTPE")
+      self$parameters <- data.frame(fread(parampath))
+    },
+
+    #' @description Set date parameters (starting, ending and sowing date)
+    #' @param val A vector of size 3 with starting, ending and sowing dates
+    set_dateparam = function(val) {
+      self$parameters[,c("startingdate","endingdate","sowing")] <- val
+    },
+
+    #' @description Set date latitude and longitude
+    #' @param val A vector of size 2 with latitude and longitude of the site
+    set_latlon = function(val) {
+      self$parameters[,c("wslat","wslong")] <- val
     }
   )
 )

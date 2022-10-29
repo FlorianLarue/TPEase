@@ -18,8 +18,9 @@ TPEweather <- R6::R6Class("TPEweather",
     wList = list(),
     #' @field simuWeather A dataframe with weather data for simulation
     simuWeather = NULL,
-    #' @field dateParam sowing date of grid point
-    dateParam = NULL,
+    #' @field dateParam Booleaon indicating if date parameters were extracted
+    #' from weather data
+    dateParam = FALSE,
     #' @field yearLevels Years of generated weather data
     yearLevels = NULL,
     #' @field parent Parent environment
@@ -99,15 +100,15 @@ TPEweather <- R6::R6Class("TPEweather",
               if(length(cP) > 0 && cP >= 800) {
                 sowing <- sowing + 15
               }
-              self$dateParam <- c(rsamara::toJulianDayCalcC(paste0("01/01/",
-                                                                   year),
-                                                            format="DMY",
-                                                            sep="/"),
-                                  rsamara::toJulianDayCalcC(paste0("31/12/",
-                                                                   year),
-                                                            format="DMY",
-                                                            sep="/"),
-                                  sowing)
+
+              self$parent$cm$set_dateparam(c(
+                             rsamara::toJulianDayCalcC(paste0("01/01/", year),
+                                                       format="DMY", sep="/"),
+                             rsamara::toJulianDayCalcC(paste0("31/12/", year),
+                                                       format="DMY", sep="/"),
+                             sowing))
+
+              self$dateParam <- TRUE
               if(!is.na(run)) {
                 tmpdf <- data.frame(year = year, run = run, sowing = sowing)
                 self$dateParamDF <- rbind(self$dateParamDF, tmpdf)

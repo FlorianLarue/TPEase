@@ -144,6 +144,13 @@ TPEgrid <- R6::R6Class("TPEgrid",
       return(resDf)
     },
 
+    #' @description Add result of gridPoint to gridRes
+    #' @param val A dataframe of gridPoint results
+    add_gridpointResult = function(val) {
+      self$gridRes <- rbind(self$gridRes,val)
+      rownames(self$gridRes) <- NULL
+    },
+
     #' @description Create gridpoint for each point of the grid
     #' @param lat Starting latitude of the grid (upper left corner)
     #' @param lon Starting longitude of the grid (upper left corner)
@@ -182,7 +189,6 @@ TPEgrid <- R6::R6Class("TPEgrid",
     #' should be shown
     #' @param seed Integer number to use as seed for marksim weather generator
     #' @importFrom data.table fread
-    #' @importFrom data.table fwrite
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, filesE,
                           verbose, seed) {
       if(filesE) { #TODO: tmp solution for dev, need to find generalization
@@ -192,10 +198,9 @@ TPEgrid <- R6::R6Class("TPEgrid",
             lonF <- self$gridPoints[i,j][[1]]$lon
             if(file.size(paste0(path,"weathers/weather_",latF,"_",
                                 lonF,".csv")) > 5) {
-              weatherF <- data.frame(data.table::fread(paste0(path,
-                                                      "weathers/weather_",
-                                                      latF,"_", lonF,".csv"),
-                                                      drop=1))
+              weatherF <- data.frame(fread(paste0(path,"weathers/weather_",
+                                                  latF,"_", lonF,".csv"),
+                                           drop=1))
               self$gridPoints[i,j][[1]]$set_weather(weatherF)
             }
           }

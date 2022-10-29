@@ -18,9 +18,13 @@ TODO
 
 \item{\code{lat}}{Latitude of the grid point}
 
+\item{\code{parameters}}{Combination of variety and environment parameters}
+
 \item{\code{weather}}{A weather object}
 
 \item{\code{soil}}{A soil object}
+
+\item{\code{cm}}{A soil object}
 
 \item{\code{result}}{Mean results}
 
@@ -31,8 +35,6 @@ TODO
 \item{\code{variety}}{Optional. Specific variety for given gridPoint}
 
 \item{\code{test}}{Test attribute}
-
-\item{\code{param}}{Test attribute}
 }
 \if{html}{\out{</div>}}
 }

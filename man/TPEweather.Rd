@@ -21,7 +21,8 @@ are generated}
 
 \item{\code{simuWeather}}{A dataframe with weather data for simulation}
 
-\item{\code{dateParam}}{sowing date of grid point}
+\item{\code{dateParam}}{Booleaon indicating if date parameters were extracted
+from weather data}
 
 \item{\code{yearLevels}}{Years of generated weather data}
 

@@ -45,6 +45,7 @@ TODO
 \item \href{#method-TPEgrid-get_width}{\code{TPEgrid$get_width()}}
 \item \href{#method-TPEgrid-get_length}{\code{TPEgrid$get_length()}}
 \item \href{#method-TPEgrid-get_results}{\code{TPEgrid$get_results()}}
+\item \href{#method-TPEgrid-add_gridpointResult}{\code{TPEgrid$add_gridpointResult()}}
 \item \href{#method-TPEgrid-populateGrid}{\code{TPEgrid$populateGrid()}}
 \item \href{#method-TPEgrid-genClimate}{\code{TPEgrid$genClimate()}}
 \item \href{#method-TPEgrid-runGridSim}{\code{TPEgrid$runGridSim()}}
@@ -191,6 +192,23 @@ Get grid simulation results
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{traitList}}{Vector of variable names to extract for results}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEgrid-add_gridpointResult"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEgrid-add_gridpointResult}{}}}
+\subsection{Method \code{add_gridpointResult()}}{
+Add result of gridPoint to gridRes
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEgrid$add_gridpointResult(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A dataframe of gridPoint results}
 }
 \if{html}{\out{</div>}}
 }

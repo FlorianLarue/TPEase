@@ -15,10 +15,14 @@ gridPoint <- R6::R6Class("gridPoint",
     lon = NULL,
     #' @field lat Latitude of the grid point
     lat = NULL,
+    #' @field parameters Combination of variety and environment parameters
+    parameters = NULL,
     #' @field weather A weather object
     weather = NULL,
     #' @field soil A soil object
     soil = NULL,
+    #' @field cm A soil object
+    cm = NULL,
     #' @field result Mean results
     result = NULL,
     #' @field simulations Model simulations
@@ -29,8 +33,6 @@ gridPoint <- R6::R6Class("gridPoint",
     variety = NULL,
     #' @field test Test attribute
     test = NULL,
-    #' @field param Test attribute
-    param = NULL,
 
     #' @description Create a new TPE grid point object
     #' @param parent Grid parent of grid point
@@ -45,6 +47,8 @@ gridPoint <- R6::R6Class("gridPoint",
       self$lat <- lat
       self$weather <- TPEweather$new(self$name, self)
       self$soil <- TPEsoil$new(self$name, self)
+      self$cm <- TPEcm$new(self$name)
+      self$cm$set_latlon(c(self$lat,self$lon))
     },
 
     #' @description Set soil parameters for grid point location
@@ -130,36 +134,20 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @importFrom data.table fwrite
     runSimulation = function(param, i, j, soilData, latlonData, cumulP,
                              traitList, savePath) {
+
       self$set_soilParam(soilData, latlonData)
+
       if(!is.null(self$weather$yearLevels)) {
         for(year in self$weather$yearLevels) {
-          if(!is.null(self$soil$soilParam)) {
-            param$stockinisurf <- self$soil$soilParam[1]
-            param$stockiniprof <- self$soil$soilParam[2]
-            param$epaisseursurf <- self$soil$soilParam[3]
-            param$epaisseurprof <- self$soil$soilParam[4]
-            param$humpf <- self$soil$soilParam[5]
-            param$humsat <- self$soil$soilParam[6]
-            param$humfc <- self$soil$soilParam[7]
-          } else {
-            warning(paste("Soil parameters were not extracted from HC27 for",
-                          "grid point", self$name,
-                          "The current soil parameters from TPE analysis",
-                          self$parent$parent$name, "will be used."),
-                    call.=F)
-          }
-          param$wslong <- self$lon
-          param$wslat <- self$lat
-
-          self$weather$dateParam <- NULL
+          self$weather$dateParam <- FALSE
           self$set_dateParam(year, cumulP)
-          if(!is.null(self$weather$dateParam)) {
-            param$startingdate <- self$weather$dateParam[1]
-            param$endingdate <- self$weather$dateParam[2]
-            param$sowing <- self$weather$dateParam[3]
-            self$param <- param
+          if(self$weather$dateParam) {
+            self$parameters <- merge(param, merge(self$soil$parameters,
+                                                  self$cm$parameters))
+
             rsamara::init_sim_idx_simple(as.numeric(paste0(self$name, year)),
-                                         self$param, self$weather$simuWeather)
+                                         self$parameters,
+                                         self$weather$simuWeather)
             sim <- rsamara::run_sim_idx(as.numeric(paste0(self$name, year)))
 
             if(!is.null(savePath) && !is.na(sim)) {
@@ -184,9 +172,17 @@ gridPoint <- R6::R6Class("gridPoint",
 
         if(!is.null(traitList)) {
           self$result <- self$get_meansd(traitList)
+          self$parent$add_gridpointResult(cbind(data.frame(x=self$lon,
+                                                           y=self$lat),
+                                                self$result))
         }
 
         self$weather$simuWeather <- NULL
+      } else if(!self$soil$soilParam) {
+        warning(paste("Soil parameters were not extracted from HC27 for",
+                      "grid point", self$name,
+                      "Simulation for this grid point will not be run."),
+                call.=F)
       } else {
         warning(paste0("No weather data on grid point ", self$name, ".",
                       "Simulation for this grid point will not be run."),
@@ -210,55 +206,60 @@ gridPoint <- R6::R6Class("gridPoint",
     #' @importFrom data.table fwrite
     runBSSimulation = function(param, soilData, latlonData, cumulP, traitList,
                                startingYear, savePath) {
+
       self$set_soilParam(soilData, latlonData)
-      for(i in 1:self$weather$yearLevels) {
-        run <- ((i - 1) %/% 99) + 1
-        index <- i - (99 * (run-1))
-        years <- startingYear:(startingYear+98)
-        year <- years[index]
-        if(!is.null(self$soil$soilParam)) {
-          param$stockinisurf <- self$soil$soilParam[1]
-          param$stockiniprof <- self$soil$soilParam[2]
-          param$epaisseursurf <- self$soil$soilParam[3]
-          param$epaisseurprof <- self$soil$soilParam[4]
-          param$humpf <- self$soil$soilParam[5]
-          param$humsat <- self$soil$soilParam[6]
-          param$humfc <- self$soil$soilParam[7]
-        }
-        param$wslong <- self$lon
-        param$wslat <- self$lat
 
-        self$weather$dateParam <- NULL
-        self$weather$wData <- self$weather$wList[[run]]
-        self$set_dateParam(year, cumulP, run)
-        if(!is.null(self$weather$dateParam)) {
-          param$startingdate <- self$weather$dateParam[1]
-          param$endingdate <- self$weather$dateParam[2]
-          param$sowing <- self$weather$dateParam[3]
+      if(!is.null(self$weather$yearLevels)) {
+        for(i in 1:self$weather$yearLevels) {
+          run <- ((i - 1) %/% 99) + 1
+          index <- i - (99 * (run-1))
+          years <- startingYear:(startingYear+98)
+          year <- years[index]
 
-          self$param <- param
-          rsamara::init_sim_idx_simple(as.numeric(paste0(run, year)),
-                                       self$param, self$weather$simuWeather)
-          sim <- rsamara::run_sim_idx(as.numeric(paste0(run, year)))
+          self$weather$dateParam <- FALSE
+          self$weather$wData <- self$weather$wList[[run]]
+          self$set_dateParam(year, cumulP, run)
 
-          if(!is.null(savePath) && !is.na(sim)) {
-            fwrite(sim, paste0(savePath,"/sim_",self$name,"_", param$variety, "_",
-                               run,"_",year,".csv"))
+          if(self$weather$dateParam) {
+            self$parameters <- merge(param, merge(self$soil$parameters,
+                                                  self$cm$parameters))
+            rsamara::init_sim_idx_simple(as.numeric(paste0(run, year)),
+                                         self$parameters,
+                                         self$weather$simuWeather)
+            sim <- rsamara::run_sim_idx(as.numeric(paste0(run, year)))
+
+            if(!is.null(savePath) && !is.na(sim)) {
+              fwrite(sim, paste0(savePath,"/sim_",self$name,"_", param$variety, "_",
+                                 run,"_",year,".csv"))
+            } else if(is.null(traitList) && !is.na(sim)) {
+              self$simulations <- append(self$simulations, list(sim))
+            }
+
+            if(!is.null(traitList) && !is.na(sim)) {
+              tmpRes <- matrixStats::colMaxs(as.matrix(sim[,traitList]))
+              tmpRes <- as.data.frame(as.list(tmpRes))
+              colnames(tmpRes) <- traitList
+              tmpRes$year <- year
+              tmpRes$run <- run
+              self$result <- rbind(self$result, tmpRes)
+            }
+
+            self$weather$simuWeather <- NULL
+          } else {
+            warning(paste("Sowing date was not extracted from weatherdata for",
+                          "grid point", self$name, "for year", year),
+                    call.=F)
           }
-
-          if(!is.null(traitList) && !is.na(sim)) {
-            tmpRes <- matrixStats::colMaxs(as.matrix(sim[,traitList]))
-            tmpRes <- as.data.frame(as.list(tmpRes))
-            colnames(tmpRes) <- traitList
-            tmpRes$year <- year
-            tmpRes$run <- run
-            self$result <- rbind(self$result, tmpRes)
-          }
-        } else {
-          warning(paste("Sowing date was not extracted from weatherdata for",
-                        "grid point", self$name, "for year", year),
-                  call.=F)
         }
+      } else if(!self$soil$soilParam) {
+        warning(paste("Soil parameters were not extracted from HC27 for",
+                      "grid point", self$name,
+                      "Simulation for this grid point will not be run."),
+                call.=F)
+      } else {
+        warning(paste0("No weather data on grid point ", self$name, ".",
+                       "Simulation for this grid point will not be run."),
+                call.=F)
       }
     }
   )

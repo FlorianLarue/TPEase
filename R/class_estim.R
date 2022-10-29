@@ -40,9 +40,9 @@ estimP <- R6::R6Class("estimP",
                          observations) {
      self$name <- as.character(name)
      self$parent <- parent
-
      if(length(environments) > 1 || !is.na(environments)) {
        for(i in 1:length(environments)) {
+
          self$createEnv(environments[i], paramE, weathers[[i]],
                         observations[[i]])
          param <- merge(self$parent$parameters, eparam[i,])
@@ -107,7 +107,6 @@ estimP <- R6::R6Class("estimP",
 
     #' @import DEoptim
     #' @import rsamara
-    #' @import tictoc
     fitness = function(p, score_fn, idv, metric) {
       self$test <- self$test + 1
       if(length(self$environments) > 0) {

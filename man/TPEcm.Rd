@@ -12,11 +12,9 @@ TODO
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{A character string identifier of the variety}
+\item{\code{name}}{A character string identifier of the crop management}
 
-\item{\code{soilParam}}{soil parameters of grid point}
-
-\item{\code{dateParam}}{sowing date of grid point}
+\item{\code{parameters}}{A dataframe with crop management parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -24,6 +22,8 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEcm-new}{\code{TPEcm$new()}}
+\item \href{#method-TPEcm-set_dateparam}{\code{TPEcm$set_dateparam()}}
+\item \href{#method-TPEcm-set_latlon}{\code{TPEcm$set_latlon()}}
 \item \href{#method-TPEcm-clone}{\code{TPEcm$clone()}}
 }
 }
@@ -47,6 +47,40 @@ Create a new variety object
 }
 \subsection{Returns}{
 A new `TPEenv` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEcm-set_dateparam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEcm-set_dateparam}{}}}
+\subsection{Method \code{set_dateparam()}}{
+Set date parameters (starting, ending and sowing date)
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEcm$set_dateparam(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A vector of size 3 with starting, ending and sowing dates}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEcm-set_latlon"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEcm-set_latlon}{}}}
+\subsection{Method \code{set_latlon()}}{
+Set date latitude and longitude
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEcm$set_latlon(val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{val}}{A vector of size 2 with latitude and longitude of the site}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}
