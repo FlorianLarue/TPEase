@@ -17,6 +17,8 @@ TPEenv <- R6::R6Class("TPEenv",
     weather = NULL,
     #' @field soil A soil object
     soil = NULL,
+    #' @field cm A crop management object
+    cm = NULL,
     #' @field parameters A dataframe with all parameters used for simulation
     parameters = NULL,
     #' @field observations A list of dataframes of observations
@@ -36,6 +38,7 @@ TPEenv <- R6::R6Class("TPEenv",
       self$parameters <- parameters
       self$weather <- weather
       self$soil <- TPEsoil$new(self$name, self)
+      self$cm <- TPEcm$new(self$name, self)
       self$observations <- observations
     },
 

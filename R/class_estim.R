@@ -43,7 +43,7 @@ estimP <- R6::R6Class("estimP",
      if(length(environments) > 1 || !is.na(environments)) {
        for(i in 1:length(environments)) {
 
-         self$createEnv(environments[i], paramE, weathers[[i]],
+         self$createEnv(environments[i], eparam[i,], weathers[[i]],
                         observations[[i]])
          param <- merge(self$parent$parameters, eparam[i,])
          param$X <- environments[i]

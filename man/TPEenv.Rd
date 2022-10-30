@@ -20,6 +20,8 @@ TODO
 
 \item{\code{soil}}{A soil object}
 
+\item{\code{cm}}{A crop management object}
+
 \item{\code{parameters}}{A dataframe with all parameters used for simulation}
 
 \item{\code{observations}}{A list of dataframes of observations}
