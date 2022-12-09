@@ -214,7 +214,7 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @param year A numeric value of the year to simulate climate
     #' (this can include years from 2013 to 2099)
     #' @param yearNb A numeric value of the number of years to simulate
-    #' @param modelNb A character string of the  general circulation model
+    #' @param modelNb A character string of the general circulation model
     #' identifier to use, see \code{generateClimate}
     #' @param path A character string with the path to the marksim standalone.
     #' For the moment, this path can not contain spaces
@@ -222,14 +222,15 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' If no value is provided, the CLI folder will be considered in the same
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
+    #' @param seed A numeric value of the seed to use to generate climate
     #' @param filesE Boolean. If weather files already exist
     #' @param verbose Boolean. If messages about starting climate generation
     #' should be shown
     genClimate = function(tpeID=1, gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
-                          filesE=F, verbose=T) {
+                          seed=NA, filesE=F, verbose=T) {
       self$TPEanalysis[[tpeID]]$genClimate(gridID, rcp, year, yearNb, modelNb,
-                                           path, pathCLI, filesE, verbose)
+                                           path, pathCLI, seed, filesE, verbose)
     },
 
     #' @description Run simulation on one or several grids

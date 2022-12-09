@@ -92,7 +92,7 @@ estimP <- R6::R6Class("estimP",
                               upper=bounds[2,], control=self$DEparams,
                               score_fn=score_fn, idv=idv, metric=metric)
        self$DEresult <- estimResult
-       self$parent$update_param(estimResult$optim$bestmem, tolower(paramnames))
+       self$parent$updateParam(estimResult$optim$bestmem, tolower(paramnames))
        cat(paste0("Estimation ", self$name, " is done. ",
                   "The final fitness score is ",
                   estimResult$optim$bestval,

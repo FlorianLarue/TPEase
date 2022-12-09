@@ -31,7 +31,7 @@ TODO
 \item \href{#method-TPEvar-get_estimNames}{\code{TPEvar$get_estimNames()}}
 \item \href{#method-TPEvar-get_estimid}{\code{TPEvar$get_estimid()}}
 \item \href{#method-TPEvar-set_param}{\code{TPEvar$set_param()}}
-\item \href{#method-TPEvar-update_param}{\code{TPEvar$update_param()}}
+\item \href{#method-TPEvar-updateParam}{\code{TPEvar$updateParam()}}
 \item \href{#method-TPEvar-createEstim}{\code{TPEvar$createEstim()}}
 \item \href{#method-TPEvar-runEstimation}{\code{TPEvar$runEstimation()}}
 \item \href{#method-TPEvar-clone}{\code{TPEvar$clone()}}
@@ -130,12 +130,12 @@ Set parameters
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEvar-update_param"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEvar-update_param}{}}}
-\subsection{Method \code{update_param()}}{
+\if{html}{\out{<a id="method-TPEvar-updateParam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEvar-updateParam}{}}}
+\subsection{Method \code{updateParam()}}{
 Set estimated parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEvar$update_param(val, names)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEvar$updateParam(val, names)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{

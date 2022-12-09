@@ -251,7 +251,7 @@ TPEa <- R6::R6Class("TPEa",
                     "this may take some time \n"))
         }
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                    pathCLI, filesE, verbose, seed)
+                                    pathCLI, seed, filesE, verbose, seed)
       }
     },
 
@@ -383,8 +383,16 @@ TPEa <- R6::R6Class("TPEa",
                                                        latlonData, cumulP,
                                                        traitList, year, savePath)
           } else {
-            #Tmp fix
-            cat("Please select more than 99 years \n")
+            lSeed <- seed[1]
+            cat(paste0("Generating point ", i,
+                       " for variety ", private$parent$get_varNames()[[v]],
+                       "\n"))
+            self$bootstrapGP[[v]][[i]]$genClimate(rcp, year, 99, modelNb,
+                                                  path, pathCLI, lSeed, bs=T)
+            param <- private$parent$varieties[[v]]$parameters
+            self$bootstrapGP[[v]][[i]]$runBSSimulation(param, soilData,
+                                                       latlonData, cumulP,
+                                                       traitList, year, savePath)
           }
         }
       }

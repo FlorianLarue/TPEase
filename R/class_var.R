@@ -80,7 +80,7 @@ TPEvar <- R6::R6Class("TPEvar",
     #' @description Set estimated parameters
     #' @param val A vector with parameter values
     #' @param names A vector with estimated parameter names
-    update_param = function(val,names) {
+    updateParam = function(val,names) {
       for(p in 1:length(names)) {
         self$parameters[,which(colnames(self$parameters) ==
                                  names[[p]])] <- val[[p]]

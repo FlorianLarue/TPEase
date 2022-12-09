@@ -292,6 +292,7 @@ Generate climate data for one or several grids
   modelNb = "00000000000000000",
   path = NA,
   pathCLI = NA,
+  seed = NA,
   filesE = F,
   verbose = T
 )}\if{html}{\out{</div>}}
@@ -314,7 +315,7 @@ c("rcp26","rcp45","rcp60","rcp85")}
 
 \item{\code{yearNb}}{A numeric value of the number of years to simulate}
 
-\item{\code{modelNb}}{A character string of the  general circulation model
+\item{\code{modelNb}}{A character string of the general circulation model
 identifier to use, see \code{generateClimate}}
 
 \item{\code{path}}{A character string with the path to the marksim standalone.
@@ -324,6 +325,8 @@ For the moment, this path can not contain spaces}
 If no value is provided, the CLI folder will be considered in the same
 folder as the marksim standalone. For the moment, this path can not
 contain spaces}
+
+\item{\code{seed}}{A numeric value of the seed to use to generate climate}
 
 \item{\code{filesE}}{Boolean. If weather files already exist}
 
