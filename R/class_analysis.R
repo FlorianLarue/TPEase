@@ -230,7 +230,7 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           seed=NA, filesE=F, verbose=T) {
       self$TPEanalysis[[tpeID]]$genClimate(gridID, rcp, year, yearNb, modelNb,
-                                           path, pathCLI, seed, filesE, verbose)
+                                           path, pathCLI, filesE, verbose, seed)
     },
 
     #' @description Run simulation on one or several grids

@@ -251,7 +251,7 @@ TPEa <- R6::R6Class("TPEa",
                     "this may take some time \n"))
         }
         self$grids[[id]]$genClimate(rcp, year, yearNb, modelNb, path,
-                                    pathCLI, seed, filesE, verbose, seed)
+                                    pathCLI, filesE, verbose, seed)
       }
     },
 
