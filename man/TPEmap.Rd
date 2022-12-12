@@ -34,6 +34,7 @@ TODO
 \item \href{#method-TPEmap-runPCA}{\code{TPEmap$runPCA()}}
 \item \href{#method-TPEmap-runHCPC}{\code{TPEmap$runHCPC()}}
 \item \href{#method-TPEmap-plotMap}{\code{TPEmap$plotMap()}}
+\item \href{#method-TPEmap-addToPlot}{\code{TPEmap$addToPlot()}}
 \item \href{#method-TPEmap-clone}{\code{TPEmap$clone()}}
 }
 }
@@ -110,9 +111,40 @@ Run Hierarchical Clustering on Principle Components
 \subsection{Method \code{plotMap()}}{
 Create plot on map based on grid simulation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$plotMap()}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$plotMap(trait = "cluster", isFactor = T)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{trait}}{A character string identifier of the data to plot,
+by default will plot the cluster computed by the runClustering function
+of the TPE analysis object}
+
+\item{\code{isFactor}}{A boolean indicating if the trait should be considered
+as a factor for plotting (cluster is a factor)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEmap-addToPlot"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEmap-addToPlot}{}}}
+\subsection{Method \code{addToPlot()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$addToPlot(plotID = 1, plotAdd)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{plotID}}{A numeric value identifier of the plot}
+
+\item{\code{plotAdd}}{A list of ggplot2 objects to pass to the plot}
+}
+\if{html}{\out{</div>}}
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEmap-clone"></a>}}

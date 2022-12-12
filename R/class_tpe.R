@@ -319,9 +319,23 @@ TPEa <- R6::R6Class("TPEa",
 
     #' @description Create plot on map based on grid simulation
     #' @param mapID Id of map to plot
+    #' @param trait A character string identifier of the data to plot,
+    #' by default will plot the cluster computed by the runClustering function
+    #' of the TPE analysis object
+    #' @param isFactor A boolean indicating if the trait should be considered
+    #' as a factor for plotting (cluster is a factor)
     #' @import ggplot2
-    plotMap = function(mapID=1) {
-      self$maps[[mapID]]$plotMap()
+    plotMap = function(mapID=1, trait, isFactor) {
+      self$maps[[mapID]]$plotMap(trait, isFactor)
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param mapID A numeric value identifier of the map
+    #' @param plotID A numeric value identifier of the plot
+    #' @param plotAdd A list of ggplot2 objects to pass to the plot
+    #' @import ggplot2
+    addToPlot = function(mapID=1, plotID=1, plotAdd) {
+      self$maps[[mapID]]$addToPlot(plotID, plotAdd)
     },
 
     #' @description Bootstrap to test if gridded simulations are close to

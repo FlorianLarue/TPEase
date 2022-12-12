@@ -32,10 +32,10 @@ TPEmap <- R6::R6Class("TPEmap",
     #' of world map to use. Options are c(1, 150, 900) for respectively
     #' 30sec, 2.5min, 15min
     #' @return A new `TPEmap` object.
-    #' @importFrom raster raster
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
+    #' @importFrom raster shapefile
     initialize = function(name="map1", bounds=NA, parent=NA, res=150) {
       self$name <- as.character(name)
       private$parent <- parent
@@ -86,27 +86,56 @@ TPEmap <- R6::R6Class("TPEmap",
     },
 
     #' @description Create plot on map based on grid simulation
+    #' @param trait A character string identifier of the data to plot,
+    #' by default will plot the cluster computed by the runClustering function
+    #' of the TPE analysis object
+    #' @param isFactor A boolean indicating if the trait should be considered
+    #' as a factor for plotting (cluster is a factor)
     #' @import ggplot2
-    plotMap = function() {
+    plotMap = function(trait="cluster", isFactor=T) {
       cat(paste0("Plotting map ", self$name,
                    " see print_maps() to show the plots\n"))
       #TODO: might need to change as fortify may be deprecated in the future
       AG <- fortify(self$data)
-      #TODO: get correct data
+
       #TODO: tmp fix, find better solution
-      private$parent$results <- private$parent$results[!is.na(private$parent$results$CstrPhase2),]
-      p <- ggplot() +
-        geom_raster(data=private$parent$results,
-                                  aes(x=x, y=y, fill=as.factor(cluster)),
-                                  interpolate=FALSE) +
-        geom_polygon(data=AG, aes(x=long, y=lat, group=group),
+      mapData <- private$parent$results[!is.na(
+        private$parent$results[,3]),]
+
+      p <- ggplot()
+      if(isFactor) {
+        p <- p + geom_raster(
+          data=mapData,
+          aes(x=x, y=y, fill=as.factor(mapData[,trait])),
+          interpolate=FALSE
+          )
+      } else {
+        p <- p + geom_raster(
+          data=mapData,
+          aes(x=x, y=y, fill=mapData[,trait]),
+          interpolate=FALSE
+        )
+      }
+      p <- p + geom_polygon(data=AG, aes(x=long, y=lat, group=group),
                    size=0.3, colour="black", fill=NA) +
         coord_cartesian() +
-        facet_wrap(~ variety)
+        facet_wrap(~ variety) +
         theme_bw() +
-        xlab("Longitude") + ylab("Latitude")
+        xlab("Longitude") + ylab("Latitude") +
+        labs(fill=trait)
       self$plots <- append(self$plots, list(p))
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param plotID A numeric value identifier of the plot
+    #' @param plotAdd A list of ggplot2 objects to pass to the plot
+    #' @import ggplot2
+    addToPlot = function(plotID=1, plotAdd) {
+      for(i in 1:length(plotAdd)) {
+        self$plots[[plotID]] <- self$plots[[plotID]] + plotAdd[[i]]
+      }
     }
+
   ),
 
   private = list(

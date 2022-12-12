@@ -283,9 +283,35 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @description Create plot on map based on grid simulation
     #' @param tpeID A TPE analysis identifier on which to create grid
     #' @param mapID Id of map to plot
+    #' @param trait A character string identifier of the data to plot,
+    #' by default will plot the cluster computed by the runClustering function
+    #' of the TPE analysis object
+    #' @param isFactor A boolean indicating if the trait should be considered
+    #' as a factor for plotting (cluster is a factor)
     #' @import ggplot2
-    plotMap = function(tpeID=1, mapID=1) {
-      self$TPEanalysis[[tpeID]]$plotMap(mapID)
+    plotMap = function(tpeID=1, mapID=1, trait="cluster", isFactor=T) {
+      self$TPEanalysis[[tpeID]]$plotMap(mapID, trait, isFactor)
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param tpeID A numeric value identifier of the TPE
+    #' @param mapID A numeric value identifier of the map
+    #' @param plotID A numeric value identifier of the plot
+    #' @param plotAdd A list of ggplot2 objects to pass to the plot
+    #' @import ggplot2
+    addToPlot = function(tpeID=1, mapID=1, plotID=1, plotAdd) {
+      self$TPEanalysis[[tpeID]]$addToPlot(mapID, plotID, plotAdd)
+    },
+
+    #' @description Create plot on map based on grid simulation
+    #' @param tpeID A numeric value identifier of the TPE
+    #' @param mapID A numeric value identifier of the map
+    #' @import ggplot2
+    print_maps = function(tpeID=1, mapID=1) {
+      plotList <- self$TPEanalysis[[tpeID]]$maps[[mapID]]$plots
+      for(i in 1:length(plotList)) {
+        print(plotList[[i]])
+      }
     },
 
     #' @description Run parameter estimation

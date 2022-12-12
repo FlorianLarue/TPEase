@@ -46,6 +46,8 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-CGMTPEa-createMap}{\code{CGMTPEa$createMap()}}
 \item \href{#method-CGMTPEa-runClustering}{\code{CGMTPEa$runClustering()}}
 \item \href{#method-CGMTPEa-plotMap}{\code{CGMTPEa$plotMap()}}
+\item \href{#method-CGMTPEa-addToPlot}{\code{CGMTPEa$addToPlot()}}
+\item \href{#method-CGMTPEa-print_maps}{\code{CGMTPEa$print_maps()}}
 \item \href{#method-CGMTPEa-runEstimation}{\code{CGMTPEa$runEstimation()}}
 \item \href{#method-CGMTPEa-clone}{\code{CGMTPEa$clone()}}
 }
@@ -446,7 +448,7 @@ Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
 \subsection{Method \code{plotMap()}}{
 Create plot on map based on grid simulation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$plotMap(tpeID = 1, mapID = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$plotMap(tpeID = 1, mapID = 1, trait = "cluster", isFactor = T)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -455,6 +457,55 @@ Create plot on map based on grid simulation
 \item{\code{tpeID}}{A TPE analysis identifier on which to create grid}
 
 \item{\code{mapID}}{Id of map to plot}
+
+\item{\code{trait}}{A character string identifier of the data to plot,
+by default will plot the cluster computed by the runClustering function
+of the TPE analysis object}
+
+\item{\code{isFactor}}{A boolean indicating if the trait should be considered
+as a factor for plotting (cluster is a factor)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-CGMTPEa-addToPlot"></a>}}
+\if{latex}{\out{\hypertarget{method-CGMTPEa-addToPlot}{}}}
+\subsection{Method \code{addToPlot()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$addToPlot(tpeID = 1, mapID = 1, plotID = 1, plotAdd)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tpeID}}{A numeric value identifier of the TPE}
+
+\item{\code{mapID}}{A numeric value identifier of the map}
+
+\item{\code{plotID}}{A numeric value identifier of the plot}
+
+\item{\code{plotAdd}}{A list of ggplot2 objects to pass to the plot}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-CGMTPEa-print_maps"></a>}}
+\if{latex}{\out{\hypertarget{method-CGMTPEa-print_maps}{}}}
+\subsection{Method \code{print_maps()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{CGMTPEa$print_maps(tpeID = 1, mapID = 1)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{tpeID}}{A numeric value identifier of the TPE}
+
+\item{\code{mapID}}{A numeric value identifier of the map}
 }
 \if{html}{\out{</div>}}
 }

@@ -50,6 +50,7 @@ used for simulations (only "Samara" is supported for now)}
 \item \href{#method-TPEa-createMap}{\code{TPEa$createMap()}}
 \item \href{#method-TPEa-runClustering}{\code{TPEa$runClustering()}}
 \item \href{#method-TPEa-plotMap}{\code{TPEa$plotMap()}}
+\item \href{#method-TPEa-addToPlot}{\code{TPEa$addToPlot()}}
 \item \href{#method-TPEa-bootstrap}{\code{TPEa$bootstrap()}}
 \item \href{#method-TPEa-clone}{\code{TPEa$clone()}}
 }
@@ -435,13 +436,41 @@ Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
 \subsection{Method \code{plotMap()}}{
 Create plot on map based on grid simulation
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$plotMap(mapID = 1, trait, isFactor)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{mapID}}{Id of map to plot}
+
+\item{\code{trait}}{A character string identifier of the data to plot,
+by default will plot the cluster computed by the runClustering function
+of the TPE analysis object}
+
+\item{\code{isFactor}}{A boolean indicating if the trait should be considered
+as a factor for plotting (cluster is a factor)}
+}
+\if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEa-addToPlot"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEa-addToPlot}{}}}
+\subsection{Method \code{addToPlot()}}{
+Create plot on map based on grid simulation
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEa$addToPlot(mapID = 1, plotID = 1, plotAdd)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{mapID}}{A numeric value identifier of the map}
+
+\item{\code{plotID}}{A numeric value identifier of the plot}
+
+\item{\code{plotAdd}}{A list of ggplot2 objects to pass to the plot}
 }
 \if{html}{\out{</div>}}
 }

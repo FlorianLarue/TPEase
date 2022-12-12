@@ -159,7 +159,7 @@ gridPoint <- R6::R6Class("gridPoint",
 
             if(!is.null(traitList) && !is.na(sim)) {
               self$result <- rbind(self$result, matrixStats::colMaxs(
-                as.matrix(sim[,traitList])))
+                as.matrix(sim[,traitList]),na.rm=T))
             }
 
           } else {
@@ -236,7 +236,7 @@ gridPoint <- R6::R6Class("gridPoint",
             }
 
             if(!is.null(traitList) && !is.na(sim)) {
-              tmpRes <- matrixStats::colMaxs(as.matrix(sim[,traitList]))
+              tmpRes <- matrixStats::colMaxs(as.matrix(sim[,traitList]),na.rm=T)
               tmpRes <- as.data.frame(as.list(tmpRes))
               colnames(tmpRes) <- traitList
               tmpRes$year <- year
