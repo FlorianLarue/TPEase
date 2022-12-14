@@ -20,7 +20,6 @@
 #' resStics <- launch_sim("STICS", "data/stics/", simOptions)
 #' @export
 #' @import rsamara
-#' @import SticsRPacks
 launch_sim <- function(model="Samara", data, params) {
  #TODO
 }
