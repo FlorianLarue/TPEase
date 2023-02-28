@@ -1,23 +1,20 @@
-#'#' R6 Class Representing a CGMTPE analysis
+#'#' R6 Class Representing a TPEase analysis
 #'
 #' @description
-#' TODO: change name
-#' The CGMTPE Analysis object "analysis" is an environment containing all
-#' objects used for estimation and TPE analysis
+#' The TPEase `analysis` object is an environment containing all
+#' objects used for parameter estimation and TPE analysis
 #' (varieties, environments, grids, maps, etc.)
 #'
-#' @details
-#' TODO
 #' @import R6
 #' @export
-CGMTPEa <- R6::R6Class("CGMTPEa",
+TPEase <- R6::R6Class("TPEase",
   public = list(
     ## Attributes
 
-    #' @field name A character string identifier of the CGMTPE analysis
+    #' @field name A character string identifier of the TPEase analysis
     name = NULL,
-    #' @field model A character string with the name of the crop model
-    #' used for simulations (only "Samara" is supported for now)
+    #' @field model A character string identifier of the used crop model
+    #' (only "Samara" is supported for now)
     model = NULL,
     #' @field varieties A list of varieties objects
     varieties = list(),
@@ -26,13 +23,11 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @field test Debug
     test = NULL,
 
+    ## Constructor
 
-    ## Methods
-
-    #' @description Create a new TPE analysis object
-    #' @param name A character string identifier of the TPE analysis
-    #' @param model A character string with the name of the crop model used
-    #' for simulations
+    #' @description Create a new TPEase analysis object
+    #' @param name A character string identifier of the TPEase analysis
+    #' @param model A character string identifier of the crop model used
     #' @param varieties A list of varieties names
     #' @param genotypes Optional. A list of alternate variety names
     #' @param vparameters A vector or dataframe with variety specific parameters
@@ -41,12 +36,12 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' parameters
     #' @param eName A character string identifier of the initial estimation
     #' object
-    #' @param weathers A list (each entry is an environment)
-    #'  of dataframes with weather data
+    #' @param weathers A list (each entry is an environment) of dataframes
+    #' containing weather data
     #' @param observations A list (each entry is a variety) of lists
     #' (each entry is an environment) of dataframes with observations
-    #' @return A new `CGMTPEa` object.
-    initialize = function(name="CGMTPE_analysis", model="Samara", varieties=NA,
+    #' @return A new `TPEase` object.
+    initialize = function(name="TPEase_analysis", model="Samara", varieties=NA,
                           genotypes=NA, vparameters=NA, environments=NA,
                           eparameters=NA, eName="estim1", weathers=NA,
                           observations=NA) {
@@ -69,7 +64,6 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
         }
 
         for(i in 1:length(varieties)) {
-          #TODO: change name of TPEvar class
           if(class(vparameters) == "data.frame" && nrow(vparameters) >= i) {
             param <- vparameters[i,]
             rownames(param) <- NULL
@@ -78,6 +72,7 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
             param <- NULL
           }
 
+          #TODO: change name of TPEvar class
           self$varieties <- append(self$varieties, TPEvar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
@@ -101,21 +96,23 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     initMessage = function(vParamMissings) {
       if(length(vParamMissings) > 0) {
         warning(paste0("No parameters were provided for ",
-                       ifelse(length(vParamMissings > 1), "varieties [", "variety ["),
+                       ifelse(length(vParamMissings > 1),
+                       "varieties [", "variety ["),
                        paste0(vParamMissings, collapse=" "),
                        "]. Simulations will not be possible. ",
                        "You can set parameters by running set_param() on the ",
                        "variety object."), call.=F)
       }
 
-      cat(paste0("CGMTPE analysis ", self$name, " created containing ",
+      cat(paste0("TPEase analysis ", self$name, " created containing ",
                  length(private$varnames), ifelse(length(private$varnames) > 1,
-                                                  " varieties "," variety "),
-                 "\n"))
+                 " varieties "," variety "), "\n"))
     },
 
-    #' @description Set TPE analysis name
-    #' @param val New TPE analysis name
+    ## Setters
+
+    #' @description Set TPEase analysis name
+    #' @param val New TPEase analysis name
     set_name = function(val) {
       self$name <- as.character(val)
     },
@@ -146,6 +143,8 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
       }
     },
 
+    ## Getters
+
     #' @description Get names of all varieties
     get_varNames = function() {
       return(private$varnames)
@@ -156,8 +155,8 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
       return(private$genotypes)
     },
 
-    #' @description Get var id
-    #' @param val Either var name or a var id (will return the var id)
+    #' @description Get variety id
+    #' @param val A variety identifier
     get_varid = function(val) {
       if(class(val) == "numeric") {
         if(val > length(self$get_varNames())) {
@@ -175,15 +174,18 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
       return(id)
     },
 
-    #' @description Create a TPE analysis object
-    #' @param name A character string of TPE analysis name
+    ## Methods
+
+    #' @description Create a TPE object
+    #' @param name A character string of TPE name
     createTPE = function(name = "TPEa_1") {
+      #TODO: change name of TPEanalysis
       self$TPEanalysis <- append(self$TPEanalysis,
                                  TPEa$new(name, self$model, self))
     },
 
-    #' @description Create a TPE analysis object
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @description Create a grid object
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param name A character string identifier of the grid
     #' @param varID A variety identifier to use for simulation on the grid
     #' @param latres A numeric value of the latitude resolution of the grid
@@ -205,10 +207,10 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     },
 
     #' @description Generate climate data for one or several grids
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param gridID Optional. A vector of grid identifiers
     #' (either index or name). By default will run all grids
-    #' @param rcp A character string with the name of the Representative
+    #' @param rcp A character string of the name of the Representative
     #' Concentration Pathway to use. One of the following options
     #' c("rcp26","rcp45","rcp60","rcp85")
     #' @param year A numeric value of the year to simulate climate
@@ -216,16 +218,19 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @param yearNb A numeric value of the number of years to simulate
     #' @param modelNb A character string of the general circulation model
     #' identifier to use, see \code{generateClimate}
-    #' @param path A character string with the path to the marksim standalone.
+    #' @param path A character string of the path to the marksim standalone.
     #' For the moment, this path can not contain spaces
-    #' @param pathCLI Optional. A character string with the path to CLI folder.
+    #' @param pathCLI Optional. A character string of the path to CLI folder.
     #' If no value is provided, the CLI folder will be considered in the same
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
     #' @param seed A numeric value of the seed to use to generate climate
-    #' @param filesE Boolean. If weather files already exist
+    #' @param filesE Boolean. If weather files already exist and should be used
+    #' (existing weather files should be located in a "weathers" subfolder of
+    #' the marksim path)
     #' @param verbose Boolean. If messages about starting climate generation
     #' should be shown
+    #' TODO: check if verbose is used
     genClimate = function(tpeID=1, gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           seed=NA, filesE=F, verbose=T) {
@@ -234,7 +239,7 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     },
 
     #' @description Run simulation on one or several grids
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param gridID Optional. A vector of grid identifiers
     #' (either index or name). By default will run all grids
     #' @param varID A variety identifier to use for
@@ -242,9 +247,10 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
-    #' @param traitList Optionnal. Vector of trait names to extract from
-    #' simulations. This will delete the simulations and only keep the max for
-    #' each year
+    #' TODO: implement generic methods for soil, latlon, cumul
+    #' @param traitList Optional. Vector of trait names to extract from
+    #' simulations. This will delete the simulations and only keep the
+    #' maximum values for each year of the selected traits
     #' @param savePath Optional. A character string of the path where to save
     #' simulation files. If NULL (default), will not save simulations
     runGridSim = function(tpeID=1, gridID=NA, varID=NA, soilData=soil,
@@ -256,13 +262,15 @@ CGMTPEa <- R6::R6Class("CGMTPEa",
     },
 
     #' @description Create raster map
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param name A character string defining the name of the map
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
+    #' (by default, with no bounds, will display the map of the world)
     #' @param res Not used at the moment. A numeric value in sec of the
     #' resolution of world map to use. Options are c(1, 150, 900)
     #' for respectively 30sec, 2.5min, 15min
+    #' TODO: remove resolution of map
     createMap = function(tpeID=1, name="map1", bounds=NA, res=150) {
       self$TPEanalysis[[tpeID]]$createMap(name, bounds, res)
     },
