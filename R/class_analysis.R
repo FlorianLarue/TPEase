@@ -277,9 +277,9 @@ TPEase <- R6::R6Class("TPEase",
 
     #' @description Run TPE clustering by performing Principle Component
     #' Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param mapID A value or list of values of map identifiers
-    #' (either index or names)on which to perform clustering
+    #' (either index or names) on which to perform clustering
     #' @param traitList Vector of variable names to be used for PCA
     #' @param nbDim Integer of number of dimensions to use for PCA
     #' @param nbClust Integer of number of clusters to use for HCPC
@@ -289,7 +289,7 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Create plot on map based on grid simulation
-    #' @param tpeID A TPE analysis identifier on which to create grid
+    #' @param tpeID A TPE identifier on which to create grid
     #' @param mapID Id of map to plot
     #' @param trait A character string identifier of the data to plot,
     #' by default will plot the cluster computed by the runClustering function
@@ -301,7 +301,7 @@ TPEase <- R6::R6Class("TPEase",
       self$TPEanalysis[[tpeID]]$plotMap(mapID, trait, isFactor)
     },
 
-    #' @description Create plot on map based on grid simulation
+    #' @description Add ggplot2 objects to existing plots
     #' @param tpeID A numeric value identifier of the TPE
     #' @param mapID A numeric value identifier of the map
     #' @param plotID A numeric value identifier of the plot
@@ -311,7 +311,7 @@ TPEase <- R6::R6Class("TPEase",
       self$TPEanalysis[[tpeID]]$addToPlot(mapID, plotID, plotAdd)
     },
 
-    #' @description Create plot on map based on grid simulation
+    #' @description Print a given map
     #' @param tpeID A numeric value identifier of the TPE
     #' @param mapID A numeric value identifier of the map
     #' @import ggplot2
@@ -323,8 +323,6 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Run parameter estimation
-    #' @import DEoptim
-    #' @description Run parameter estimation
     #' @param varID A value or list of values of variety identifier
     #' (either index or name)
     #' @param estimID A value of estimation identifier (either index or name)
@@ -335,9 +333,11 @@ TPEase <- R6::R6Class("TPEase",
     #' for fitness computation. Options are c("RMSE","MAE","MSE")
     #' @param score_fn A function to compute fitness, see \code{get_score}
     #' @param weigh_fn Not used for the moment
+    #' TODO: implement weigh_fn
     #' @param bounds A matrix with lower (row1) and upper (row2) bounds for
     #' each of the parameters in `paramnames` (cols)
     #' @param ... Additional parameters to be passed to DEoptim.control
+    #' @import DEoptim
     runEstimation = function(varID=1, estimID=1, maxiter=2000, paramnames=NA,
                              metric="RMSE", score_fn=get_score, weigh_fn=NA,
                              bounds=NA, ...) {
