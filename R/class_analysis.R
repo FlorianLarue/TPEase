@@ -1,7 +1,7 @@
-#'#' R6 Class Representing a TPEase analysis
+#'#' R6 Class representing a TPE analysis and simulation environment
 #'
 #' @description
-#' The TPEase `analysis` object is an environment containing all
+#' The `TPEase` object is an environment containing all
 #' objects used for parameter estimation and TPE analysis
 #' (varieties, environments, grids, maps, etc.)
 #'
@@ -9,27 +9,28 @@
 #' @export
 TPEase <- R6::R6Class("TPEase",
   public = list(
+
     ## Attributes
 
-    #' @field name A character string identifier of the TPEase analysis
+    #' @field name A character string identifier of the TPEase
     name = NULL,
     #' @field model A character string identifier of the used crop model
     #' (only "Samara" is supported for now)
     model = NULL,
-    #' @field varieties A list of varieties objects
+    #' @field varieties A list of `TPEaseVar` objects
     varieties = list(),
-    #' @field TPEanalysis A list of TPE analysis objects
+    #' @field TPEanalysis A list of `TPEaseTPE` objects
     TPEanalysis = list(),
     #' @field test Debug
     test = NULL,
 
     ## Constructor
 
-    #' @description Create a new TPEase analysis object
-    #' @param name A character string identifier of the TPEase analysis
+    #' @description Create a new TPEase object
+    #' @param name A character string identifier of the TPEase
     #' @param model A character string identifier of the crop model used
     #' @param varieties A list of varieties names
-    #' @param genotypes Optional. A list of alternate variety names
+    #' @param genotypes Optional. A list of alternate varieties names
     #' @param vparameters A vector or dataframe with variety specific parameters
     #' @param environments A list of environments names
     #' @param eparameters A vector or dataframe with environment specific
@@ -39,9 +40,9 @@ TPEase <- R6::R6Class("TPEase",
     #' @param weathers A list (each entry is an environment) of dataframes
     #' containing weather data
     #' @param observations A list (each entry is a variety) of lists
-    #' (each entry is an environment) of dataframes with observations
+    #' (each entry is an environment) of dataframes containing observations
     #' @return A new `TPEase` object.
-    initialize = function(name="TPEase_analysis", model="Samara", varieties=NA,
+    initialize = function(name="TPEase_1", model="Samara", varieties=NA,
                           genotypes=NA, vparameters=NA, environments=NA,
                           eparameters=NA, eName="estim1", weathers=NA,
                           observations=NA) {
@@ -50,7 +51,6 @@ TPEase <- R6::R6Class("TPEase",
       self$model <- as.character(model)
 
       vParamMissings <- c()
-
       if(length(varieties) > 1 || !is.na(varieties)) {
         private$varnames <- as.character(varieties)
 
@@ -72,8 +72,7 @@ TPEase <- R6::R6Class("TPEase",
             param <- NULL
           }
 
-          #TODO: change name of TPEvar class
-          self$varieties <- append(self$varieties, TPEvar$new(
+          self$varieties <- append(self$varieties, TPEasVar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
             parameters = param,
@@ -92,7 +91,7 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Confirm creation of TPE analysis object
-    #' @param vParamMissings Name of varieties without parameters
+    #' @param vParamMissings Name of varieties with missing parameters
     initMessage = function(vParamMissings) {
       if(length(vParamMissings) > 0) {
         warning(paste0("No parameters were provided for ",
@@ -111,8 +110,8 @@ TPEase <- R6::R6Class("TPEase",
 
     ## Setters
 
-    #' @description Set TPEase analysis name
-    #' @param val New TPEase analysis name
+    #' @description Set TPEase name
+    #' @param val New TPEase name
     set_name = function(val) {
       self$name <- as.character(val)
     },
@@ -123,9 +122,8 @@ TPEase <- R6::R6Class("TPEase",
       self$model <- as.character(val)
     },
 
-    #' @description Set varieties, this is a list of TPEvar objects,
-    #' use with caution
-    #' @param val New varieties
+    #' @description Set varieties
+    #' @param val New TPEaseVar objects
     set_var = function(val) {
       if(depth(val) == 0) {
         if(class(val)[1] == "TPEvar") {
@@ -176,18 +174,17 @@ TPEase <- R6::R6Class("TPEase",
 
     ## Methods
 
-    #' @description Create a TPE object
+    #' @description Create a TPEaseTPE object
     #' @param name A character string of TPE name
     createTPE = function(name = "TPEa_1") {
-      #TODO: change name of TPEanalysis
       self$TPEanalysis <- append(self$TPEanalysis,
-                                 TPEa$new(name, self$model, self))
+                                 TPEaseTPE$new(name, self$model, self))
     },
 
-    #' @description Create a grid object
-    #' @param tpeID A TPE identifier on which to create grid
+    #' @description Create a TPEGrid object
+    #' @param tpeID A TPEaseTPE identifier on which to create grid
     #' @param name A character string identifier of the grid
-    #' @param varID A variety identifier to use for simulation on the grid
+    #' @param varID A TPEaseVar identifier to use for simulation on the grid
     #' @param latres A numeric value of the latitude resolution of the grid
     #' @param lonres A numeric value of the longitude resolution of the grid
     #' @param cols A numeric value of the number of columns in the grid
@@ -207,15 +204,15 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Generate climate data for one or several grids
-    #' @param tpeID A TPE identifier on which to create grid
-    #' @param gridID Optional. A vector of grid identifiers
+    #' @param tpeID A TPEaseTPE identifier on which to create grid
+    #' @param gridID Optional. A vector of TPEGrid identifiers
     #' (either index or name). By default will run all grids
     #' @param rcp A character string of the name of the Representative
-    #' Concentration Pathway to use. One of the following options
-    #' c("rcp26","rcp45","rcp60","rcp85")
+    #' Concentration Pathway to use. One of the following options :
+    #' "rcp26","rcp45","rcp60","rcp85"
     #' @param year A numeric value of the year to simulate climate
     #' (this can include years from 2013 to 2099)
-    #' @param yearNb A numeric value of the number of years to simulate
+    #' @param yearNb A numeric value of the number of replicates to simulate
     #' @param modelNb A character string of the general circulation model
     #' identifier to use, see \code{generateClimate}
     #' @param path A character string of the path to the marksim standalone.
@@ -225,12 +222,11 @@ TPEase <- R6::R6Class("TPEase",
     #' folder as the marksim standalone. For the moment, this path can not
     #' contain spaces
     #' @param seed A numeric value of the seed to use to generate climate
-    #' @param filesE Boolean. If weather files already exist and should be used
-    #' (existing weather files should be located in a "weathers" subfolder of
-    #' the marksim path)
-    #' @param verbose Boolean. If messages about starting climate generation
-    #' should be shown
-    #' TODO: check if verbose is used
+    #' @param filesE A boolean indicating ff weather files already exist and
+    #' should be used (existing weather files should be located in a "weathers"
+    #' subfolder of the marksim path)
+    #' @param verbose A boolean indicating ff messages about starting climate
+    #' generation should be shown
     genClimate = function(tpeID=1, gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
                           seed=NA, filesE=F, verbose=T) {
@@ -239,16 +235,16 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Run simulation on one or several grids
-    #' @param tpeID A TPE identifier on which to create grid
-    #' @param gridID Optional. A vector of grid identifiers
+    #' @param tpeID A TPEaseTPE identifier on which to create grid
+    #' @param gridID Optional. A vector of TPEGrid identifiers
     #' (either index or name). By default will run all grids
-    #' @param varID A variety identifier to use for
-    #' simulation on the grid. If NA, will use the variety attached to grid
+    #' @param varID A TPEaseVar identifier to use for simulation on the grid.
+    #' If NA, will use the variety attached to grid
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
     #' TODO: implement generic methods for soil, latlon, cumul
-    #' @param traitList Optional. Vector of trait names to extract from
+    #' @param traitList Optional. A vector of trait names to extract from
     #' simulations. This will delete the simulations and only keep the
     #' maximum values for each year of the selected traits
     #' @param savePath Optional. A character string of the path where to save
@@ -261,15 +257,12 @@ TPEase <- R6::R6Class("TPEase",
                                            cumulP, traitList, savePath)
     },
 
-    #' @description Create raster map
-    #' @param tpeID A TPE identifier on which to create grid
-    #' @param name A character string defining the name of the map
+    #' @description Create TPEMap object
+    #' @param tpeID A TPEaseTPE on which to create the map
+    #' @param name A character string identifier of the map
     #' @param bounds Optional. A vector of four numeric values as decimal degree
-    #' of north, east, south, west bounds to crop map
-    #' (by default, with no bounds, will display the map of the world)
-    #' @param res Not used at the moment. A numeric value in sec of the
-    #' resolution of world map to use. Options are c(1, 150, 900)
-    #' for respectively 30sec, 2.5min, 15min
+    #' of north, east, south, west bounds to crop the world map
+    #' @param res Not used anymore
     #' TODO: remove resolution of map
     createMap = function(tpeID=1, name="map1", bounds=NA, res=150) {
       self$TPEanalysis[[tpeID]]$createMap(name, bounds, res)
@@ -277,20 +270,20 @@ TPEase <- R6::R6Class("TPEase",
 
     #' @description Run TPE clustering by performing Principle Component
     #' Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
-    #' @param tpeID A TPE identifier on which to create grid
-    #' @param mapID A value or list of values of map identifiers
+    #' @param tpeID A TPEaseTPE identifier on which to create grid
+    #' @param mapID A value or list of values of TPEMap identifiers
     #' (either index or names) on which to perform clustering
-    #' @param traitList Vector of variable names to be used for PCA
-    #' @param nbDim Integer of number of dimensions to use for PCA
-    #' @param nbClust Integer of number of clusters to use for HCPC
+    #' @param traitList A vector of trait names to be used for PCA
+    #' @param nbDim An integer of number of dimensions to use for PCA
+    #' @param nbClust An integer of number of clusters to use for HCPC
     runClustering = function(tpeID=1, mapID=1, traitList=c("GrainYieldPop"),
                              nbDim=5, nbClust=3) {
       self$TPEanalysis[[tpeID]]$runClustering(mapID, traitList, nbDim, nbClust)
     },
 
     #' @description Create plot on map based on grid simulation
-    #' @param tpeID A TPE identifier on which to create grid
-    #' @param mapID Id of map to plot
+    #' @param tpeID A TPEeaseTPE identifier on which to create grid
+    #' @param mapID A TPEMap identifier to plot
     #' @param trait A character string identifier of the data to plot,
     #' by default will plot the cluster computed by the runClustering function
     #' of the TPE analysis object
@@ -302,8 +295,8 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Add ggplot2 objects to existing plots
-    #' @param tpeID A numeric value identifier of the TPE
-    #' @param mapID A numeric value identifier of the map
+    #' @param tpeID A numeric value identifier of the TPEaseTPE
+    #' @param mapID A numeric value identifier of the TPEMap
     #' @param plotID A numeric value identifier of the plot
     #' @param plotAdd A list of ggplot2 objects to pass to the plot
     #' @import ggplot2
@@ -312,8 +305,8 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Print a given map
-    #' @param tpeID A numeric value identifier of the TPE
-    #' @param mapID A numeric value identifier of the map
+    #' @param tpeID A numeric value identifier of the TPEaseTPE
+    #' @param mapID A numeric value identifier of the TPEMap
     #' @import ggplot2
     print_maps = function(tpeID=1, mapID=1) {
       plotList <- self$TPEanalysis[[tpeID]]$maps[[mapID]]$plots
@@ -323,9 +316,9 @@ TPEase <- R6::R6Class("TPEase",
     },
 
     #' @description Run parameter estimation
-    #' @param varID A value or list of values of variety identifier
+    #' @param varID A value or list of values of TPEaseVar identifier(s)
     #' (either index or name)
-    #' @param estimID A value of estimation identifier (either index or name)
+    #' @param estimID A value of VarEstim identifier (either index or name)
     #' @param maxiter A numeric value of the maximum number of iteration
     #' for DEoptim
     #' @param paramnames A vector of parameter names to be estimated
