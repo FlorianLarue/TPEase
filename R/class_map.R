@@ -28,15 +28,12 @@ TPEmap <- R6::R6Class("TPEmap",
     #' @param bounds Optional. A vector of four numeric values as decimal degree
     #' of north, east, south, west bounds to crop map
     #' @param parent TPE parent
-    #' @param res Not active for now. A numeric value in sec of the resolution
-    #' of world map to use. Options are c(1, 150, 900) for respectively
-    #' 30sec, 2.5min, 15min
     #' @return A new `TPEmap` object.
     #' @importFrom raster crop
     #' @importFrom raster extent
     #' @importFrom raster crs
     #' @importFrom raster shapefile
-    initialize = function(name="map1", bounds=NA, parent=NA, res=150) {
+    initialize = function(name="map1", bounds=NA, parent=NA) {
       self$name <- as.character(name)
       private$parent <- parent
 

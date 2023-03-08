@@ -1,35 +1,34 @@
-#'#' R6 Class Representing an environment
+#' R6 Class representing a TPEaseEnv Environment
 #'
 #' @description
-#' TODO
+#' The `TPEaseEnv` object contains all information of a given environment,
+#' defined as a combination of : soil, weather and crop management data
 #'
-#' @details
-#' TODO
 #' @import R6
 #' @export
-TPEenv <- R6::R6Class("TPEenv",
+TPEaseEnv <- R6::R6Class("TPEaseEnv",
   public = list(
-    #' @field name A character string identifier of the variety
+    #' @field name A character string identifier of the TPEaseEnv
     name = NULL,
-    #' @field parent Estimation parent
+    #' @field parent A TPEase object parent of the Environment
     parent = NULL,
-    #' @field weather A TPE weather object
+    #' @field weather A EnvWeather object
     weather = NULL,
-    #' @field soil A soil object
+    #' @field soil A EnvSoil object
     soil = NULL,
-    #' @field cm A crop management object
+    #' @field cm A EnvCM object
     cm = NULL,
-    #' @field parameters A dataframe with all parameters used for simulation
+    #' @field parameters A dataframe with all crop model environment parameters
     parameters = NULL,
     #' @field observations A list of dataframes of observations
     observations = list(),
 
-    #' @description Create a new environment object
-    #' @param name A character string identifier of the environment
-    #' @param parent Estimation parent
-    #' @param parameters TPE analysis parent
-    #' @param weather Weather
-    #' @param observations Observations
+    #' @description Create a new TPEaseEnv object
+    #' @param name A character string identifier of the TPEaseEnv
+    #' @param parent A TPEase object parent of the Environment
+    #' @param parameters A dataframe with all crop model environment parameters
+    #' @param weather A dataframe with weather data
+    #' @param observations A list of dataframes of observations
     #' @return A new `TPEenv` object.
     initialize = function(name="e1", parent, parameters, weather,
                           observations) {

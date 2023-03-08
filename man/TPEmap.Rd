@@ -44,7 +44,7 @@ TODO
 \subsection{Method \code{new()}}{
 Create a new TPE map object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1", bounds = NA, parent = NA, res = 150)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEmap$new(name = "map1", bounds = NA, parent = NA)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -56,10 +56,6 @@ Create a new TPE map object
 of north, east, south, west bounds to crop map}
 
 \item{\code{parent}}{TPE parent}
-
-\item{\code{res}}{Not active for now. A numeric value in sec of the resolution
-of world map to use. Options are c(1, 150, 900) for respectively
-30sec, 2.5min, 15min}
 }
 \if{html}{\out{</div>}}
 }

@@ -1,46 +1,51 @@
-#'#' R6 Class Representing a simulation grid
+#' R6 Class representing a TPEGrid
 #'
 #' @description
-#' TODO
+#' The `TPEGrid` object contains all information of the grid as well as a
+#' collection of GridPoints
 #'
-#' @details
-#' TODO
 #' @import R6
 #' @export
-TPEgrid <- R6::R6Class("TPEgrid",
+TPEGrid <- R6::R6Class("TPEGrid",
   public = list(
     #' @field name Identifier of the grid
     name = NULL,
-    #' @field latRes Latitude resolution of the grid
+    #' @field latRes A numeric value of latitude resolution of the grid
     latRes = NULL,
-    #' @field lonRes Longitude resolution of the grid
+    #' @field lonRes A numeric value of longitude resolution of the grid
     lonRes = NULL,
-    #' @field lonStart Starting longitude of the grid
+    #' @field lonStart A numeric value of the starting longitude
+    #' of the grid
     lonStart = NULL,
-    #' @field latStart Starting latitude of the grid
+    #' @field latStart A numeric value of the starting latitude
+    #' of the grid
     latStart = NULL,
-    #' @field gridPoints Collection of each point on the grid
+    #' @field gridPoints A matrix of GridPoint objects
     gridPoints = NULL,
-    #' @field gridRes Result dataframe (constructed during map clustering)
+    #' @field gridRes A dataframe with simulation results
     gridRes = NULL,
-    #' @field parent TPE analysis parent
+    #' @field parent A dataframe object parent of the TPEGrid
     parent = NULL,
-    #' @field variety Variety to which this grid is linked to
+    #' @field variety A TPEaseVar to which this grid is linked to
     variety = NULL,
     #' @field test Debug
     test = NULL,
 
-    #' @description Create a new TPE grid object
-    #' @param name Identifier of the grid
-    #' @param varID Identifier of the variety to which this grid is linked
-    #' @param latres Latitude resolution of the grid (in decimal degrees)
-    #' @param lonres Longitude resolution of the grid (in decimal degrees)
-    #' @param width Width of the grid
-    #' @param length Length of the grid
-    #' @param lon Optional. Starting longitude of the grid (upper left corner)
-    #' @param lat Optional. Starting latitude of the grid (upper left corner)
-    #' @param parent TPE analysis parent
-    #' @return A new `TPEgrid` object.
+    #' @description Create a new TPEGrid object
+    #' @param name A character string identifier of the TPEGrid
+    #' @param varID A TPEaseVar identifier to which this grid is linked
+    #' @param latres A numeric value of the latitude resolution of the grid
+    #' (in decimal degrees)
+    #' @param lonres A numeric value of the longitude resolution of the grid
+    #' (in decimal degrees)
+    #' @param width A numeric value of the Width of the grid
+    #' @param length A numeric value of the length of the grid
+    #' @param lon A numeric value of the starting longitude of the
+    #' grid (upper left corner)
+    #' @param lat A numeric value of the starting latitude of the grid
+    #' (upper left corner)
+    #' @param parent A TPEaseVar to which this grid is linked to
+    #' @return A new `TPEGrid` object.
     initialize = function(name="grid1", varID=NA, latres=0.35, lonres=0.5,
                           width=5, length=5, lon=NA, lat=NA, parent=NA) {
       self$name <- as.character(name)
@@ -69,7 +74,6 @@ TPEgrid <- R6::R6Class("TPEgrid",
       self$parent <- parent
       self$variety <- varID
 
-      #TODO: might have to find a better solution than having list in matrix
       self$gridPoints <- matrix(list(), nrow=length, ncol=width)
       if(!is.na(lon) & !is.na(lat) & !is.na(latres) & !is.na(lonres)) {
         self$populateGrid()
