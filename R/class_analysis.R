@@ -63,7 +63,7 @@ TPEase <- R6::R6Class("TPEase",
       vParamMissings <- c()
       if(length(varieties) > 1 || !is.na(varieties)) {
         private$varnames <- as.character(varieties)
-        if(length(genotypes) != length(varieties) || is.na(genotypes)) {
+        if(length(genotypes) != length(varieties)) {
           private$genotypes <- as.character(varieties)
           warning(paste("Length of genotypes does not match",
                         "length of varieties, name of varieties will be used."),
@@ -79,7 +79,7 @@ TPEase <- R6::R6Class("TPEase",
             vParamMissings <- c(vParamMissings, private$varnames[i])
             param <- NULL
           }
-          self$varieties <- append(self$varieties, TPEasVar$new(
+          self$varieties <- append(self$varieties, TPEaseVar$new(
             name = as.character(private$varnames[i]),
             alt = as.character(private$genotypes[i]),
             parameters = param,

@@ -81,7 +81,7 @@ A new `VarEstim` object.
 \if{html}{\out{<a id="method-VarEstim-createEnv"></a>}}
 \if{latex}{\out{\hypertarget{method-VarEstim-createEnv}{}}}
 \subsection{Method \code{createEnv()}}{
-Create a TPEaseEnv object
+Create a EstimEnv object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VarEstim$createEnv(name, eparam, weather, observations)}\if{html}{\out{</div>}}
 }

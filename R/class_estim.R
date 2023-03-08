@@ -51,14 +51,14 @@ VarEstim <- R6::R6Class("VarEstim",
      }
    },
 
-   #' @description Create a TPEaseEnv object
+   #' @description Create a EstimEnv object
    #' @param name A character string identifier of the environment
    #' @param eparam A dataframe of environment parameters
    #' @param weather A dataframe of environment weather
    #' @param observations A dataframe of environment observations
    createEnv = function(name, eparam, weather, observations) {
      self$environments <- append(self$environments,
-                                 TPEaseenv$new(name, self, eparam, weather,
+                                 EstimEnv$new(name, self, eparam, weather,
                                                observations))
    },
 

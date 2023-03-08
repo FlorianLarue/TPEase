@@ -68,37 +68,39 @@ Create a new \code{TPEaseVar} object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEaseVar}
+\item{\code{name}}{A \code{character} string identifier of the TPEaseVar}
 
-\item{\code{alt}}{A character string alternate identifier of the variety}
+\item{\code{alt}}{A \code{character} string alternate identifier of the variety}
 
-\item{\code{parameters}}{A dataframe with variety parameters}
+\item{\code{parameters}}{A \code{data.frame} with variety parameters}
 
-\item{\code{eName}}{A character string identifier of initial VarEstim object}
+\item{\code{eName}}{Optionnal. A \code{character} string identifier of initial
+\code{VarEstim} object. By default, will not create a \code{VarEstim}
+object}
 
-\item{\code{environments}}{A list of environments names}
+\item{\code{environments}}{A \code{vector} of environments names}
 
-\item{\code{eparam}}{A dataframe with environment parameters}
+\item{\code{eparam}}{A \code{data.frame} with environment parameters}
 
-\item{\code{weathers}}{A list of dataframes of weathers
+\item{\code{weathers}}{A \code{list} of \code{data.frames} of weathers
 (each entry is for one environment)}
 
-\item{\code{observations}}{A list of dataframes of observations
+\item{\code{observations}}{A \code{list} of \code{data.frames} of observations
 (each entry is for one environment)}
 
-\item{\code{parent}}{A TPEase object parent of the TPEaseVar}
+\item{\code{parent}}{A \code{TPEase} object parent of the \code{TPEaseVar}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `TPEaseVar` object.
+A new \code{TPEaseVar} object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEaseVar-get_estimNames"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseVar-get_estimNames}{}}}
 \subsection{Method \code{get_estimNames()}}{
-Get VarEstim names
+Get \code{VarEstim} names
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$get_estimNames()}\if{html}{\out{</div>}}
 }
@@ -108,7 +110,7 @@ Get VarEstim names
 \if{html}{\out{<a id="method-TPEaseVar-get_estimid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseVar-get_estimid}{}}}
 \subsection{Method \code{get_estimid()}}{
-Get VarEstim id
+Get \code{VarEstim} id
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$get_estimid(val)}\if{html}{\out{</div>}}
 }
@@ -116,7 +118,7 @@ Get VarEstim id
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A VarEstim identifier (either index or name)}
+\item{\code{val}}{A \code{VarEstim} identifier (either index or name)}
 }
 \if{html}{\out{</div>}}
 }
@@ -125,7 +127,7 @@ Get VarEstim id
 \if{html}{\out{<a id="method-TPEaseVar-set_param"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseVar-set_param}{}}}
 \subsection{Method \code{set_param()}}{
-Set TPEaseVar parameters
+Set \code{TPEaseVar} parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$set_param(val)}\if{html}{\out{</div>}}
 }
@@ -133,7 +135,7 @@ Set TPEaseVar parameters
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A dataframe with variety parameters}
+\item{\code{val}}{A \code{data.frame} with variety parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -142,7 +144,7 @@ Set TPEaseVar parameters
 \if{html}{\out{<a id="method-TPEaseVar-updateParam"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseVar-updateParam}{}}}
 \subsection{Method \code{updateParam()}}{
-Set TPEaseVar estimated parameters
+Set \code{TPEaseVar} estimated parameters
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$updateParam(val, names)}\if{html}{\out{</div>}}
 }
@@ -150,9 +152,9 @@ Set TPEaseVar estimated parameters
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A vector with parameter values}
+\item{\code{val}}{A \code{vector} with parameter values}
 
-\item{\code{names}}{A vector with estimated parameter names}
+\item{\code{names}}{A \code{vector} with estimated parameter names}
 }
 \if{html}{\out{</div>}}
 }
@@ -161,7 +163,7 @@ Set TPEaseVar estimated parameters
 \if{html}{\out{<a id="method-TPEaseVar-createEstim"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseVar-createEstim}{}}}
 \subsection{Method \code{createEstim()}}{
-Create a VarEstim object
+Create a \code{VarEstim} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$createEstim(
   name,
@@ -176,18 +178,18 @@ Create a VarEstim object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the VarEstim}
+\item{\code{name}}{A \code{character} string identifier of the \code{VarEstim}}
 
-\item{\code{parent}}{A TPEaseVar object parent of the VarEstim}
+\item{\code{parent}}{A \code{TPEaseVar} object parent of the \code{VarEstim}}
 
-\item{\code{environments}}{A vector of environments identifiers}
+\item{\code{environments}}{A \code{vector} of environments identifiers}
 
-\item{\code{eparam}}{A dataframe with parameters of environments}
+\item{\code{eparam}}{A \code{data.frame} with parameters of environments}
 
-\item{\code{weathers}}{A dataframe with weather data of environments}
+\item{\code{weathers}}{A \code{data.frame} with weather data of environments}
 
-\item{\code{observations}}{A dataframe with observations of environments for
-the variety TPEaseVar}
+\item{\code{observations}}{A \code{data.frame} with observations of environments
+for the variety \code{TPEaseVar}}
 }
 \if{html}{\out{</div>}}
 }
@@ -213,25 +215,27 @@ Run parameter estimation
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{estimID}}{A value of VarEstim identifier (either index or name)}
+\item{\code{estimID}}{A \code{VarEstim} identifier (either index or name)}
 
-\item{\code{maxiter}}{A numeric value of the maximum number of iteration
-for DEoptim}
+\item{\code{maxiter}}{A \code{numeric} value of the maximum number of iteration
+for \code{DEoptim}}
 
-\item{\code{paramnames}}{A vector of parameter names to be estimated}
+\item{\code{paramnames}}{A \code{vector} of parameter names to be estimated}
 
-\item{\code{metric}}{A character string with the name of the metric to use
-for fitness computation. Options are c("RMSE","MAE","MSE")}
+\item{\code{metric}}{A \code{character} string with the name of the metric
+to use for fitness computation. Options are c("RMSE","MAE","MSE")}
 
-\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+\item{\code{score_fn}}{A \code{function} to compute fitness,
+see \code{get_score}}
 
 \item{\code{weigh_fn}}{Not used for the moment
 TODO: implement weigh_fn}
 
-\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
-each of the parameters in `paramnames` (rows)}
+\item{\code{bounds}}{A \code{matrix} or \code{data.frame}
+with lower (col1) and upper (col2) bounds for each of the parameters in
+\code{paramnames} (rows)}
 
-\item{\code{args}}{Additional parameters to be passed to DEoptim.control}
+\item{\code{args}}{Additional parameters to be passed to \code{DEoptim.control}}
 }
 \if{html}{\out{</div>}}
 }
