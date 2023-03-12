@@ -2,28 +2,30 @@
 % Please edit documentation in R/class_tpe.R
 \name{TPEaseTPE}
 \alias{TPEaseTPE}
-\title{R6 Class representing a TPEaseTPE}
+\title{R6 Class representing a TPEaseTPE Target Population of Environment Analysis}
 \description{
-The `TPEaseTPE` object is an environment containing all objects used for
-TPE analysis (grids and maps)
+Main TPE block to perform Target containing all objects and methods to
+perform Target Population of Environment analysis
+}
+\details{
+The \code{TPEaseTPE} object is an environment containing all \code{TPEGrid}
+and \code{TPEMap} (grids and maps) and statistical methods
+(bootstrap, clustering) to perform TPE analysis
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEaseTPE}
+\item{\code{name}}{The \code{TPEaseTPE} identifier}
 
-\item{\code{model}}{A character string identifier of the used crop model
-(only "Samara" is supported for now)}
+\item{\code{model}}{The crop model used to perform TPE analysis}
 
-\item{\code{grids}}{A list of TPEGrid objects}
+\item{\code{grids}}{A \code{list} of \code{TPEGrid} objects}
 
-\item{\code{results}}{A dataframe with grid simulation result summary}
+\item{\code{results}}{A \code{data.frame} with grid simulation result summary}
 
-\item{\code{maps}}{A list of TPEMap objects for each of the TPEGrid}
+\item{\code{maps}}{A list of \code{TPEMap} objects}
 
-\item{\code{bootstrapGP}}{A list of GridPoints to perform bootstrap}
-
-\item{\code{test}}{Debug}
+\item{\code{bootstrapGP}}{A list of \code{GridPoints} to perform bootstrap}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +58,7 @@ TPE analysis (grids and maps)
 \if{html}{\out{<a id="method-TPEaseTPE-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPEaseTPE object
+Create a new \code{TPEaseTPE} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$new(name = "TPE_1", model = "Samara", parent = NULL)}\if{html}{\out{</div>}}
 }
@@ -64,23 +66,23 @@ Create a new TPEaseTPE object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEaseTPE}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEaseTPE}}
 
-\item{\code{model}}{A character string identifier of the used crop model}
+\item{\code{model}}{A \code{character} string identifier of the used crop model}
 
-\item{\code{parent}}{A TPEase object parent of the TPEaseTPE}
+\item{\code{parent}}{A \code{TPEase} parent object of the \code{TPEaseTPE}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `TPEaseTPE` object.
+A new \code{TPEaseTPE} object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEaseTPE-initMessage"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-initMessage}{}}}
 \subsection{Method \code{initMessage()}}{
-Confirm creation of TPEaseTPE object
+Confirm creation of \code{TPEaseTPE} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$initMessage()}\if{html}{\out{</div>}}
 }
@@ -90,7 +92,7 @@ Confirm creation of TPEaseTPE object
 \if{html}{\out{<a id="method-TPEaseTPE-set_name"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-set_name}{}}}
 \subsection{Method \code{set_name()}}{
-Set TPEaseTPE name
+Set \code{TPEaseTPE} name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$set_name(val)}\if{html}{\out{</div>}}
 }
@@ -98,7 +100,7 @@ Set TPEaseTPE name
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{New TPEaseTPE name}
+\item{\code{val}}{New \code{TPEaseTPE} name}
 }
 \if{html}{\out{</div>}}
 }
@@ -132,7 +134,7 @@ Set grids
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{New TPEGrid objects}
+\item{\code{val}}{New \code{TPEGrid} objects}
 }
 \if{html}{\out{</div>}}
 }
@@ -149,7 +151,7 @@ Set maps
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{New TPEMap objects}
+\item{\code{val}}{New \code{TPEMap} objects}
 }
 \if{html}{\out{</div>}}
 }
@@ -158,7 +160,7 @@ Set maps
 \if{html}{\out{<a id="method-TPEaseTPE-get_gridNames"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-get_gridNames}{}}}
 \subsection{Method \code{get_gridNames()}}{
-Get names of all TPEGrid
+Get names of all \code{TPEGrid}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$get_gridNames()}\if{html}{\out{</div>}}
 }
@@ -168,7 +170,7 @@ Get names of all TPEGrid
 \if{html}{\out{<a id="method-TPEaseTPE-get_mapNames"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-get_mapNames}{}}}
 \subsection{Method \code{get_mapNames()}}{
-Get names of all TPEMap
+Get names of all \code{TPEMap}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$get_mapNames()}\if{html}{\out{</div>}}
 }
@@ -178,7 +180,7 @@ Get names of all TPEMap
 \if{html}{\out{<a id="method-TPEaseTPE-get_gridid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-get_gridid}{}}}
 \subsection{Method \code{get_gridid()}}{
-Get TPEGrid id
+Get \code{TPEGrid} id
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$get_gridid(val)}\if{html}{\out{</div>}}
 }
@@ -195,7 +197,7 @@ Get TPEGrid id
 \if{html}{\out{<a id="method-TPEaseTPE-get_mapid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-get_mapid}{}}}
 \subsection{Method \code{get_mapid()}}{
-Get TPEMap id
+Get \code{TPEMap} id
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$get_mapid(val)}\if{html}{\out{</div>}}
 }
@@ -229,7 +231,7 @@ Get simulation results of all grids
 \if{html}{\out{<a id="method-TPEaseTPE-createGrid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-createGrid}{}}}
 \subsection{Method \code{createGrid()}}{
-Create a TPEGrid object
+Create a \code{TPEGrid} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$createGrid(
   name = "g1",
@@ -247,27 +249,29 @@ Create a TPEGrid object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the grid}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEGrid}}
 
-\item{\code{varID}}{A TPEaseVar identifier to use for simulation on the grid}
+\item{\code{varID}}{A \code{TPEaseVar} identifier to be attached to the grid}
 
-\item{\code{latres}}{A numeric value of the latitude resolution of the grid}
+\item{\code{latres}}{A \code{numeric} value of the latitude resolution
+of the grid}
 
-\item{\code{lonres}}{A numeric value of the longitude resolution of the grid}
+\item{\code{lonres}}{A \code{numeric} value of the longitude resolution
+of the grid}
 
-\item{\code{cols}}{A numeric value of the number of columns in the grid}
+\item{\code{cols}}{A \code{numeric} value of the number of columns in the grid}
 
-\item{\code{rows}}{A numeric value of the number of rows in the grid}
+\item{\code{rows}}{A \code{numeric} value of the number of rows in the grid}
 
-\item{\code{lon}}{A numeric value of the starting longitude of the grid in
-decimal degrees}
+\item{\code{lon}}{A \code{numeric} value of the starting longitude of the grid
+in decimal degrees}
 
-\item{\code{lat}}{A numeric value of the starting latitude of the grid in
-decimal degrees}
+\item{\code{lat}}{A \code{numeric} value of the starting latitude of the grid
+in decimal degrees}
 
-\item{\code{multigrid}}{A boolean indicating if one grid should be created
-for each TPEaseVar with the same cols, rows, lon and lat. If true, varID
-will be ignored}
+\item{\code{multigrid}}{A \code{boolean} indicating if one grid should be
+created for each \code{TPEaseVar} within the \code{TPEase}
+with the same cols, rows, lon and lat. If true, varID will be ignored}
 }
 \if{html}{\out{</div>}}
 }
@@ -276,7 +280,7 @@ will be ignored}
 \if{html}{\out{<a id="method-TPEaseTPE-genClimate"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-genClimate}{}}}
 \subsection{Method \code{genClimate()}}{
-Generate climate data for one or several TPEGrid
+Generate climate data for one or several \code{TPEGrid}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$genClimate(
   gridID = NA,
@@ -295,35 +299,35 @@ Generate climate data for one or several TPEGrid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{Optional. A vector of grid identifiers
+\item{\code{gridID}}{Optional. A vector of \code{TPEGrid} identifiers
 (either index or name). By default will run all grids}
 
-\item{\code{rcp}}{A character string with the name of the Representative
+\item{\code{rcp}}{A \code{character} string with the name of the Representative
 Concentration Pathway to use. One of the following options
 c("rcp26","rcp45","rcp60","rcp85")}
 
-\item{\code{year}}{A numeric value of the year to simulate climate
+\item{\code{year}}{A \code{numeric} value of the year to simulate climate
 (this can include years from 2013 to 2099)}
 
-\item{\code{yearNb}}{A numeric value of the number of years to simulate}
+\item{\code{yearNb}}{A \code{numeric} value of the number of years to simulate}
 
-\item{\code{modelNb}}{A character string of the  general circulation model
-identifier to use, see \code{generateClimate}}
+\item{\code{modelNb}}{A \code{character} string of the  general circulation
+model identifier to use, see \code{generateClimate}}
 
-\item{\code{path}}{A character string with the path to the marksim standalone.
-For the moment, this path can not contain spaces}
+\item{\code{path}}{A \code{character} string with the path to the marksim
+standalone. This path can not contain spaces}
 
-\item{\code{pathCLI}}{Optional. A character string with the path to CLI folder.
-If no value is provided, the CLI folder will be considered in the same
-folder as the marksim standalone. For the moment, this path can not
+\item{\code{pathCLI}}{Optional. A \code{character} string with the path to
+CLI folder. If no value is provided, the CLI folder will be considered
+in the same folder as the marksim standalone. This path can not
 contain spaces}
 
-\item{\code{filesE}}{A boolean indicating if weather files already exist}
+\item{\code{filesE}}{A \code{boolean} indicating if weather files already exist}
 
-\item{\code{verbose}}{A boolean indicating ff messages about starting
+\item{\code{verbose}}{A \code{boolean} indicating ff messages about starting
 climate generation should be shown}
 
-\item{\code{seed}}{An integer number to use as seed for marksim weather
+\item{\code{seed}}{An \code{integer} number to use as seed for marksim weather
 generator}
 }
 \if{html}{\out{</div>}}
@@ -333,7 +337,7 @@ generator}
 \if{html}{\out{<a id="method-TPEaseTPE-runGridSim"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-runGridSim}{}}}
 \subsection{Method \code{runGridSim()}}{
-Run simulation on one or several TPEGrid
+Run simulation on one or several \code{TPEGrid}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$runGridSim(
   gridID = NA,
@@ -349,10 +353,10 @@ Run simulation on one or several TPEGrid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{gridID}}{Optional. A vector of grid identifiers
+\item{\code{gridID}}{Optional. A \code{vector} of \code{TPEGrid} identifiers
 (either index or name). By default will run all grids}
 
-\item{\code{varID}}{A TPeaseVar identifier to use for
+\item{\code{varID}}{A \code{TPeaseVar} identifier to use for
 simulation on the grid. If NA, will use the variety attached to grid}
 
 \item{\code{soilData}}{Tmp for Adam et al.}
@@ -361,12 +365,13 @@ simulation on the grid. If NA, will use the variety attached to grid}
 
 \item{\code{cumulP}}{Tmp for Adam et al.}
 
-\item{\code{traitList}}{Optionnal. A vector of trait names to extract from
-simulations. This will delete the simulations and only keep the max for
-each year}
+\item{\code{traitList}}{Optionnal. A \code{vector} of trait names to extract
+from simulations. This will delete the simulations and only keep
+the max for each year}
 
-\item{\code{savePath}}{Optional. A character string of the path where to save
-simulation files. If NULL (default), will not save simulations}
+\item{\code{savePath}}{Optional. A \code{character} string of the path where
+to save simulation files. If \code{NULL} (default), will not save
+simulations}
 }
 \if{html}{\out{</div>}}
 }
@@ -375,7 +380,7 @@ simulation files. If NULL (default), will not save simulations}
 \if{html}{\out{<a id="method-TPEaseTPE-createMap"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-createMap}{}}}
 \subsection{Method \code{createMap()}}{
-Create TPEMap object
+Create a \code{TPEMap} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$createMap(name = "map1", bounds = NA)}\if{html}{\out{</div>}}
 }
@@ -383,13 +388,10 @@ Create TPEMap object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the map}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEMap}}
 
-\item{\code{bounds}}{Optional. A vector of four numeric values as decimal degree
-of north, east, south, west bounds to crop map}
-
-\item{\code{res}}{Not used at the moment.
-TODO: remove map res}
+\item{\code{bounds}}{Optional. A \code{vector} of four numeric values as
+decimal degree of north, east, south, west bounds to crop map}
 }
 \if{html}{\out{</div>}}
 }
@@ -400,7 +402,7 @@ TODO: remove map res}
 \subsection{Method \code{runClustering()}}{
 Run TPE clustering by performing Principle Component
 Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
-on a TPEMap
+on a \code{TPEMap}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$runClustering(
   mapID = 1,
@@ -413,14 +415,14 @@ on a TPEMap
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{mapID}}{A value or list of values of map identifiers
+\item{\code{mapID}}{A \code{value} or \code{vector} of values of map identifiers
 (either index or names) on which to perform clustering}
 
-\item{\code{traitList}}{A vector of variable names to be used for PCA}
+\item{\code{traitList}}{A \code{vector} of variable names to be used for PCA}
 
-\item{\code{nbDim}}{An integer of number of dimensions to use for PCA}
+\item{\code{nbDim}}{An \code{integer} of number of dimensions to use for PCA}
 
-\item{\code{nbClust}}{An integer of number of clusters to use for HCPC}
+\item{\code{nbClust}}{An \code{integer} of number of clusters to use for HCPC}
 }
 \if{html}{\out{</div>}}
 }
@@ -429,7 +431,8 @@ on a TPEMap
 \if{html}{\out{<a id="method-TPEaseTPE-plotMap"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-plotMap}{}}}
 \subsection{Method \code{plotMap()}}{
-Create a plot on a TPEMap based on TPEGrid simulations
+Create a plot on a \code{TPEMap} based on \code{TPEGrid}
+simulations
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$plotMap(mapID = 1, trait, isFactor)}\if{html}{\out{</div>}}
 }
@@ -437,14 +440,14 @@ Create a plot on a TPEMap based on TPEGrid simulations
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{mapID}}{A value of map identifier}
+\item{\code{mapID}}{A \code{TPEMap} identifier}
 
-\item{\code{trait}}{A character string identifier of the data to plot,
+\item{\code{trait}}{A \code{character} string identifier of the data to plot,
 by default will plot the cluster computed by the runClustering function
-of the TPEeaseTPE object}
+of the \code{TPEeaseTPE} object}
 
-\item{\code{isFactor}}{A boolean indicating if the trait should be considered
-as a factor for plotting (cluster is a factor)}
+\item{\code{isFactor}}{A \code{boolean} indicating if the trait should be
+considered as a factor for plotting (cluster is a factor)}
 }
 \if{html}{\out{</div>}}
 }
@@ -453,7 +456,7 @@ as a factor for plotting (cluster is a factor)}
 \if{html}{\out{<a id="method-TPEaseTPE-addToPlot"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseTPE-addToPlot}{}}}
 \subsection{Method \code{addToPlot()}}{
-Add ggplot2 objects to existing plots
+Add \code{ggplot2} objects to existing plots
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseTPE$addToPlot(mapID = 1, plotID = 1, plotAdd)}\if{html}{\out{</div>}}
 }
@@ -461,11 +464,12 @@ Add ggplot2 objects to existing plots
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{mapID}}{A numeric value identifier of the TPEMap}
+\item{\code{mapID}}{A \code{numeric} value identifier of the \code{TPEMap}}
 
-\item{\code{plotID}}{A numeric value identifier of the plot}
+\item{\code{plotID}}{A \code{numeric} value identifier of the plot}
 
-\item{\code{plotAdd}}{A list of ggplot2 objects to pass to the plot}
+\item{\code{plotAdd}}{A \code{list} of \code{ggplot2} objects to pass to the
+plot}
 }
 \if{html}{\out{</div>}}
 }
@@ -499,33 +503,33 @@ are close to simulations on observed sites
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{nameList}}{A list of names of sites to test}
+\item{\code{nameList}}{A \code{vector} of names of sites to test}
 
-\item{\code{latList}}{A list of latitudes of sites to test}
+\item{\code{latList}}{A \code{vector} of latitudes of sites to test}
 
-\item{\code{lonList}}{A list of longitudes of sites to test}
+\item{\code{lonList}}{A \code{vector} of longitudes of sites to test}
 
-\item{\code{rcp}}{A character string with the name of the Representative
+\item{\code{rcp}}{A \code{character} string with the name of the Representative
 Concentration Pathway to use. One of the following options
 c("rcp26","rcp45","rcp60","rcp85")}
 
-\item{\code{year}}{A numeric value of the year to simulate climate
+\item{\code{year}}{A \code{numeric} value of the year to simulate climate
 (this can include years from 2013 to 2099)}
 
-\item{\code{yearNb}}{A numeric value of the number of replicates to simulate}
+\item{\code{yearNb}}{A \code{numeric} value of the number of replicates to
+simulate}
 
-\item{\code{modelNb}}{A character string of the general circulation model
+\item{\code{modelNb}}{A \code{character} string of the general circulation model
 identifier to use, see \code{generateClimate}}
 
-\item{\code{path}}{A character string with the path to the marksim standalone.
-For the moment, this path can not contain spaces}
+\item{\code{path}}{A \code{character} string with the path to the marksim
+standalone. This path can not contain spaces}
 
-\item{\code{pathCLI}}{Optional. A character string with the path to CLI folder.
-If no value is provided, the CLI folder will be considered in the same
-folder as the marksim standalone. For the moment, this path can not
-contain spaces}
+\item{\code{pathCLI}}{Optional. A \code{character} string with the path to CLI
+folder. If no value is provided, the CLI folder will be considered in the same
+folder as the marksim standalone. This path can not contain spaces}
 
-\item{\code{seed}}{An integer number to use as seed for marksim weather
+\item{\code{seed}}{An \code{integer} number to use as seed for marksim weather
 generator}
 
 \item{\code{soilData}}{Tmp fix for Adam et al.}
@@ -534,9 +538,9 @@ generator}
 
 \item{\code{cumulP}}{Tmp fix for Adam et al.}
 
-\item{\code{traitList}}{A vector of variable names}
+\item{\code{traitList}}{A \code{vector} of variable names}
 
-\item{\code{savePath}}{A character string of the path to save bootstrap
+\item{\code{savePath}}{A \code{character} string of the path to save bootstrap
 simulations}
 }
 \if{html}{\out{</div>}}

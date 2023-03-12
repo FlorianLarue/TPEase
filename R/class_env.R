@@ -19,9 +19,10 @@ TPEaseEnv <- R6::R6Class("TPEaseEnv",
   public = list(
     #' @field name The \code{TPEaseEnv} identifier
     name = NULL,
-    #' @field parent the parent object of \code{TPEaseEnv},
-    #' either a \code{VarEstim} or a \code{TPEGrid}
+    #' @field parent The \code{TPEase} parent object of \code{TPEaseEnv}
     parent = NULL,
+    #' @field variety The \code{TPEaseVar} attached to the \code{TPEaseEnv}
+    variety = NULL,
     #' @field weather A \code{EnvWeather} object
     weather = NULL,
     #' @field soil A \code{EnvSoil} object
@@ -35,14 +36,16 @@ TPEaseEnv <- R6::R6Class("TPEaseEnv",
     #' @description Create a new \code{TPEaseEnv} object
     #' @param name A \code{character} string identifier of the \code{TPEaseEnv}
     #' @param parent A \code{TPEase} parent object of the Environment
+    #' @param variety A \code{TPEaseVar} attached to the \code{TPEaseEnv}
     #' @param parameters A \code{data.frame} with all crop model environment
     #' parameters
     #' @param weather A \code{data.frame} with weather data
     #' @param observations A \code{list} of \code{data.frames} of observations
     #' @return A new \code{TPEase} object.
-    initialize = function(name="e1", parent, parameters, weather) {
+    initialize = function(name="e1", parent, variety, parameters, weather) {
       self$name <- name
       self$parent <- parent
+      self$variety <- variety
       self$parameters <- parameters
       self$weather <- weather
       self$soil <- TPEsoil$new(self$name, self)

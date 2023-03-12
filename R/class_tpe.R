@@ -1,34 +1,36 @@
-#' R6 Class representing a TPEaseTPE
+#' R6 Class representing a TPEaseTPE Target Population of Environment Analysis
 #'
 #' @description
-#' The `TPEaseTPE` object is an environment containing all objects used for
-#' TPE analysis (grids and maps)
+#' Main TPE block to perform Target containing all objects and methods to
+#' perform Target Population of Environment analysis
+#'
+#' @details
+#' The \code{TPEaseTPE} object is an environment containing all \code{TPEGrid}
+#' and \code{TPEMap} (grids and maps) and statistical methods
+#' (bootstrap, clustering) to perform TPE analysis
 #'
 #' @import R6
 #' @export
 TPEaseTPE <- R6::R6Class("TPEaseTPE",
   public = list(
-    #' @field name A character string identifier of the TPEaseTPE
+    #' @field name The \code{TPEaseTPE} identifier
     name = NULL,
-    #' @field model A character string identifier of the used crop model
-    #' (only "Samara" is supported for now)
+    #' @field model The crop model used to perform TPE analysis
     model = NULL,
-    #' @field grids A list of TPEGrid objects
+    #' @field grids A \code{list} of \code{TPEGrid} objects
     grids = list(),
-    #' @field results A dataframe with grid simulation result summary
+    #' @field results A \code{data.frame} with grid simulation result summary
     results = NULL,
-    #' @field maps A list of TPEMap objects for each of the TPEGrid
+    #' @field maps A list of \code{TPEMap} objects
     maps = list(),
-    #' @field bootstrapGP A list of GridPoints to perform bootstrap
+    #' @field bootstrapGP A list of \code{GridPoints} to perform bootstrap
     bootstrapGP = list(),
-    #' @field test Debug
-    test = NULL,
 
-    #' @description Create a new TPEaseTPE object
-    #' @param name A character string identifier of the TPEaseTPE
-    #' @param model A character string identifier of the used crop model
-    #' @param parent A TPEase object parent of the TPEaseTPE
-    #' @return A new `TPEaseTPE` object.
+    #' @description Create a new \code{TPEaseTPE} object
+    #' @param name A \code{character} string identifier of the \code{TPEaseTPE}
+    #' @param model A \code{character} string identifier of the used crop model
+    #' @param parent A \code{TPEase} parent object of the \code{TPEaseTPE}
+    #' @return A new \code{TPEaseTPE} object.
     initialize = function(name="TPE_1", model="Samara", parent=NULL) {
       self$name <- as.character(name)
       self$model <- as.character(model)
@@ -36,13 +38,13 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       self$initMessage()
     },
 
-    #' @description Confirm creation of TPEaseTPE object
+    #' @description Confirm creation of \code{TPEaseTPE} object
     initMessage = function() {
       cat(paste0("TPE ", self$name, " created \n"))
     },
 
-    #' @description Set TPEaseTPE name
-    #' @param val New TPEaseTPE name
+    #' @description Set \code{TPEaseTPE} name
+    #' @param val New \code{TPEaseTPE} name
     set_name = function(val) {
       self$name <- as.character(val)
     },
@@ -54,7 +56,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
     },
 
     #' @description Set grids
-    #' @param val New TPEGrid objects
+    #' @param val New \code{TPEGrid} objects
     set_grid = function(val) {
       if(depth(val) == 0) {
         if(class(val)[1] == "TPEGrid") {
@@ -76,7 +78,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
     },
 
     #' @description Set maps
-    #' @param val New TPEMap objects
+    #' @param val New \code{TPEMap} objects
     set_map = function(val) {
       if(depth(val) == 0) {
         if(class(val)[1] == "TPEMap") {
@@ -97,17 +99,17 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       }
     },
 
-    #' @description Get names of all TPEGrid
+    #' @description Get names of all \code{TPEGrid}
     get_gridNames = function() {
       return(private$gridnames)
     },
 
-    #' @description Get names of all TPEMap
+    #' @description Get names of all \code{TPEMap}
     get_mapNames = function() {
       return(private$mapnames)
     },
 
-    #' @description Get TPEGrid id
+    #' @description Get \code{TPEGrid} id
     #' @param val A grid identifier
     get_gridid = function(val) {
       if(class(val) == "numeric" || class(val) == "integer") {
@@ -129,7 +131,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       return(id)
     },
 
-    #' @description Get TPEMap id
+    #' @description Get \code{TPEMap} id
     #' @param val A map identifier
     get_mapid = function(val) {
       if(class(val) == "numeric") {
@@ -160,20 +162,22 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       self$results <- resDf
     },
 
-    #' @description Create a TPEGrid object
-    #' @param name A character string identifier of the grid
-    #' @param varID A TPEaseVar identifier to use for simulation on the grid
-    #' @param latres A numeric value of the latitude resolution of the grid
-    #' @param lonres A numeric value of the longitude resolution of the grid
-    #' @param cols A numeric value of the number of columns in the grid
-    #' @param rows A numeric value of the number of rows in the grid
-    #' @param lon A numeric value of the starting longitude of the grid in
-    #' decimal degrees
-    #' @param lat A numeric value of the starting latitude of the grid in
-    #' decimal degrees
-    #' @param multigrid A boolean indicating if one grid should be created
-    #' for each TPEaseVar with the same cols, rows, lon and lat. If true, varID
-    #' will be ignored
+    #' @description Create a \code{TPEGrid} object
+    #' @param name A \code{character} string identifier of the \code{TPEGrid}
+    #' @param varID A \code{TPEaseVar} identifier to be attached to the grid
+    #' @param latres A \code{numeric} value of the latitude resolution
+    #' of the grid
+    #' @param lonres A \code{numeric} value of the longitude resolution
+    #' of the grid
+    #' @param cols A \code{numeric} value of the number of columns in the grid
+    #' @param rows A \code{numeric} value of the number of rows in the grid
+    #' @param lon A \code{numeric} value of the starting longitude of the grid
+    #' in decimal degrees
+    #' @param lat A \code{numeric} value of the starting latitude of the grid
+    #' in decimal degrees
+    #' @param multigrid A \code{boolean} indicating if one grid should be
+    #' created for each \code{TPEaseVar} within the \code{TPEase}
+    #' with the same cols, rows, lon and lat. If true, varID will be ignored
     createGrid = function(name="g1", varID=NA, latres=0.35, lonres=0.5, cols=5,
                           rows=5, lon=NA, lat=NA, multigrid=F) {
       if(multigrid) {
@@ -206,27 +210,27 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       }
     },
 
-    #' @description Generate climate data for one or several TPEGrid
-    #' @param gridID Optional. A vector of grid identifiers
+    #' @description Generate climate data for one or several \code{TPEGrid}
+    #' @param gridID Optional. A vector of \code{TPEGrid} identifiers
     #' (either index or name). By default will run all grids
-    #' @param rcp A character string with the name of the Representative
+    #' @param rcp A \code{character} string with the name of the Representative
     #' Concentration Pathway to use. One of the following options
     #' c("rcp26","rcp45","rcp60","rcp85")
-    #' @param year A numeric value of the year to simulate climate
+    #' @param year A \code{numeric} value of the year to simulate climate
     #' (this can include years from 2013 to 2099)
-    #' @param yearNb A numeric value of the number of years to simulate
-    #' @param modelNb A character string of the  general circulation model
-    #' identifier to use, see \code{generateClimate}
-    #' @param path A character string with the path to the marksim standalone.
-    #' For the moment, this path can not contain spaces
-    #' @param pathCLI Optional. A character string with the path to CLI folder.
-    #' If no value is provided, the CLI folder will be considered in the same
-    #' folder as the marksim standalone. For the moment, this path can not
+    #' @param yearNb A \code{numeric} value of the number of years to simulate
+    #' @param modelNb A \code{character} string of the  general circulation
+    #' model identifier to use, see \code{generateClimate}
+    #' @param path A \code{character} string with the path to the marksim
+    #' standalone. This path can not contain spaces
+    #' @param pathCLI Optional. A \code{character} string with the path to
+    #' CLI folder. If no value is provided, the CLI folder will be considered
+    #' in the same folder as the marksim standalone. This path can not
     #' contain spaces
-    #' @param filesE A boolean indicating if weather files already exist
-    #' @param verbose A boolean indicating ff messages about starting
+    #' @param filesE A \code{boolean} indicating if weather files already exist
+    #' @param verbose A \code{boolean} indicating ff messages about starting
     #' climate generation should be shown
-    #' @param seed An integer number to use as seed for marksim weather
+    #' @param seed An \code{integer} number to use as seed for marksim weather
     #' generator
     genClimate = function(gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
@@ -248,19 +252,20 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       }
     },
 
-    #' @description Run simulation on one or several TPEGrid
-    #' @param gridID Optional. A vector of grid identifiers
+    #' @description Run simulation on one or several \code{TPEGrid}
+    #' @param gridID Optional. A \code{vector} of \code{TPEGrid} identifiers
     #' (either index or name). By default will run all grids
-    #' @param varID A TPeaseVar identifier to use for
+    #' @param varID A \code{TPeaseVar} identifier to use for
     #' simulation on the grid. If NA, will use the variety attached to grid
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
-    #' @param traitList Optionnal. A vector of trait names to extract from
-    #' simulations. This will delete the simulations and only keep the max for
-    #' each year
-    #' @param savePath Optional. A character string of the path where to save
-    #' simulation files. If NULL (default), will not save simulations
+    #' @param traitList Optionnal. A \code{vector} of trait names to extract
+    #' from simulations. This will delete the simulations and only keep
+    #' the max for each year
+    #' @param savePath Optional. A \code{character} string of the path where
+    #' to save simulation files. If \code{NULL} (default), will not save
+    #' simulations
     runGridSim = function(gridID=NA,varID=NA,soilData=soil,latlonData=lat_lon,
                           cumulP=cumul, traitList=NULL, savePath=NULL) {
       if(sum(!is.na(gridID)) == 0) {
@@ -280,12 +285,10 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       }
     },
 
-    #' @description Create TPEMap object
-    #' @param name A character string identifier of the map
-    #' @param bounds Optional. A vector of four numeric values as decimal degree
-    #' of north, east, south, west bounds to crop map
-    #' @param res Not used at the moment.
-    #' TODO: remove map res
+    #' @description Create a \code{TPEMap} object
+    #' @param name A \code{character} string identifier of the \code{TPEMap}
+    #' @param bounds Optional. A \code{vector} of four numeric values as
+    #' decimal degree of north, east, south, west bounds to crop map
     createMap = function(name="map1", bounds=NA) {
       if(name %in% self$get_mapNames()) {
         stop(paste("Map with name ", name, " already exist"))
@@ -297,12 +300,12 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
 
     #' @description Run TPE clustering by performing Principle Component
     #' Analysis (PCA) and Hierarchical Clustering on Principle Component (HCPC)
-    #' on a TPEMap
-    #' @param mapID A value or list of values of map identifiers
+    #' on a \code{TPEMap}
+    #' @param mapID A \code{value} or \code{vector} of values of map identifiers
     #' (either index or names) on which to perform clustering
-    #' @param traitList A vector of variable names to be used for PCA
-    #' @param nbDim An integer of number of dimensions to use for PCA
-    #' @param nbClust An integer of number of clusters to use for HCPC
+    #' @param traitList A \code{vector} of variable names to be used for PCA
+    #' @param nbDim An \code{integer} of number of dimensions to use for PCA
+    #' @param nbClust An \code{integer} of number of clusters to use for HCPC
     runClustering = function(mapID=1, traitList=c("GrainYieldPop"), nbDim=5,
                              nbClust=3) {
       self$get_results(traitList)
@@ -310,22 +313,24 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
       self$maps[[mapID]]$runHCPC(nbClust)
     },
 
-    #' @description Create a plot on a TPEMap based on TPEGrid simulations
-    #' @param mapID A value of map identifier
-    #' @param trait A character string identifier of the data to plot,
+    #' @description Create a plot on a \code{TPEMap} based on \code{TPEGrid}
+    #' simulations
+    #' @param mapID A \code{TPEMap} identifier
+    #' @param trait A \code{character} string identifier of the data to plot,
     #' by default will plot the cluster computed by the runClustering function
-    #' of the TPEeaseTPE object
-    #' @param isFactor A boolean indicating if the trait should be considered
-    #' as a factor for plotting (cluster is a factor)
+    #' of the \code{TPEeaseTPE} object
+    #' @param isFactor A \code{boolean} indicating if the trait should be
+    #' considered as a factor for plotting (cluster is a factor)
     #' @import ggplot2
     plotMap = function(mapID=1, trait, isFactor) {
       self$maps[[mapID]]$plotMap(trait, isFactor)
     },
 
-    #' @description Add ggplot2 objects to existing plots
-    #' @param mapID A numeric value identifier of the TPEMap
-    #' @param plotID A numeric value identifier of the plot
-    #' @param plotAdd A list of ggplot2 objects to pass to the plot
+    #' @description Add \code{ggplot2} objects to existing plots
+    #' @param mapID A \code{numeric} value identifier of the \code{TPEMap}
+    #' @param plotID A \code{numeric} value identifier of the plot
+    #' @param plotAdd A \code{list} of \code{ggplot2} objects to pass to the
+    #' plot
     #' @import ggplot2
     addToPlot = function(mapID=1, plotID=1, plotAdd) {
       self$maps[[mapID]]$addToPlot(plotID, plotAdd)
@@ -333,30 +338,30 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
 
     #' @description Perform Bootstrap Analysis to test if gridded simulations
     #' are close to simulations on observed sites
-    #' @param nameList A list of names of sites to test
-    #' @param latList A list of latitudes of sites to test
-    #' @param lonList A list of longitudes of sites to test
-    #' @param rcp A character string with the name of the Representative
+    #' @param nameList A \code{vector} of names of sites to test
+    #' @param latList A \code{vector} of latitudes of sites to test
+    #' @param lonList A \code{vector} of longitudes of sites to test
+    #' @param rcp A \code{character} string with the name of the Representative
     #' Concentration Pathway to use. One of the following options
     #' c("rcp26","rcp45","rcp60","rcp85")
-    #' @param year A numeric value of the year to simulate climate
+    #' @param year A \code{numeric} value of the year to simulate climate
     #' (this can include years from 2013 to 2099)
-    #' @param yearNb A numeric value of the number of replicates to simulate
-    #' @param modelNb A character string of the general circulation model
+    #' @param yearNb A \code{numeric} value of the number of replicates to
+    #' simulate
+    #' @param modelNb A \code{character} string of the general circulation model
     #' identifier to use, see \code{generateClimate}
-    #' @param path A character string with the path to the marksim standalone.
-    #' For the moment, this path can not contain spaces
-    #' @param pathCLI Optional. A character string with the path to CLI folder.
-    #' If no value is provided, the CLI folder will be considered in the same
-    #' folder as the marksim standalone. For the moment, this path can not
-    #' contain spaces
-    #' @param seed An integer number to use as seed for marksim weather
+    #' @param path A \code{character} string with the path to the marksim
+    #' standalone. This path can not contain spaces
+    #' @param pathCLI Optional. A \code{character} string with the path to CLI
+    #' folder. If no value is provided, the CLI folder will be considered in the same
+    #' folder as the marksim standalone. This path can not contain spaces
+    #' @param seed An \code{integer} number to use as seed for marksim weather
     #' generator
     #' @param soilData Tmp fix for Adam et al.
     #' @param latlonData Tmp fix for Adam et al.
     #' @param cumulP Tmp fix for Adam et al.
-    #' @param traitList A vector of variable names
-    #' @param savePath A character string of the path to save bootstrap
+    #' @param traitList A \code{vector} of variable names
+    #' @param savePath A \code{character} string of the path to save bootstrap
     #' simulations
     bootstrap = function(nameList, latList, lonList, rcp="rcp26", year=2014,
                          yearNb=1, modelNb="00000000000000000", path=NA,

@@ -67,8 +67,8 @@ VarEstim <- R6::R6Class("VarEstim",
    #' \code{TPEaseVar} in the \code{EstimEnv}
    createEnv = function(name, eparam, weather, observations) {
      self$environments <- append(self$environments,
-                                 EstimEnv$new(name, self, eparam, weather,
-                                               observations))
+                                 EstimEnv$new(name, self, self$parent, eparam,
+                                              weather, observations))
    },
 
    #' @description Run parameter estimation
