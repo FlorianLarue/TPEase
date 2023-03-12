@@ -20,9 +20,6 @@
 #' @export
 TPEase <- R6::R6Class("TPEase",
   public = list(
-
-    ## Attributes
-
     #' @field name The \code{TPEase} identifier
     name = NULL,
     #' @field model The name of the crop model used in this \code{TPEase}
@@ -32,8 +29,6 @@ TPEase <- R6::R6Class("TPEase",
     varieties = list(),
     #' @field TPEanalyses A list of \code{TPEaseTPE} objects
     TPEanalyses = list(),
-
-    ## Constructor
 
     #' @description Create a new TPEase object
     #' @param name A \code{character} string identifier of the TPEase
@@ -97,8 +92,6 @@ TPEase <- R6::R6Class("TPEase",
       private$initMessage(vParamMissings)
     },
 
-    ## Setters
-
     #' @description Set TPEase name
     #' @param val New TPEase name
     set_name = function(val) {
@@ -130,8 +123,6 @@ TPEase <- R6::R6Class("TPEase",
       }
     },
 
-    ## Getters
-
     #' @description Get names of all TPEaseVar
     get_varNames = function() {
       return(private$varnames)
@@ -160,8 +151,6 @@ TPEase <- R6::R6Class("TPEase",
       }
       return(id)
     },
-
-    ## Methods
 
     #' @description Create a \code{TPEaseTPE} object
     #' @param name A character string of TPE name

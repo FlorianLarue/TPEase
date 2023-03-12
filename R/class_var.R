@@ -22,16 +22,13 @@ TPEaseVar <- R6::R6Class("TPEaseVar",
     alt = NULL,
     #' @field parent The \code{TPEase} object parent of the \code{TPEaseVar}
     parent = NULL,
-    #' @field parameters A \code{data.frame} with all parameters used
-    #' for simulation
+    #' @field parameters All crop variety parameters
     parameters = NULL,
     #' @field estimations A list of \code{VarEstim} objects
     estimations = list(),
-    #' @field test Debug
-    test = NA,
 
     #' @description Create a new \code{TPEaseVar} object
-    #' @param name A \code{character} string identifier of the TPEaseVar
+    #' @param name A \code{character} string identifier of the \code{TPEaseVar}
     #' @param alt A \code{character} string alternate identifier of the variety
     #' @param parameters A \code{data.frame} with variety parameters
     #' @param eName Optionnal. A \code{character} string identifier of initial
@@ -53,8 +50,8 @@ TPEaseVar <- R6::R6Class("TPEaseVar",
       self$parameters <- parameters
       self$parent <- parent
       if(!is.na(eName)) {
-        self$createEstim(eName, self, environments, eparam, weathers,
-                         observations)
+        self$createEstim(eName, environments, eparam, weathers,
+                         observations, self)
       }
     },
 
@@ -100,17 +97,17 @@ TPEaseVar <- R6::R6Class("TPEaseVar",
 
     #' @description Create a \code{VarEstim} object
     #' @param name A \code{character} string identifier of the \code{VarEstim}
-    #' @param parent A \code{TPEaseVar} object parent of the \code{VarEstim}
     #' @param environments A \code{vector} of environments identifiers
     #' @param eparam A \code{data.frame} with parameters of environments
     #' @param weathers A \code{data.frame} with weather data of environments
     #' @param observations A \code{data.frame} with observations of environments
     #' for the variety \code{TPEaseVar}
-    createEstim = function(name, parent, environments, eparam, weathers,
-                           observations) {
+    #' @param parent A \code{TPEaseVar} object parent of the \code{VarEstim}
+    createEstim = function(name, environments, eparam, weathers, observations,
+                           parent) {
       self$estimations <- append(self$estimations,
-                                 VarEstim$new(name, parent, environments,
-                                              eparam, weathers, observations))
+                                 VarEstim$new(name, environments, eparam,
+                                              weathers, observations, parent))
       private$estimnames <- c(private$estimnames, name)
     },
 

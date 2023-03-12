@@ -24,12 +24,9 @@ It contains basic information about a crop variety as well as a list of
 
 \item{\code{parent}}{The \code{TPEase} object parent of the \code{TPEaseVar}}
 
-\item{\code{parameters}}{A \code{data.frame} with all parameters used
-for simulation}
+\item{\code{parameters}}{All crop variety parameters}
 
 \item{\code{estimations}}{A list of \code{VarEstim} objects}
-
-\item{\code{test}}{Debug}
 }
 \if{html}{\out{</div>}}
 }
@@ -68,7 +65,7 @@ Create a new \code{TPEaseVar} object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A \code{character} string identifier of the TPEaseVar}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEaseVar}}
 
 \item{\code{alt}}{A \code{character} string alternate identifier of the variety}
 
@@ -167,11 +164,11 @@ Create a \code{VarEstim} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEaseVar$createEstim(
   name,
-  parent,
   environments,
   eparam,
   weathers,
-  observations
+  observations,
+  parent
 )}\if{html}{\out{</div>}}
 }
 
@@ -179,8 +176,6 @@ Create a \code{VarEstim} object
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{name}}{A \code{character} string identifier of the \code{VarEstim}}
-
-\item{\code{parent}}{A \code{TPEaseVar} object parent of the \code{VarEstim}}
 
 \item{\code{environments}}{A \code{vector} of environments identifiers}
 
@@ -190,6 +185,8 @@ Create a \code{VarEstim} object
 
 \item{\code{observations}}{A \code{data.frame} with observations of environments
 for the variety \code{TPEaseVar}}
+
+\item{\code{parent}}{A \code{TPEaseVar} object parent of the \code{VarEstim}}
 }
 \if{html}{\out{</div>}}
 }

@@ -3,26 +3,35 @@
 \name{TPEaseEnv}
 \alias{TPEaseEnv}
 \title{R6 Class representing a TPEaseEnv Environment}
+\usage{
+\code{TPEaseEnv} are not used as is but are created for specific use cases
+(estimation or grid simulations)
+}
 \description{
-The `TPEaseEnv` object contains all information of a given environment,
+The \code{TPEaseEnv} object contains all information of a given environment,
 defined as a combination of : soil, weather and crop management data
+}
+\details{
+The \code{TPEaseEnv} object is a super-class containing common information
+across the different types of environments
+(\code{EstimEnv} or \code{GridPoint})
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEaseEnv}
+\item{\code{name}}{The \code{TPEaseEnv} identifier}
 
-\item{\code{parent}}{A TPEase object parent of the Environment}
+\item{\code{parent}}{the parent object of \code{TPEaseEnv},
+either a \code{VarEstim} or a \code{TPEGrid}}
 
-\item{\code{weather}}{A EnvWeather object}
+\item{\code{weather}}{A \code{EnvWeather} object}
 
-\item{\code{soil}}{A EnvSoil object}
+\item{\code{soil}}{A \code{EnvSoil} object}
 
-\item{\code{cm}}{A EnvCM object}
+\item{\code{cm}}{A \code{EnvCM} object}
 
-\item{\code{parameters}}{A dataframe with all crop model environment parameters}
-
-\item{\code{observations}}{A list of dataframes of observations}
+\item{\code{parameters}}{A \code{data.frame} with all crop model environment
+parameters}
 }
 \if{html}{\out{</div>}}
 }
@@ -39,28 +48,29 @@ defined as a combination of : soil, weather and crop management data
 \if{html}{\out{<a id="method-TPEaseEnv-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseEnv-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPEaseEnv object
+Create a new \code{TPEaseEnv} object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$new(name = "e1", parent, parameters, weather, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$new(name = "e1", parent, parameters, weather)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEaseEnv}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEaseEnv}}
 
-\item{\code{parent}}{A TPEase object parent of the Environment}
+\item{\code{parent}}{A \code{TPEase} parent object of the Environment}
 
-\item{\code{parameters}}{A dataframe with all crop model environment parameters}
+\item{\code{parameters}}{A \code{data.frame} with all crop model environment
+parameters}
 
-\item{\code{weather}}{A dataframe with weather data}
+\item{\code{weather}}{A \code{data.frame} with weather data}
 
-\item{\code{observations}}{A list of dataframes of observations}
+\item{\code{observations}}{A \code{list} of \code{data.frames} of observations}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `TPEenv` object.
+A new \code{TPEase} object.
 }
 }
 \if{html}{\out{<hr>}}
@@ -75,7 +85,7 @@ Set weather
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A dataframe with weather data}
+\item{\code{val}}{A \code{data.frame} with weather data}
 }
 \if{html}{\out{</div>}}
 }
@@ -92,7 +102,7 @@ Set parameters
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A dataframe with parameter values}
+\item{\code{val}}{A \code{data.frame} with parameter values}
 }
 \if{html}{\out{</div>}}
 }

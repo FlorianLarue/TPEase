@@ -3,30 +3,38 @@
 \name{VarEstim}
 \alias{VarEstim}
 \title{R6 Class representing a VarEstim Estimation process}
+\usage{
+res <- TPEase$new(...)
+res$varieties[[1]]$createEstim(name, self, environments, eparam, weathers,
+                               observations)
+}
 \description{
-The `VarEstim` object contains all information to perform parameter
-estimation for a given TPEaseVar variety
+Estimation object for a given variety containing all information about
+crop model parameter estimation
+}
+\details{
+The \code{VarEstim} object contains all information to perform parameter
+estimation for a given \code{TPEaseVar} variety including calibration
+environments
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{A character string identifier of VarEstim}
+\item{\code{name}}{The \code{VarEstim} identifier}
 
-\item{\code{parent}}{A TPEaseVar object parent of VarEstim}
+\item{\code{parent}}{The \code{TPEaseVar} object parent of VarEstim}
 
-\item{\code{environments}}{A list of TPEaseEnv objects to use for estimation}
+\item{\code{environments}}{A \code{list} of \code{EstimEnv} objects to use for
+estimation}
 
-\item{\code{parameters}}{A dataframe with all parameters (variety x environment)
-used for simulation, each line is one environment}
+\item{\code{parameters}}{All parameters (variety x environment) of the crop model}
 
-\item{\code{DEparams}}{A DEoptim.control object with parameters used for DEoptim
-parameter estimation}
+\item{\code{DEparams}}{A DEoptim.control object with hyperparameters used for
+DEoptim parameter estimation}
 
-\item{\code{DEresult}}{A DEoptim result object}
+\item{\code{DEresult}}{The DEoptim result}
 
-\item{\code{paramNames}}{A vector of estimated parameter names}
-
-\item{\code{test}}{Debug}
+\item{\code{paramNames}}{The names of parameters to be estimated}
 }
 \if{html}{\out{</div>}}
 }
@@ -43,45 +51,45 @@ parameter estimation}
 \if{html}{\out{<a id="method-VarEstim-new"></a>}}
 \if{latex}{\out{\hypertarget{method-VarEstim-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new VarEstim object
+Create a new \code{VarEstim} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VarEstim$new(
   name = "estim1",
-  parent,
   environments,
   eparam,
   weathers,
-  observations
+  observations,
+  parent
 )}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of VarEstim}
+\item{\code{name}}{A \code{character} string identifier of \code{VarEstim}}
 
-\item{\code{parent}}{A TPEaseVar object parent of VarEstim}
+\item{\code{environments}}{A \code{vector} of environments names}
 
-\item{\code{environments}}{A vector of environments names}
+\item{\code{eparam}}{A \code{data.frame} of \code{environments} parameters}
 
-\item{\code{eparam}}{A dataframe of environments parameters}
+\item{\code{weathers}}{A \code{data.frame} of \code{environments} weathers}
 
-\item{\code{weathers}}{A dataframe of environments weathers}
+\item{\code{observations}}{A \code{data.frame} of \code{environments}
+observations for the parent \code{TPEaseVar}}
 
-\item{\code{observations}}{A dataframe of environments observations for a given
-TPEaseVar}
+\item{\code{parent}}{A \code{TPEaseVar} parent object of \code{VarEstim}}
 }
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new `VarEstim` object.
+A new \code{VarEstim} object.
 }
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-VarEstim-createEnv"></a>}}
 \if{latex}{\out{\hypertarget{method-VarEstim-createEnv}{}}}
 \subsection{Method \code{createEnv()}}{
-Create a EstimEnv object
+Create a \code{EstimEnv} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{VarEstim$createEnv(name, eparam, weather, observations)}\if{html}{\out{</div>}}
 }
@@ -89,13 +97,14 @@ Create a EstimEnv object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the environment}
+\item{\code{name}}{A \code{character} string identifier of the \code{EstimEnv}}
 
-\item{\code{eparam}}{A dataframe of environment parameters}
+\item{\code{eparam}}{A \code{data.frame} of environment parameters}
 
-\item{\code{weather}}{A dataframe of environment weather}
+\item{\code{weather}}{A \code{data.frame} of environment's weather data}
 
-\item{\code{observations}}{A dataframe of environment observations}
+\item{\code{observations}}{A \code{data.frame} of observations of the parent
+\code{TPEaseVar} in the \code{EstimEnv}}
 }
 \if{html}{\out{</div>}}
 }
@@ -121,22 +130,23 @@ Run parameter estimation
 \if{html}{\out{<div class="arguments">}}
 \describe{
 \item{\code{maxiter}}{A numeric value of the maximum number of iteration
-for DEoptim}
+for \code{DEoptim}}
 
-\item{\code{paramnames}}{A vector of parameter names to be estimated}
+\item{\code{paramnames}}{A \code{vector} of parameter names to be estimated}
 
-\item{\code{metric}}{A character string with the name of the metric to use
+\item{\code{metric}}{A \code{character} string with the name of the metric to use
 for fitness computation. Options are c("RMSE","MAE","MSE")}
 
-\item{\code{score_fn}}{A function to compute fitness, see \code{get_score}}
+\item{\code{score_fn}}{A \code{function} to compute fitness, see \code{get_score}}
 
 \item{\code{weigh_fn}}{Not used for the moment
 TODO: implement weigh_fn}
 
-\item{\code{bounds}}{A matrix with lower (col1) and upper (col2) bounds for
-each of the parameters in `paramnames` (rows)}
+\item{\code{bounds}}{A \code{matrix} or \code{data.frame} with lower (col1)
+and upper (col2) bounds for each of the parameters in \code{paramnames}
+(rows)}
 
-\item{\code{args}}{Additional parameters to be passed to DEoptim.control}
+\item{\code{args}}{Additional parameters to be passed to \code{DEoptim.control}}
 }
 \if{html}{\out{</div>}}
 }

@@ -3,30 +3,73 @@
 \name{EstimEnv}
 \alias{EstimEnv}
 \title{R6 Class representing an EstimEnv Environment}
+\usage{
+\code{EstimEnv} are automatically created when initiating a \code{VarEstim}
+}
 \description{
+Environment object of a \code{VarEstim} containing all information about a
+given environment used in the parameter estimation process
+}
+\details{
 The `EstimEnv` object is a subclass of `TPEaseEnv` specific for an
 estimation process and containing all information of the Environment,
-defined as a combination of : soil, weather and crop management data as
-well as a geographical location
+defined as a combination of : soil, weather and crop management data
 }
 \section{Super class}{
 \code{\link[CGMTPE:TPEaseEnv]{CGMTPE::TPEaseEnv}} -> \code{EstimEnv}
 }
+\section{Public fields}{
+\if{html}{\out{<div class="r6-fields">}}
+\describe{
+\item{\code{observations}}{A \code{data.frame} of observations of a
+\code{TPEaseVar}}
+}
+\if{html}{\out{</div>}}
+}
 \section{Methods}{
 \subsection{Public methods}{
 \itemize{
+\item \href{#method-EstimEnv-new}{\code{EstimEnv$new()}}
 \item \href{#method-EstimEnv-clone}{\code{EstimEnv$clone()}}
 }
 }
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="initialize"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-initialize'><code>CGMTPE::TPEaseEnv$initialize()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="set_param"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-set_param'><code>CGMTPE::TPEaseEnv$set_param()</code></a></span></li>
 <li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="set_weather"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-set_weather'><code>CGMTPE::TPEaseEnv$set_weather()</code></a></span></li>
 </ul>
 </details>
 }}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-EstimEnv-new"></a>}}
+\if{latex}{\out{\hypertarget{method-EstimEnv-new}{}}}
+\subsection{Method \code{new()}}{
+Create a new \code{EstimEnv} object
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{EstimEnv$new(name = "e1", parent, parameters, weather, observations)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{A \code{character} string identifier of the \code{EstimEnv}}
+
+\item{\code{parent}}{A \code{VarEstim} parent object of the \code{EstimEnv}}
+
+\item{\code{parameters}}{A \code{data.frame} with all crop model environment
+parameters}
+
+\item{\code{weather}}{A \code{data.frame} with weather data}
+
+\item{\code{observations}}{A \code{list} of \code{data.frames} of observations}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+A new \code{EstimEnv} object.
+}
+}
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-EstimEnv-clone"></a>}}
 \if{latex}{\out{\hypertarget{method-EstimEnv-clone}{}}}
