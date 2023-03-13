@@ -3,6 +3,10 @@
 \name{TPEaseTPE}
 \alias{TPEaseTPE}
 \title{R6 Class representing a TPEaseTPE Target Population of Environment Analysis}
+\usage{
+res <- TPEase$new(...)
+res$createTpe("TPE1")
+}
 \description{
 Main TPE block to perform Target containing all objects and methods to
 perform Target Population of Environment analysis

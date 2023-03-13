@@ -5,7 +5,7 @@
 #' estimation and TPE analysis
 #'
 #' @usage
-#' res <- TPEase$new(name, model, varieties, genotypes, vparameters,
+#' res <- TPEase$new("TPEase1", model, varieties, genotypes, vparameters,
 #'                   environments, eparameters, eName, weathers, observations)
 #'
 #' @details

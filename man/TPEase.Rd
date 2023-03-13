@@ -4,7 +4,7 @@
 \alias{TPEase}
 \title{R6 Class representing a TPE analysis and simulation environment}
 \usage{
-res <- TPEase$new(name, model, varieties, genotypes, vparameters,
+res <- TPEase$new("TPEase1", model, varieties, genotypes, vparameters,
                   environments, eparameters, eName, weathers, observations)
 }
 \description{

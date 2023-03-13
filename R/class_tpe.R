@@ -4,6 +4,10 @@
 #' Main TPE block to perform Target containing all objects and methods to
 #' perform Target Population of Environment analysis
 #'
+#' @usage
+#' res <- TPEase$new(...)
+#' res$createTpe("TPE1")
+#'
 #' @details
 #' The \code{TPEaseTPE} object is an environment containing all \code{TPEGrid}
 #' and \code{TPEMap} (grids and maps) and statistical methods
@@ -188,7 +192,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
                        "Please provide a unique name to be attached to",
                        "variety name."))
           } else {
-            self$grids <- append(self$grids, TPEgrid$new(gname,
+            self$grids <- append(self$grids, TPEGrid$new(gname,
                                              private$parent$varieties[[i]],
                                              latres, lonres, cols, rows, lon,
                                              lat, self))
@@ -201,7 +205,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
                      "Please provide a unique identifier."))
         } else {
           id <- private$parent$get_varid(varID)
-          self$grids <- append(self$grids, TPEgrid$new(name,
+          self$grids <- append(self$grids, TPEGrid$new(name,
                                            private$parent$varieties[[id]],
                                            latres, lonres, cols, rows, lon,
                                            lat, self))
@@ -384,7 +388,7 @@ TPEaseTPE <- R6::R6Class("TPEaseTPE",
           if(yearNb > 99) {
             nbRun <- yearNb %/% 99
             for(j in 1:nbRun) {
-              lSeed <- seed[j] #TODO: Tmp fix
+              lSeed <- seed[j]
               cat(paste0("Generating run ", j, " of point ", i,
                          " for variety ", private$parent$get_varNames()[[v]],
                          "\n"))

@@ -2,35 +2,42 @@
 % Please edit documentation in R/class_grid.R
 \name{TPEGrid}
 \alias{TPEGrid}
-\title{R6 Class representing a TPEGrid}
+\title{R6 Class representing a TPEGrid grid}
+\usage{
+res <- TPEase$new(...)
+res$createTpe("TPE1")
+res$createGrid(tpeID=1, "Grid1", varID, latres, lonres, cols, rows, lon, lat,
+               multigrid)
+}
 \description{
-The `TPEGrid` object contains all information of the grid as well as a
-collection of GridPoints
+Grid object summarizing information and simulations on the different
+\code{GridPoints}
+}
+\details{
+The \code{TPEGrid} object contains all information of the grid as well as a
+collection of \code{GridPoints}. The object summarizes simulations in all
+environments (\code{GridPoints}) for a given variety (\code{TPEaseVar})
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
-\item{\code{name}}{Identifier of the grid}
+\item{\code{name}}{The identifier of the \code{TPEGrid}}
 
-\item{\code{latRes}}{A numeric value of latitude resolution of the grid}
+\item{\code{latRes}}{Latitude resolution of the grid}
 
-\item{\code{lonRes}}{A numeric value of longitude resolution of the grid}
+\item{\code{lonRes}}{Longitude resolution of the grid}
 
-\item{\code{lonStart}}{A numeric value of the starting longitude
-of the grid}
+\item{\code{lonStart}}{Starting longitude of the grid (in decimal degrees)}
 
-\item{\code{latStart}}{A numeric value of the starting latitude
-of the grid}
+\item{\code{latStart}}{Starting latitude of the grid (in decimal degrees)}
 
-\item{\code{gridPoints}}{A matrix of GridPoint objects}
+\item{\code{gridPoints}}{A \code{matrix} of \code{GridPoint} objects}
 
-\item{\code{gridRes}}{A dataframe with simulation results}
+\item{\code{gridRes}}{Summary of simulation results at the grid level}
 
-\item{\code{parent}}{A dataframe object parent of the TPEGrid}
+\item{\code{parent}}{The \code{TPEaseTPE} parent object of \code{TPEGrid}}
 
-\item{\code{variety}}{A TPEaseVar to which this grid is linked to}
-
-\item{\code{test}}{Debug}
+\item{\code{variety}}{A \code{TPEaseVar} to which this grid is linked to}
 }
 \if{html}{\out{</div>}}
 }
@@ -56,7 +63,7 @@ of the grid}
 \if{html}{\out{<a id="method-TPEGrid-new"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-new}{}}}
 \subsection{Method \code{new()}}{
-Create a new TPEGrid object
+Create a new \code{TPEGrid} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$new(
   name = "grid1",
@@ -74,27 +81,27 @@ Create a new TPEGrid object
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{name}}{A character string identifier of the TPEGrid}
+\item{\code{name}}{A \code{character} string identifier of the \code{TPEGrid}}
 
-\item{\code{varID}}{A TPEaseVar identifier to which this grid is linked}
+\item{\code{varID}}{A \code{TPEaseVar} identifier to link to this grid}
 
-\item{\code{latres}}{A numeric value of the latitude resolution of the grid
-(in decimal degrees)}
+\item{\code{latres}}{A \code{numeric} value of the latitude resolution of the
+grid (in decimal degrees)}
 
-\item{\code{lonres}}{A numeric value of the longitude resolution of the grid
-(in decimal degrees)}
+\item{\code{lonres}}{A \code{numeric} value of the longitude resolution of the
+grid (in decimal degrees)}
 
-\item{\code{width}}{A numeric value of the Width of the grid}
+\item{\code{width}}{A \code{numeric} value of the Width of the grid}
 
-\item{\code{length}}{A numeric value of the length of the grid}
+\item{\code{length}}{A \code{numeric} value of the length of the grid}
 
-\item{\code{lon}}{A numeric value of the starting longitude of the
+\item{\code{lon}}{A \code{numeric} value of the starting longitude of the
 grid (upper left corner)}
 
-\item{\code{lat}}{A numeric value of the starting latitude of the grid
+\item{\code{lat}}{A \code{numeric} value of the starting latitude of the grid
 (upper left corner)}
 
-\item{\code{parent}}{A TPEaseVar to which this grid is linked to}
+\item{\code{parent}}{The \code{TPEaseTPE} parent object}
 }
 \if{html}{\out{</div>}}
 }
@@ -106,7 +113,7 @@ A new `TPEGrid` object.
 \if{html}{\out{<a id="method-TPEGrid-initMessage"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-initMessage}{}}}
 \subsection{Method \code{initMessage()}}{
-Confirm creation of Grid object
+Confirm creation of \code{TPEGrid} object
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$initMessage()}\if{html}{\out{</div>}}
 }
@@ -124,7 +131,7 @@ Set variety
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Variety}
+\item{\code{val}}{\code{TPEaseVar} object}
 }
 \if{html}{\out{</div>}}
 }
@@ -133,7 +140,7 @@ Set variety
 \if{html}{\out{<a id="method-TPEGrid-set_name"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-set_name}{}}}
 \subsection{Method \code{set_name()}}{
-Set grid name
+Set \code{TPEGrid} name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$set_name(val)}\if{html}{\out{</div>}}
 }
@@ -141,7 +148,7 @@ Set grid name
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Variety}
+\item{\code{val}}{New \code{TPEGrid} name}
 }
 \if{html}{\out{</div>}}
 }
@@ -150,7 +157,7 @@ Set grid name
 \if{html}{\out{<a id="method-TPEGrid-set_gridres"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-set_gridres}{}}}
 \subsection{Method \code{set_gridres()}}{
-Set grid result dataframe
+Set grid result
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$set_gridres(val)}\if{html}{\out{</div>}}
 }
@@ -158,7 +165,7 @@ Set grid result dataframe
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{Dataframe}
+\item{\code{val}}{A \code{data.frame} of simulation results}
 }
 \if{html}{\out{</div>}}
 }
@@ -195,7 +202,8 @@ Get grid simulation results
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{traitList}}{Vector of variable names to extract for results}
+\item{\code{traitList}}{A \code{vector} of variable names to extract
+from simulations}
 }
 \if{html}{\out{</div>}}
 }
@@ -204,7 +212,7 @@ Get grid simulation results
 \if{html}{\out{<a id="method-TPEGrid-add_gridpointResult"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-add_gridpointResult}{}}}
 \subsection{Method \code{add_gridpointResult()}}{
-Add result of gridPoint to gridRes
+Add result of a \code{GridPoint} to \code{gridRes}
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$add_gridpointResult(val)}\if{html}{\out{</div>}}
 }
@@ -212,7 +220,7 @@ Add result of gridPoint to gridRes
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{val}}{A dataframe of gridPoint results}
+\item{\code{val}}{A \code{data.frame} of \code{GridPoint} results}
 }
 \if{html}{\out{</div>}}
 }
@@ -221,7 +229,7 @@ Add result of gridPoint to gridRes
 \if{html}{\out{<a id="method-TPEGrid-populateGrid"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEGrid-populateGrid}{}}}
 \subsection{Method \code{populateGrid()}}{
-Create gridpoint for each point of the grid
+Create \code{GridPoint} for each point of the grid
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEGrid$populateGrid(lat = NA, lon = NA)}\if{html}{\out{</div>}}
 }
@@ -229,9 +237,11 @@ Create gridpoint for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{lat}}{Starting latitude of the grid (upper left corner)}
+\item{\code{lat}}{A \code{numeric} value of the starting latitude of the grid
+(upper left corner)}
 
-\item{\code{lon}}{Starting longitude of the grid (upper left corner)}
+\item{\code{lon}}{A \code{numeric} value of the starting longitude of the grid
+(upper left corner)}
 }
 \if{html}{\out{</div>}}
 }
@@ -258,24 +268,33 @@ Generate climate data for each point of the grid
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{rcp}}{Rcp scenario to use}
+\item{\code{rcp}}{A \code{character} string with the name of the Representative
+Concentration Pathway to use. One of the following options
+c("rcp26","rcp45","rcp60","rcp85")}
 
-\item{\code{year}}{Year to simulate climate}
+\item{\code{year}}{A \code{numeric} value of the year to simulate climate
+(this can include years from 2013 to 2099)}
 
-\item{\code{yearNb}}{Number of years to simulate}
+\item{\code{yearNb}}{A \code{numeric} value of the number of years to simulate}
 
-\item{\code{modelNb}}{Identifier of model to use, see \code{generateClimate}}
+\item{\code{modelNb}}{A \code{character} string of the  general circulation
+model identifier to use, see \code{generateClimate}}
 
-\item{\code{path}}{Path to marksim standalone}
+\item{\code{path}}{A \code{character} string with the path to the marksim
+standalone. This path can not contain spaces}
 
-\item{\code{pathCLI}}{Optional. Path to CLI folder for marksim standalone}
+\item{\code{pathCLI}}{Optional. A \code{character} string with the path to
+CLI folder. If no value is provided, the CLI folder will be considered
+in the same folder as the marksim standalone. This path can not
+contain spaces}
 
-\item{\code{filesE}}{Boolean. If weather files already exist}
+\item{\code{filesE}}{A \code{boolean} indicating if weather files already exist}
 
-\item{\code{verbose}}{Boolean. If messages about completing climate generation
-should be shown}
+\item{\code{verbose}}{A \code{boolean} indicating ff messages about starting
+climate generation should be shown}
 
-\item{\code{seed}}{Integer number to use as seed for marksim weather generator}
+\item{\code{seed}}{An \code{integer} number to use as seed for marksim weather
+generator}
 }
 \if{html}{\out{</div>}}
 }
@@ -298,12 +317,13 @@ Run simulation for each point of the grid
 
 \item{\code{cumulP}}{Tmp for Adam et al.}
 
-\item{\code{traitList}}{Optionnal. Vector of trait names to extract from
-simulations. This will delete the simulations and only keep the mean of
-the yearly maximum for each trait}
+\item{\code{traitList}}{Optionnal. A \code{vector} of trait names to extract
+from simulations. This will delete the simulations and only keep the
+mean of the yearly maximum for each trait}
 
-\item{\code{savePath}}{Optional. A character string of the path where to save
-simulation files. If NULL (default), will not save simulations}
+\item{\code{savePath}}{Optional. A \code{character} string of the path where
+to save simulation files. If \code{NULL} (default),
+will not save simulations}
 }
 \if{html}{\out{</div>}}
 }

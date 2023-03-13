@@ -8,7 +8,7 @@
 #' \code{EstimEnv} are automatically created when initiating a \code{VarEstim}
 #'
 #' @details
-#' The `EstimEnv` object is a subclass of `TPEaseEnv` specific for an
+#' The \code{EstimEnv} object is a subclass of \code{TPEaseEnv} specific for an
 #' estimation process and containing all information of the Environment,
 #' defined as a combination of : soil, weather and crop management data
 #'
@@ -24,15 +24,14 @@ EstimEnv <- R6::R6Class("EstimEnv",
     #' @description Create a new \code{EstimEnv} object
     #' @param name A \code{character} string identifier of the \code{EstimEnv}
     #' @param parent A \code{VarEstim} parent object of the \code{EstimEnv}
-    #' @param variety A \code{TPEaseVar} attached to the \code{EstimEnv}
     #' @param parameters A \code{data.frame} with all crop model environment
     #' parameters
     #' @param weather A \code{data.frame} with weather data
     #' @param observations A \code{list} of \code{data.frames} of observations
     #' @return A new \code{EstimEnv} object.
-    initialize = function(name="e1", parent, variety, parameters, weather,
+    initialize = function(name="e1", parent, parameters, weather,
                           observations) {
-      super$initialize(name, parent, variety, parameters, weather)
+      super$initialize(name, parent, parameters, weather)
       self$observations <- observations
     }
   )

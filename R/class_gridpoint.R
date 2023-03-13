@@ -1,48 +1,45 @@
-#'#' R6 Class Representing a simulation grid point
+#'#' R6 Class representing a simulation grid point
 #'
 #' @description
-#' TODO
+#' Environment object of a \code{TPEGrid} containing all information about a
+#' given environment used in the TPE analysis process
+#'
+#' @usage
+#' \code{GridPoint} are automatically created when creating a \code{TPEGrid}
 #'
 #' @details
-#' TODO
+#' The \code{GridPoint} object is a subclass of \code{TPEaseEnv} specific for a
+#' TPE analysis and containing all information of the Environment,
+#' defined as a combination of : soil, weather and crop management data as well
+#' as geographical location inside the \code{TPEGrid}
+#'
 #' @import R6
 #' @export
-gridPoint <- R6::R6Class("gridPoint",
+GridPoint <- R6::R6Class("GridPoint",
+  inherit = TPEaseEnv,
   public = list(
-    #' @field name Identifier of the grid point
-    name = NULL,
-    #' @field lon Longitude of the grid point
+    #' @field lon The longitude of the grid point
     lon = NULL,
-    #' @field lat Latitude of the grid point
+    #' @field lat The latitude of the grid point
     lat = NULL,
-    #' @field parameters Combination of variety and environment parameters
-    parameters = NULL,
-    #' @field weather A weather object
-    weather = NULL,
-    #' @field soil A soil object
-    soil = NULL,
-    #' @field cm A soil object
-    cm = NULL,
-    #' @field result Mean results
+    #' @field result Mean simulation results
     result = NULL,
-    #' @field simulations Model simulations
+    #' @field simulations Raw simulation results
     simulations = list(),
-    #' @field parent Grid parent of grid point
-    parent = NULL,
-    #' @field variety Optional. Specific variety for given gridPoint
-    variety = NULL,
-    #' @field test Test attribute
-    test = NULL,
+    #' @field gridParent The \code{TPEGrid} parent object of \code{GridPoint}
+    gridParent = NULL,
 
-    #' @description Create a new TPE grid point object
-    #' @param parent Grid parent of grid point
-    #' @param name Identifier of the TPE analysis
-    #' @param lat Latitude of grid point
-    #' @param lon Longitude of grid point
-    #' @return A new `TPEgrid` object.
+    #' @description Create a new \code{GridPoint} object
+    #' @param parent A \code{TPEGrid} parent object of the \code{GridPoint}
+    #' @param name A \code{character} string identifier of the \code{GridPoint}
+    #' @param lat A \code{numeric} value of the latitude of grid point
+    #' (in decimal degrees)
+    #' @param lon A \code{numeric} value of the longitude of grid point
+    #' (in decimal degrees)
+    #' @return A new \code{GridPoint} object.
     initialize = function(parent=NA, name="11", lon=-4.3, lat=11.18) {
-      self$parent <- parent
-      self$name <- name
+      super$initialize(name, parent$parent$parent, NA, NA)
+      self$gridParent <- parent
       self$lon <- lon
       self$lat <- lat
       self$weather <- TPEweather$new(self$name, self)
@@ -51,35 +48,37 @@ gridPoint <- R6::R6Class("gridPoint",
       self$cm$set_latlon(c(self$lat,self$lon))
     },
 
+    #TODO: generalize
     #' @description Set soil parameters for grid point location
     #' @param soil Dataframe with soil characteristics
     #' @param lat_lon Dataframe with correspondance of lat/lon with soil df
-    set_soilParam = function(soil, lat_lon) {  #TODO: generalize
+    set_soilParam = function(soil, lat_lon) {
       self$soil$set_soilParam(soil, lat_lon)
     },
 
+    #TODO: generalize
     #' @description Set soil parameters for grid point location
     #' @param year Year of simulation
     #' @param cumulP Tmp for Adam et al.
     #' @param run Tmp for Adam et al.
-    set_dateParam = function(year, cumulP, run=NA) {  #TODO: generalize tmp fix for Adam et al
+    set_dateParam = function(year, cumulP, run=NA) {
       self$weather$set_dateParam(year, cumulP, run)
     },
 
-    #' @description Set variety to this gridPoint
-    #' @param val Object of type variety
+    #' @description Set variety
+    #' @param val \code{TPEaseVar} object
     set_variety = function(val) {
       self$variety <- val
     },
 
     #' @description Set weather data
-    #' @param val A dataframe of weather data
+    #' @param val A \code{data.frame} of weather data
     set_weather = function(val) {
       self$weather$set_weather(val)
     },
 
-    #' @description Get simulation data
-    #' @param val Variable name to retrieve
+    #' @description Get simulation results
+    #' @param val A \code{character} string of the variable name to retrieve
     get_sim = function(val) {
       if(!is.null(self$result)) {
         return(mean(self$result[,val],na.rm=T))
@@ -88,8 +87,8 @@ gridPoint <- R6::R6Class("gridPoint",
       }
     },
 
-    #' @description Get mean and sd of simulation result
-    #' @param traitList Vector of trait names
+    #' @description Get mean and standard deviation of simulation result
+    #' @param traitList A \code{vector} of trait names
     #' @importFrom matrixStats colSds
     get_meansd = function(traitList) {
       resDf <- as.data.frame(self$result)
@@ -98,37 +97,50 @@ gridPoint <- R6::R6Class("gridPoint",
       colnames(resDf) <- traitList
       rownames(resDf) <- NULL
       #TODO: tmp fix for dev, find another way to save sd
-      self$test <- resDf[nrow(resDf),]
+      #self$test <- resDf[nrow(resDf),]
       return(resDf[nrow(resDf)-1,])
     },
 
     #' @description Generate climate
-    #' @param rcp Rcp scenario to use
-    #' @param year Year to simulate climate
-    #' @param yearNb Number of years to simulate
-    #' @param modelNb Identifier of model to use, see \code{generateClimate}
-    #' @param path Path to marksim standalone
-    #' @param pathCLI Optional. Path to CLI folder for marksim standalone
-    #' @param seed Integer number to use as seed for marksim weather generator
-    #' @param bs Boolean. Should weathers be stored for bootstrap
+    #' @param rcp A \code{character} string with the name of the Representative
+    #' Concentration Pathway to use. One of the following options
+    #' c("rcp26","rcp45","rcp60","rcp85")
+    #' @param year A \code{numeric} value of the year to simulate climate
+    #' (this can include years from 2013 to 2099)
+    #' @param yearNb A \code{numeric} value of the number of years to simulate
+    #' @param modelNb A \code{character} string of the  general circulation
+    #' model identifier to use, see \code{generateClimate}
+    #' @param path A \code{character} string with the path to the marksim
+    #' standalone. This path can not contain spaces
+    #' @param pathCLI Optional. A \code{character} string with the path to
+    #' CLI folder. If no value is provided, the CLI folder will be considered
+    #' in the same folder as the marksim standalone. This path can not
+    #' contain spaces
+    #' @param seed An \code{integer} number to use as seed for marksim weather
+    #' generator
+    #' @param bs A \code{boolean} indicating if should weathers be stored for
+    #' bootstrap
     genClimate = function(rcp, year, yearNb, modelNb, path, pathCLI, seed,
                           bs=F) {
       self$weather$genClimate(rcp, year, yearNb, modelNb, path, pathCLI, seed,
                               bs)
     },
 
-    #' @description Run simulation on grid point
-    #' @param param Parameter values
-    #' @param i row position of grid point
-    #' @param j col position of grid point
+    #' @description Run simulation on \code{GridPoint}
+    #' @param param A \code{data.frame} of all crop model parameter values
+    #' @param i An \code{integer} value of the row position of \code{GridPoint}
+    #' in the \code{TPEGrid}
+    #' @param j An \code{integer} value of the col position of \code{GridPoint}
+    #' in the \code{TPEGrid}
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
-    #' @param traitList Optionnal. Vector of trait names to extract from
-    #' simulations. This will delete the simulations and only keep the max for
-    #' each year
-    #' @param savePath Optional. A character string of the path where to save
-    #' simulation files. If NULL (default), will not save simulations
+    #' @param traitList Optionnal. A \code{vector} of trait names to extract
+    #' from simulations. This will delete the simulations and only keep the max
+    #' for each year
+    #' @param savePath Optional. A \code{character} string of the path where to
+    #' save simulation files. If \code{NULL} (default),
+    #' will not save simulations
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
@@ -151,8 +163,8 @@ gridPoint <- R6::R6Class("gridPoint",
             sim <- rsamara::run_sim_idx(as.numeric(paste0(self$name, year)))
 
             if(!is.null(savePath) && !is.na(sim)) {
-              fwrite(sim, paste0(savePath,"/sim_",self$name,"_",self$variety$name,
-                                 year,".csv"))
+              fwrite(sim, paste0(savePath,"/sim_",self$name,"_",
+                                 self$variety$name, year,".csv"))
             } else if(is.null(traitList) && !is.na(sim)) {
               self$simulations <- append(self$simulations, list(sim))
             }
@@ -190,17 +202,19 @@ gridPoint <- R6::R6Class("gridPoint",
       }
     },
 
-    #' @description Run simulation on grid point
-    #' @param param Parameter values
+    #' @description Run simulation on \code{GridPoint} for bootstrap
+    #' @param param A \code{data.frame} of all crop model parameter values
     #' @param soilData Tmp for Adam et al.
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
-    #' @param traitList Optionnal. Vector of trait names to extract from
-    #' simulations. This will delete the simulations and only keep the max for
-    #' each year
-    #' @param startingYear Starting year of bootstrap climate gen
-    #' @param savePath Optional. A character string of the path where to save
-    #' simulation files. If NULL (default), will not save simulations
+    #' @param traitList Optionnal. A \code{vector} of trait names to extract
+    #' from simulations. This will delete the simulations and only keep the max
+    #' for each year
+    #' @param startingYear An \code{integer} value of the starting year of
+    #' bootstrap climate generation
+    #' @param savePath Optional. A \code{character} string of the path where to
+    #' save simulation files. If \code{NULL} (default),
+    #' will not save simulations
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
@@ -229,8 +243,8 @@ gridPoint <- R6::R6Class("gridPoint",
             sim <- rsamara::run_sim_idx(as.numeric(paste0(run, year)))
 
             if(!is.null(savePath) && !is.na(sim)) {
-              fwrite(sim, paste0(savePath,"/sim_",self$name,"_", param$variety, "_",
-                                 run,"_",year,".csv"))
+              fwrite(sim, paste0(savePath,"/sim_",self$name,"_", param$variety,
+                                 "_", run,"_",year,".csv"))
             } else if(is.null(traitList) && !is.na(sim)) {
               self$simulations <- append(self$simulations, list(sim))
             }

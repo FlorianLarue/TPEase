@@ -18,75 +18,79 @@
 #' @export
 VarEstim <- R6::R6Class("VarEstim",
   public = list(
-   #' @field name The \code{VarEstim} identifier
-   name = NULL,
-   #' @field parent The \code{TPEaseVar} object parent of VarEstim
-   parent = NULL,
-   #' @field environments A \code{list} of \code{EstimEnv} objects to use for
-   #' estimation
-   environments = list(),
-   #' @field parameters All parameters (variety x environment) of the crop model
-   parameters = data.frame(),
-   #' @field DEparams A DEoptim.control object with hyperparameters used for
-   #' DEoptim parameter estimation
-   DEparams = NULL,
-   #' @field DEresult The DEoptim result
-   DEresult = NULL,
-   #' @field paramNames The names of parameters to be estimated
-   paramNames = NULL,
+    #' @field name The \code{VarEstim} identifier
+    name = NULL,
+    #' @field parent The \code{TPEaseVar} object parent of VarEstim
+    parent = NULL,
+    #' @field environments A \code{list} of \code{EstimEnv} objects to use for
+    #' estimation
+    environments = list(),
+    #' @field parameters All parameters (variety x environment) of the crop
+    #' model
+    parameters = data.frame(),
+    #' @field DEparams A \code{DEoptim.control} object with hyperparameters
+    #' used for \code{DEoptim} parameter estimation
+    DEparams = NULL,
+    #' @field DEresult The \code{DEoptim} result
+    DEresult = NULL,
+    #' @field paramNames The names of parameters to be estimated
+    paramNames = NULL,
 
-   #' @description Create a new \code{VarEstim} object
-   #' @param name A \code{character} string identifier of \code{VarEstim}
-   #' @param environments A \code{vector} of environments names
-   #' @param eparam A \code{data.frame} of \code{environments} parameters
-   #' @param weathers A \code{data.frame} of \code{environments} weathers
-   #' @param observations A \code{data.frame} of \code{environments}
-   #' observations for the parent \code{TPEaseVar}
-   #' @param parent A \code{TPEaseVar} parent object of \code{VarEstim}
-   #' @return A new \code{VarEstim} object.
-   initialize = function(name="estim1", environments, eparam, weathers,
+    #' @description Create a new \code{VarEstim} object
+    #' @param name A \code{character} string identifier of \code{VarEstim}
+    #' @param environments A \code{vector} of environments names
+    #' @param eparam A \code{data.frame} of \code{environments} parameters
+    #' @param weathers A \code{data.frame} of \code{environments} weathers
+    #' @param observations A \code{data.frame} of \code{environments}
+    #' observations for the parent \code{TPEaseVar}
+    #' @param parent A \code{TPEaseVar} parent object of \code{VarEstim}
+    #' @return A new \code{VarEstim} object.
+    initialize = function(name="estim1", environments, eparam, weathers,
                          observations, parent) {
      self$name <- as.character(name)
      self$parent <- parent
-     if(length(environments) > 1 || !is.na(environments)) {
+     if(length(environments) > 1) {
        for(i in 1:length(environments)) {
-         self$createEnv(environments[i], eparam[i,], weathers[[i]],
-                        observations[[i]])
-         param <- merge(self$parent$parameters, eparam[i,])
-         param$X <- environments[i]
-         self$parameters <- rbind(self$parameters, param)
+         if(!is.na(environments[i])) {
+           self$createEnv(environments[i], eparam[i,], weathers[[i]],
+                          observations[[i]])
+           param <- merge(self$parent$parameters, eparam[i,])
+           param$X <- environments[i]
+           self$parameters <- rbind(self$parameters, param)
+         }
        }
      }
-   },
+    },
 
-   #' @description Create a \code{EstimEnv} object
-   #' @param name A \code{character} string identifier of the \code{EstimEnv}
-   #' @param eparam A \code{data.frame} of environment parameters
-   #' @param weather A \code{data.frame} of environment's weather data
-   #' @param observations A \code{data.frame} of observations of the parent
-   #' \code{TPEaseVar} in the \code{EstimEnv}
-   createEnv = function(name, eparam, weather, observations) {
+    #' @description Create a \code{EstimEnv} object
+    #' @param name A \code{character} string identifier of the \code{EstimEnv}
+    #' @param eparam A \code{data.frame} of environment parameters
+    #' @param weather A \code{data.frame} of environment's weather data
+    #' @param observations A \code{data.frame} of observations of the parent
+    #' \code{TPEaseVar} in the \code{EstimEnv}
+    createEnv = function(name, eparam, weather, observations) {
      self$environments <- append(self$environments,
-                                 EstimEnv$new(name, self, self$parent, eparam,
+                                 EstimEnv$new(name, self, eparam,
                                               weather, observations))
-   },
+    },
 
-   #' @description Run parameter estimation
-   #' @param maxiter A numeric value of the maximum number of iteration
-   #' for \code{DEoptim}
-   #' @param paramnames A \code{vector} of parameter names to be estimated
-   #' @param metric A \code{character} string with the name of the metric to use
-   #' for fitness computation. Options are c("RMSE","MAE","MSE")
-   #' @param score_fn A \code{function} to compute fitness, see \code{get_score}
-   #' @param weigh_fn Not used for the moment
-   #' TODO: implement weigh_fn
-   #' @param bounds A \code{matrix} or \code{data.frame} with lower (col1)
-   #' and upper (col2) bounds for each of the parameters in \code{paramnames}
-   #' (rows)
-   #' @param args Additional parameters to be passed to \code{DEoptim.control}
-   #' @import DEoptim
-   #' @import rsamara
-   runEstimation = function(maxiter=2000, paramnames=NA,
+    #' @description Run parameter estimation
+    #' @param maxiter A numeric value of the maximum number of iteration
+    #' for \code{DEoptim}
+    #' @param paramnames A \code{vector} of parameter names to be estimated
+    #' @param metric A \code{character} string with the name of the metric to
+    #' use for fitness computation. Options are c("RMSE","MAE","MSE")
+    #' @param score_fn A \code{function} to compute fitness,
+    #' see \code{get_score}
+    #' @param weigh_fn Not used for the moment
+    #' TODO: implement weigh_fn
+    #' @param bounds A \code{matrix} or \code{data.frame} with lower (col1)
+    #' and upper (col2) bounds for each of the parameters in \code{paramnames}
+    #' (rows)
+    #' @param args Additional parameters to be passed to \code{DEoptim.control}
+    #' @import DEoptim
+    #' @import rsamara
+    runEstimation = function(maxiter=2000, paramnames=NA,
                             metric="RMSE", score_fn=get_score, weigh_fn=NA,
                             bounds=NA, args) {
      if(length(self$environments) < 1) {
@@ -107,7 +111,7 @@ VarEstim <- R6::R6Class("VarEstim",
                   " and parameters have been updated on variety ",
                   self$parent$name))
      }
-   }
+    }
   ),
 
   private = list(

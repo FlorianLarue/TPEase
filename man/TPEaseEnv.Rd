@@ -23,8 +23,6 @@ across the different types of environments
 
 \item{\code{parent}}{The \code{TPEase} parent object of \code{TPEaseEnv}}
 
-\item{\code{variety}}{The \code{TPEaseVar} attached to the \code{TPEaseEnv}}
-
 \item{\code{weather}}{A \code{EnvWeather} object}
 
 \item{\code{soil}}{A \code{EnvSoil} object}
@@ -51,7 +49,7 @@ parameters}
 \subsection{Method \code{new()}}{
 Create a new \code{TPEaseEnv} object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$new(name = "e1", parent, variety, parameters, weather)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$new(name = "e1", parent, parameters, weather)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -60,8 +58,6 @@ Create a new \code{TPEaseEnv} object
 \item{\code{name}}{A \code{character} string identifier of the \code{TPEaseEnv}}
 
 \item{\code{parent}}{A \code{TPEase} parent object of the Environment}
-
-\item{\code{variety}}{A \code{TPEaseVar} attached to the \code{TPEaseEnv}}
 
 \item{\code{parameters}}{A \code{data.frame} with all crop model environment
 parameters}

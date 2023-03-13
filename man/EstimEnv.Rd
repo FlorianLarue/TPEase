@@ -11,7 +11,7 @@ Environment object of a \code{VarEstim} containing all information about a
 given environment used in the parameter estimation process
 }
 \details{
-The `EstimEnv` object is a subclass of `TPEaseEnv` specific for an
+The \code{EstimEnv} object is a subclass of \code{TPEaseEnv} specific for an
 estimation process and containing all information of the Environment,
 defined as a combination of : soil, weather and crop management data
 }
@@ -47,7 +47,7 @@ defined as a combination of : soil, weather and crop management data
 \subsection{Method \code{new()}}{
 Create a new \code{EstimEnv} object
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{EstimEnv$new(name = "e1", parent, variety, parameters, weather, observations)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{EstimEnv$new(name = "e1", parent, parameters, weather, observations)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -56,8 +56,6 @@ Create a new \code{EstimEnv} object
 \item{\code{name}}{A \code{character} string identifier of the \code{EstimEnv}}
 
 \item{\code{parent}}{A \code{VarEstim} parent object of the \code{EstimEnv}}
-
-\item{\code{variety}}{A \code{TPEaseVar} attached to the \code{EstimEnv}}
 
 \item{\code{parameters}}{A \code{data.frame} with all crop model environment
 parameters}
