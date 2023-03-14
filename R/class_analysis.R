@@ -92,7 +92,7 @@ TPEase <- R6::R6Class("TPEase",
       private$initMessage(vParamMissings)
     },
 
-    #' @description Set TPEase name
+    #' @description Set \code{TPEase} name
     #' @param val New TPEase name
     set_name = function(val) {
       self$name <- as.character(val)
@@ -289,7 +289,7 @@ TPEase <- R6::R6Class("TPEase",
     #' @param tpeID A \code{numeric} value identifier of the \code{TPEaseTPE}
     #' @param mapID A \code{numeric} value identifier of the \code{TPEMap}
     #' @import ggplot2
-    print_maps = function(tpeID=1, mapID=1) {
+    printMaps = function(tpeID=1, mapID=1) {
       plotList <- self$TPEanalyses[[tpeID]]$maps[[mapID]]$plots
       for(i in 1:length(plotList)) {
         print(plotList[[i]])
@@ -307,15 +307,12 @@ TPEase <- R6::R6Class("TPEase",
     #' to use for fitness computation. Options are c("RMSE","MAE","MSE")
     #' @param score_fn A \code{function} to compute fitness,
     #' see \code{get_score}
-    #' @param weigh_fn Not used for the moment
-    #' TODO: implement weigh_fn
     #' @param bounds A \code{matrix} or \code{data.frame} with lower (row1)
     #' and upper (row2) bounds for each of the parameters in `paramnames` (cols)
     #' @param ... Additional parameters to be passed to \code{DEoptim.control}
     #' @import DEoptim
     runEstimation = function(varID=1, estimID=1, maxiter=2000, paramnames=NA,
-                             metric="RMSE", score_fn=get_score, weigh_fn=NA,
-                             bounds=NA, ...) {
+                             metric="MSE", score_fn=get_score, bounds=NA, ...) {
       args <- list(...)
       for(i in 1:length(varID)) {
         id <- self$get_varid(varID[i])

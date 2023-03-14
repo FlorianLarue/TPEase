@@ -29,8 +29,6 @@ as geographical location inside the \code{TPEGrid}
 \item{\code{result}}{Mean simulation results}
 
 \item{\code{simulations}}{Raw simulation results}
-
-\item{\code{gridParent}}{The \code{TPEGrid} parent object of \code{GridPoint}}
 }
 \if{html}{\out{</div>}}
 }
@@ -91,15 +89,21 @@ A new \code{GridPoint} object.
 \subsection{Method \code{set_soilParam()}}{
 Set soil parameters for grid point location
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{GridPoint$set_soilParam(soil, lat_lon)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{GridPoint$set_soilParam(soil)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{soil}}{Dataframe with soil characteristics}
-
-\item{\code{lat_lon}}{Dataframe with correspondance of lat/lon with soil df}
+\item{\code{soil}}{User input of soil parameters, either :
+\itemize{
+\item A \code{data.frame} with latitude (first column), longitude
+(second column) and corresponding soil parameters
+(starting from third column, column name should be the parameter name)
+for each grid point
+\item A \code{function} taking latitude and longitude as arguments and
+returning a named \code{vector} of parameter values
+}}
 }
 \if{html}{\out{</div>}}
 }
@@ -263,7 +267,15 @@ in the \code{TPEGrid}}
 \item{\code{j}}{An \code{integer} value of the col position of \code{GridPoint}
 in the \code{TPEGrid}}
 
-\item{\code{soilData}}{Tmp for Adam et al.}
+\item{\code{soilData}}{User input of soil parameters, either :
+\itemize{
+\item A \code{data.frame} with latitude (first column), longitude
+(second column) and corresponding soil parameters
+(starting from third column, column name should be the parameter name)
+for each grid point
+\item A \code{function} taking latitude and longitude as arguments and
+returning a named \code{vector} of parameter values
+}}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
 
@@ -302,7 +314,15 @@ Run simulation on \code{GridPoint} for bootstrap
 \describe{
 \item{\code{param}}{A \code{data.frame} of all crop model parameter values}
 
-\item{\code{soilData}}{Tmp for Adam et al.}
+\item{\code{soilData}}{User input of soil parameters, either :
+\itemize{
+\item A \code{data.frame} with latitude (first column), longitude
+(second column) and corresponding soil parameters
+(starting from third column, column name should be the parameter name)
+for each grid point
+\item A \code{function} taking latitude and longitude as arguments and
+returning a named \code{vector} of parameter values
+}}
 
 \item{\code{latlonData}}{Tmp for Adam et al.}
 

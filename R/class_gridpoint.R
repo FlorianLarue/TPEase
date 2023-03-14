@@ -26,8 +26,6 @@ GridPoint <- R6::R6Class("GridPoint",
     result = NULL,
     #' @field simulations Raw simulation results
     simulations = list(),
-    #' @field gridParent The \code{TPEGrid} parent object of \code{GridPoint}
-    gridParent = NULL,
 
     #' @description Create a new \code{GridPoint} object
     #' @param parent A \code{TPEGrid} parent object of the \code{GridPoint}
@@ -38,22 +36,35 @@ GridPoint <- R6::R6Class("GridPoint",
     #' (in decimal degrees)
     #' @return A new \code{GridPoint} object.
     initialize = function(parent=NA, name="11", lon=-4.3, lat=11.18) {
-      super$initialize(name, parent$parent$parent, NA, NA)
-      self$gridParent <- parent
+      super$initialize(name, parent, NA, NA)
       self$lon <- lon
       self$lat <- lat
-      self$weather <- TPEweather$new(self$name, self)
-      self$soil <- TPEsoil$new(self$name, self)
-      self$cm <- TPEcm$new(self$name)
       self$cm$set_latlon(c(self$lat,self$lon))
     },
 
-    #TODO: generalize
     #' @description Set soil parameters for grid point location
-    #' @param soil Dataframe with soil characteristics
-    #' @param lat_lon Dataframe with correspondance of lat/lon with soil df
-    set_soilParam = function(soil, lat_lon) {
-      self$soil$set_soilParam(soil, lat_lon)
+    #' @param soil User input of soil parameters, either :
+    #'
+    #' * A \code{data.frame} with latitude (first column), longitude
+    #' (second column) and corresponding soil parameters
+    #' (starting from third column, column name should be the parameter name)
+    #' for each grid point
+    #' * A \code{function} taking latitude and longitude as arguments and
+    #' returning a named \code{vector} of parameter values
+    #'
+    #' @md
+    set_soilParam = function(soil) {
+      if(class(soil) == "data.frame") {
+        self$soil$set_soilParam(colnames(soil)[3:ncol(soil)],
+                                soil[which(soil[,1] == self$lat &
+                                             soil[,2] == self$lon),
+                                     3:ncol(soil)])
+      } else if(class(soil) == "function") {
+        self$soil$set_soilParam(names(soil(self$lat, self$lon)),
+                                soil(self$lat, self$lon))
+      } else {
+        cat("Soil data.frame or function was not recognized")
+      }
     },
 
     #TODO: generalize
@@ -132,7 +143,15 @@ GridPoint <- R6::R6Class("GridPoint",
     #' in the \code{TPEGrid}
     #' @param j An \code{integer} value of the col position of \code{GridPoint}
     #' in the \code{TPEGrid}
-    #' @param soilData Tmp for Adam et al.
+    #' @param soilData User input of soil parameters, either :
+    #'
+    #' * A \code{data.frame} with latitude (first column), longitude
+    #' (second column) and corresponding soil parameters
+    #' (starting from third column, column name should be the parameter name)
+    #' for each grid point
+    #' * A \code{function} taking latitude and longitude as arguments and
+    #' returning a named \code{vector} of parameter values
+    #'
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. A \code{vector} of trait names to extract
@@ -144,10 +163,11 @@ GridPoint <- R6::R6Class("GridPoint",
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
+    #' @md
     runSimulation = function(param, i, j, soilData, latlonData, cumulP,
                              traitList, savePath) {
 
-      self$set_soilParam(soilData, latlonData)
+      self$set_soilParam(soilData)
 
       if(!is.null(self$weather$yearLevels)) {
         for(year in self$weather$yearLevels) {
@@ -191,7 +211,7 @@ GridPoint <- R6::R6Class("GridPoint",
 
         self$weather$simuWeather <- NULL
       } else if(!self$soil$soilParam) {
-        warning(paste("Soil parameters were not extracted from HC27 for",
+        warning(paste("Soil parameters were not extracted for",
                       "grid point", self$name,
                       "Simulation for this grid point will not be run."),
                 call.=F)
@@ -204,7 +224,15 @@ GridPoint <- R6::R6Class("GridPoint",
 
     #' @description Run simulation on \code{GridPoint} for bootstrap
     #' @param param A \code{data.frame} of all crop model parameter values
-    #' @param soilData Tmp for Adam et al.
+    #' @param soilData User input of soil parameters, either :
+    #'
+    #' * A \code{data.frame} with latitude (first column), longitude
+    #' (second column) and corresponding soil parameters
+    #' (starting from third column, column name should be the parameter name)
+    #' for each grid point
+    #' * A \code{function} taking latitude and longitude as arguments and
+    #' returning a named \code{vector} of parameter values
+    #'
     #' @param latlonData Tmp for Adam et al.
     #' @param cumulP Tmp for Adam et al.
     #' @param traitList Optionnal. A \code{vector} of trait names to extract
@@ -218,10 +246,11 @@ GridPoint <- R6::R6Class("GridPoint",
     #' @importFrom stringr str_split_fixed
     #' @importFrom matrixStats colMaxs
     #' @importFrom data.table fwrite
+    #' @md
     runBSSimulation = function(param, soilData, latlonData, cumulP, traitList,
                                startingYear, savePath) {
 
-      self$set_soilParam(soilData, latlonData)
+      self$set_soilParam(soilData)
 
       if(!is.null(self$weather$yearLevels)) {
         for(i in 1:self$weather$yearLevels) {
@@ -266,7 +295,7 @@ GridPoint <- R6::R6Class("GridPoint",
           }
         }
       } else if(!self$soil$soilParam) {
-        warning(paste("Soil parameters were not extracted from HC27 for",
+        warning(paste("Soil parameters were not extracted for",
                       "grid point", self$name,
                       "Simulation for this grid point will not be run."),
                 call.=F)

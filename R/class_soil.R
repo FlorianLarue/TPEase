@@ -32,31 +32,17 @@ TPEsoil <- R6::R6Class("TPEsoil",
       self$parent <- parent
     },
 
-    #' @description Set soil parameters for grid point location
-    #' @param soil Dataframe with soil characteristics
-    #' @param lat_lon Dataframe with correspondance of lat/lon with soil df
-    set_soilParam = function(soil, lat_lon) {  #TODO: generalize
-      gCode <- lat_lon[which(lat_lon$X == round(self$parent$lon,digits=2) &
-                               lat_lon$Y == round(self$parent$lat,digits=2)),
-                       "GRIDCODE"]
-      if(length(gCode) > 0) {
-        self$parameters[,c("stockinisurf","stockiniprof","epaisseursurf",
-                           "epaisseurprof","humpf", "humsat","humfc")] <-
-          c(soil[which(soil$GRIDCODE == gCode),
-                 "stockinisurf"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "stockiniprof"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "epaisseursurf"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "epaisseurprof"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "humpf"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "humsat"],
-            soil[which(soil$GRIDCODE == gCode),
-                 "humfc"])
-        self$soilParam <- TRUE
+    #' @description Set soil parameters
+    #' @param name A \code{character} value (or \code{vector}) of
+    #' soil parameter name(s)
+    #' @param val A \code{numeric} (or \code{vector}) of soil parameter values
+    set_soilParam = function(name, val) {
+      for(i in 1:length(name)) {
+        if(!is.na(name[i]) & name[i] %in% colnames(self$parameters)) {
+          self$parameters[,which(colnames(self$parameters) == name[i])] <-
+            val[i]
+          self$soilParam <- TRUE
+        }
       }
     }
   ),

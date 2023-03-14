@@ -21,7 +21,7 @@ across the different types of environments
 \describe{
 \item{\code{name}}{The \code{TPEaseEnv} identifier}
 
-\item{\code{parent}}{The \code{TPEase} parent object of \code{TPEaseEnv}}
+\item{\code{parent}}{The parent object of \code{TPEaseEnv}}
 
 \item{\code{weather}}{A \code{EnvWeather} object}
 
@@ -93,18 +93,11 @@ Set weather
 \if{html}{\out{<a id="method-TPEaseEnv-set_param"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEaseEnv-set_param}{}}}
 \subsection{Method \code{set_param()}}{
-Set parameters
+Set environment parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$set_param(val)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEaseEnv$set_param()}\if{html}{\out{</div>}}
 }
 
-\subsection{Arguments}{
-\if{html}{\out{<div class="arguments">}}
-\describe{
-\item{\code{val}}{A \code{data.frame} with parameter values}
-}
-\if{html}{\out{</div>}}
-}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-TPEaseEnv-clone"></a>}}

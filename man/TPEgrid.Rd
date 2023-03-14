@@ -33,6 +33,9 @@ environments (\code{GridPoints}) for a given variety (\code{TPEaseVar})
 
 \item{\code{gridPoints}}{A \code{matrix} of \code{GridPoint} objects}
 
+\item{\code{parameters}}{A \code{matrix} of all parameters
+(variety x environment) for each \code{GridPoint}}
+
 \item{\code{gridRes}}{Summary of simulation results at the grid level}
 
 \item{\code{parent}}{The \code{TPEaseTPE} parent object of \code{TPEGrid}}

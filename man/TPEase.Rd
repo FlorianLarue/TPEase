@@ -51,7 +51,7 @@ The \code{TPEase} can contain a list of \code{TPEaseVar} objects
 \item \href{#method-TPEase-runClustering}{\code{TPEase$runClustering()}}
 \item \href{#method-TPEase-plotMap}{\code{TPEase$plotMap()}}
 \item \href{#method-TPEase-addToPlot}{\code{TPEase$addToPlot()}}
-\item \href{#method-TPEase-print_maps}{\code{TPEase$print_maps()}}
+\item \href{#method-TPEase-printMaps}{\code{TPEase$printMaps()}}
 \item \href{#method-TPEase-runEstimation}{\code{TPEase$runEstimation()}}
 \item \href{#method-TPEase-clone}{\code{TPEase$clone()}}
 }
@@ -116,7 +116,7 @@ A new `TPEase` object
 \if{html}{\out{<a id="method-TPEase-set_name"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEase-set_name}{}}}
 \subsection{Method \code{set_name()}}{
-Set TPEase name
+Set \code{TPEase} name
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{TPEase$set_name(val)}\if{html}{\out{</div>}}
 }
@@ -484,12 +484,12 @@ Add ggplot2 objects to existing plots
 }
 }
 \if{html}{\out{<hr>}}
-\if{html}{\out{<a id="method-TPEase-print_maps"></a>}}
-\if{latex}{\out{\hypertarget{method-TPEase-print_maps}{}}}
-\subsection{Method \code{print_maps()}}{
+\if{html}{\out{<a id="method-TPEase-printMaps"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEase-printMaps}{}}}
+\subsection{Method \code{printMaps()}}{
 Print a given map
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEase$print_maps(tpeID = 1, mapID = 1)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEase$printMaps(tpeID = 1, mapID = 1)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -513,9 +513,8 @@ Run parameter estimation for a given variety
   estimID = 1,
   maxiter = 2000,
   paramnames = NA,
-  metric = "RMSE",
+  metric = "MSE",
   score_fn = get_score,
-  weigh_fn = NA,
   bounds = NA,
   ...
 )}\if{html}{\out{</div>}}
@@ -539,9 +538,6 @@ to use for fitness computation. Options are c("RMSE","MAE","MSE")}
 
 \item{\code{score_fn}}{A \code{function} to compute fitness,
 see \code{get_score}}
-
-\item{\code{weigh_fn}}{Not used for the moment
-TODO: implement weigh_fn}
 
 \item{\code{bounds}}{A \code{matrix} or \code{data.frame} with lower (row1)
 and upper (row2) bounds for each of the parameters in `paramnames` (cols)}

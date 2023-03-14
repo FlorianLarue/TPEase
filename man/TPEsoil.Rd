@@ -59,17 +59,18 @@ A new `TPEsoil` object.
 \if{html}{\out{<a id="method-TPEsoil-set_soilParam"></a>}}
 \if{latex}{\out{\hypertarget{method-TPEsoil-set_soilParam}{}}}
 \subsection{Method \code{set_soilParam()}}{
-Set soil parameters for grid point location
+Set soil parameters
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{TPEsoil$set_soilParam(soil, lat_lon)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{TPEsoil$set_soilParam(name, val)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{soil}}{Dataframe with soil characteristics}
+\item{\code{name}}{A \code{character} value (or \code{vector}) of
+soil parameter name(s)}
 
-\item{\code{lat_lon}}{Dataframe with correspondance of lat/lon with soil df}
+\item{\code{val}}{A \code{numeric} (or \code{vector}) of soil parameter values}
 }
 \if{html}{\out{</div>}}
 }

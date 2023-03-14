@@ -19,7 +19,7 @@ TPEaseEnv <- R6::R6Class("TPEaseEnv",
   public = list(
     #' @field name The \code{TPEaseEnv} identifier
     name = NULL,
-    #' @field parent The \code{TPEase} parent object of \code{TPEaseEnv}
+    #' @field parent The parent object of \code{TPEaseEnv}
     parent = NULL,
     #' @field weather A \code{EnvWeather} object
     weather = NULL,
@@ -43,7 +43,8 @@ TPEaseEnv <- R6::R6Class("TPEaseEnv",
       self$name <- name
       self$parent <- parent
       self$parameters <- parameters
-      self$weather <- weather
+      self$weather <- TPEweather$new(self$name, self)
+      self$set_weather(weather)
       self$soil <- TPEsoil$new(self$name, self)
       self$cm <- TPEcm$new(self$name, self)
     },
@@ -51,13 +52,21 @@ TPEaseEnv <- R6::R6Class("TPEaseEnv",
     #' @description Set weather
     #' @param val A \code{data.frame} with weather data
     set_weather = function(val) {
-      self$weather <- val
+      self$weather$set_weather(val)
     },
 
-    #' @description Set parameters
-    #' @param val A \code{data.frame} with parameter values
-    set_param = function(val) {
-      self$parameters <- val
+    #' @description Set environment parameters
+    #' @import dplyr
+    set_param = function() {
+      tmpParam <- data.frame(t(merge(self$parameters,
+                                     merge(self$soil$parameters,
+                                           self$cm$parameters, all = TRUE),
+                                     all = TRUE)))
+      tmpParam <- tmpParam %>%
+        mutate(Val = coalesce(X1, X2)) %>%
+        select(-c(X1, X2))
+      tmpParam <- data.frame(t(tmpParam))
+      self$parameters <- tmpParam
     }
   )
 )

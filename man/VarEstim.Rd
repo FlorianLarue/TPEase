@@ -27,12 +27,13 @@ environments
 \item{\code{environments}}{A \code{list} of \code{EstimEnv} objects to use for
 estimation}
 
-\item{\code{parameters}}{All parameters (variety x environment) of the crop model}
+\item{\code{parameters}}{All parameters (variety x environment) of the crop
+model}
 
-\item{\code{DEparams}}{A DEoptim.control object with hyperparameters used for
-DEoptim parameter estimation}
+\item{\code{DEparams}}{A \code{DEoptim.control} object with hyperparameters
+used for \code{DEoptim} parameter estimation}
 
-\item{\code{DEresult}}{The DEoptim result}
+\item{\code{DEresult}}{The \code{DEoptim} result}
 
 \item{\code{paramNames}}{The names of parameters to be estimated}
 }
@@ -120,7 +121,6 @@ Run parameter estimation
   paramnames = NA,
   metric = "RMSE",
   score_fn = get_score,
-  weigh_fn = NA,
   bounds = NA,
   args
 )}\if{html}{\out{</div>}}
@@ -134,13 +134,11 @@ for \code{DEoptim}}
 
 \item{\code{paramnames}}{A \code{vector} of parameter names to be estimated}
 
-\item{\code{metric}}{A \code{character} string with the name of the metric to use
-for fitness computation. Options are c("RMSE","MAE","MSE")}
+\item{\code{metric}}{A \code{character} string with the name of the metric to
+use for fitness computation. Options are c("RMSE","MAE","MSE")}
 
-\item{\code{score_fn}}{A \code{function} to compute fitness, see \code{get_score}}
-
-\item{\code{weigh_fn}}{Not used for the moment
-TODO: implement weigh_fn}
+\item{\code{score_fn}}{A \code{function} to compute fitness,
+see \code{get_score}}
 
 \item{\code{bounds}}{A \code{matrix} or \code{data.frame} with lower (col1)
 and upper (col2) bounds for each of the parameters in \code{paramnames}

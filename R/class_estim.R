@@ -82,17 +82,14 @@ VarEstim <- R6::R6Class("VarEstim",
     #' use for fitness computation. Options are c("RMSE","MAE","MSE")
     #' @param score_fn A \code{function} to compute fitness,
     #' see \code{get_score}
-    #' @param weigh_fn Not used for the moment
-    #' TODO: implement weigh_fn
     #' @param bounds A \code{matrix} or \code{data.frame} with lower (col1)
     #' and upper (col2) bounds for each of the parameters in \code{paramnames}
     #' (rows)
     #' @param args Additional parameters to be passed to \code{DEoptim.control}
     #' @import DEoptim
     #' @import rsamara
-    runEstimation = function(maxiter=2000, paramnames=NA,
-                            metric="RMSE", score_fn=get_score, weigh_fn=NA,
-                            bounds=NA, args) {
+    runEstimation = function(maxiter=2000, paramnames=NA, metric="RMSE",
+                             score_fn=get_score, bounds=NA, args) {
      if(length(self$environments) < 1) {
        stop(paste0("No environments were found for estimation ", self$name,
                    " of variety ", self$parent$name), call.=F)
@@ -115,8 +112,6 @@ VarEstim <- R6::R6Class("VarEstim",
   ),
 
   private = list(
-    score_fn = NULL,
-
     fitness = function(p, score_fn, idv, metric) {
       self$test <- self$test + 1
       if(length(self$environments) > 0) {
@@ -138,7 +133,6 @@ VarEstim <- R6::R6Class("VarEstim",
             }
           }
           sum_score <- sum_score + col_score
-          self$test <- c(self$test, col_score)
         }
         return(sum_score/length(self$environments))
       } else {

@@ -25,6 +25,20 @@ TPEcm <- R6::R6Class("TPEcm",
       self$parameters <- data.frame(fread(parampath))
     },
 
+    #' @description Set crop management parameters
+    #' @param name A \code{character} value (or \code{vector}) of
+    #' crop management parameter name(s)
+    #' @param val A \code{numeric} (or \code{vector}) of crop management
+    #' parameter values
+    set_cmParam = function(name, val) {
+      for(i in 1:length(name)) {
+        if(!is.na(name[i]) & name[i] %in% colnames(self$parameters)) {
+          self$parameters[,which(colnames(self$parameters) == name[i])] <-
+            val[i]
+        }
+      }
+    },
+
     #' @description Set date parameters (starting, ending and sowing date)
     #' @param val A vector of size 3 with starting, ending and sowing dates
     set_dateparam = function(val) {

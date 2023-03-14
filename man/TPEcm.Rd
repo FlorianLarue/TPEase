@@ -22,6 +22,7 @@ TODO
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-TPEcm-new}{\code{TPEcm$new()}}
+\item \href{#method-TPEcm-set_cmParam}{\code{TPEcm$set_cmParam()}}
 \item \href{#method-TPEcm-set_dateparam}{\code{TPEcm$set_dateparam()}}
 \item \href{#method-TPEcm-set_latlon}{\code{TPEcm$set_latlon()}}
 \item \href{#method-TPEcm-clone}{\code{TPEcm$clone()}}
@@ -47,6 +48,27 @@ Create a new variety object
 }
 \subsection{Returns}{
 A new `TPEenv` object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-TPEcm-set_cmParam"></a>}}
+\if{latex}{\out{\hypertarget{method-TPEcm-set_cmParam}{}}}
+\subsection{Method \code{set_cmParam()}}{
+Set crop management parameters
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{TPEcm$set_cmParam(name, val)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{name}}{A \code{character} value (or \code{vector}) of
+crop management parameter name(s)}
+
+\item{\code{val}}{A \code{numeric} (or \code{vector}) of crop management
+parameter values}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

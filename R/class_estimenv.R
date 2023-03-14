@@ -28,11 +28,15 @@ EstimEnv <- R6::R6Class("EstimEnv",
     #' parameters
     #' @param weather A \code{data.frame} with weather data
     #' @param observations A \code{list} of \code{data.frames} of observations
-    #' @return A new \code{EstimEnv} object.
+    #' @return A new \code{EstimEnv} object
     initialize = function(name="e1", parent, parameters, weather,
                           observations) {
       super$initialize(name, parent, parameters, weather)
       self$observations <- observations
+      self$soil$set_soilParam(colnames(self$soil$parameters),
+                              self$parameters[colnames(self$soil$parameters)])
+      self$cm$set_cmParam(colnames(self$cm$parameters),
+                              self$parameters[colnames(self$cm$parameters)])
     }
   )
 )

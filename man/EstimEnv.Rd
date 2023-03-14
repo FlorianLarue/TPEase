@@ -67,7 +67,7 @@ parameters}
 \if{html}{\out{</div>}}
 }
 \subsection{Returns}{
-A new \code{EstimEnv} object.
+A new \code{EstimEnv} object
 }
 }
 \if{html}{\out{<hr>}}
