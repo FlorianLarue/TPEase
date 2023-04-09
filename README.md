@@ -1,23 +1,23 @@
-# CGMTPE
+# TPEase
 
 R package to perform Target Population of Environments (TPE) analysis using Crop Growth Models (CGM). 
 
 This package aims to facilitate the analysis of TPE (in particular the characterization of the environment according to the performance of cultivated plants) by providing a number of useful functions for: (1) model calibration by parameter estimation, (2) model validation, (3) generation of future climates on a grid and (4) simulation of plant performance on this grid. These results can then be used to characterize the environments. 
 
-CGMTPE supports the Samara crop model (ref). Work is ongoing to also support STICS (ref) and other models (DSSAT, APSIM, ...).
+TPEase supports the Samara crop model. Work is ongoing to also support STICS and other models (DSSAT, APSIM, ...).
 
 ## Installation
 
 Use the provided install_github function from the [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html) package to install CGMTPE:
 
 ```r
-install_github("KawahFL/CGMTPE")
+install_github("KawahFL/TPEase")
 ```
 
 ## Usage
 
 ```r
-library(CGMTPE)
+library(TPEase)
 
 # load example data
 loadData()
@@ -39,6 +39,13 @@ TPE_analysis$runGridSim()
 
 # plot simulations
 TPE_analysis$plotSim("GrainYieldPopFin")
+
+# cluster simulations
+TPE_analysis$runClustering()
+
+# plot results on a map
+TPE_analysis$createMap()
+TPE_analysis$plotMap()
 
 ```
 
