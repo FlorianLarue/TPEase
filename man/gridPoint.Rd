@@ -17,7 +17,7 @@ defined as a combination of : soil, weather and crop management data as well
 as geographical location inside the \code{TPEGrid}
 }
 \section{Super class}{
-\code{\link[CGMTPE:TPEaseEnv]{CGMTPE::TPEaseEnv}} -> \code{GridPoint}
+\code{\link[TPEase:TPEaseEnv]{TPEase::TPEaseEnv}} -> \code{GridPoint}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -51,7 +51,7 @@ as geographical location inside the \code{TPEGrid}
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="set_param"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-set_param'><code>CGMTPE::TPEaseEnv$set_param()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="TPEase" data-topic="TPEaseEnv" data-id="set_param"><a href='../../TPEase/html/TPEaseEnv.html#method-TPEaseEnv-set_param'><code>TPEase::TPEaseEnv$set_param()</code></a></span></li>
 </ul>
 </details>
 }}

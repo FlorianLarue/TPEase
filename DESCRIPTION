@@ -1,12 +1,20 @@
-Package: CGMTPE
+Package: TPEase
 Type: Package
 Title: Generic Framework to perform Target Population of Environments analysis
 Version: 0.1.0
 Author: Florian Larue
-Maintainer: Florian Larue <florian.larue@cirad.fr>
-Description: Generic Framework to perform analysis of 
-  Target Population of Environments by using a crop model. From model calibration
-  to data visualisation.
+Maintainer: Florian Larue <florian.larue@outlook.com>
+Description: TPEase is a generic framework to perform analysis of 
+  Target Population of Environments (TPE) by using a crop model. 
+  Through an object-oriented approach (R6), 
+  this package eases the TPE analysis byallowing users to cross 
+  environmental information (soil, weather, crop managment) and 
+  varietal information (genotypic parameters) and thus simulate plant responses 
+  to a diversity of situations.
+  TPEase also incapsulates methods for parameter estimation (using DEoptim), 
+  weather data generation (using raster and Marksim), 
+  parallel grid simulation (using parallel) and 
+  data vizualisation (using ggplot2).
 Encoding: UTF-8
 LazyData: true
 Imports: ggplot2, Rdpack

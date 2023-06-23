@@ -16,7 +16,7 @@ estimation process and containing all information of the Environment,
 defined as a combination of : soil, weather and crop management data
 }
 \section{Super class}{
-\code{\link[CGMTPE:TPEaseEnv]{CGMTPE::TPEaseEnv}} -> \code{EstimEnv}
+\code{\link[TPEase:TPEaseEnv]{TPEase::TPEaseEnv}} -> \code{EstimEnv}
 }
 \section{Public fields}{
 \if{html}{\out{<div class="r6-fields">}}
@@ -36,8 +36,8 @@ defined as a combination of : soil, weather and crop management data
 \if{html}{\out{
 <details open><summary>Inherited methods</summary>
 <ul>
-<li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="set_param"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-set_param'><code>CGMTPE::TPEaseEnv$set_param()</code></a></span></li>
-<li><span class="pkg-link" data-pkg="CGMTPE" data-topic="TPEaseEnv" data-id="set_weather"><a href='../../CGMTPE/html/TPEaseEnv.html#method-TPEaseEnv-set_weather'><code>CGMTPE::TPEaseEnv$set_weather()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="TPEase" data-topic="TPEaseEnv" data-id="set_param"><a href='../../TPEase/html/TPEaseEnv.html#method-TPEaseEnv-set_param'><code>TPEase::TPEaseEnv$set_param()</code></a></span></li>
+<li><span class="pkg-link" data-pkg="TPEase" data-topic="TPEaseEnv" data-id="set_weather"><a href='../../TPEase/html/TPEaseEnv.html#method-TPEaseEnv-set_weather'><code>TPEase::TPEaseEnv$set_weather()</code></a></span></li>
 </ul>
 </details>
 }}
