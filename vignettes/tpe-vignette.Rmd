@@ -8,47 +8,55 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
+# TPEase vignette : how to use the package
+
 ```{r setup, include=TRUE}
-library(CGMTPE)
-library(ggplot2)
+
+library(TPEase)
 knitr::opts_knit$set(root.dir = rprojroot::find_rstudio_root_file())
+
 ```
 
+## Creating a TPEase object
+
 ```{r}
-# load example data
-loadData()
 
-# create a TPE analysis object
-TPE_analysis <- createTpe(varieties=c("Fadda"),
-                 environments=c("BAMA2014S1","BAMA2014S2"),
-                 parameters=param)
+cropParam <- read.csv(system.file("extdata", "crop.csv", package="TPEase"), 
+                      sep=";")
+soilParam <- read.csv(system.file("extdata", "soil.csv", package="TPEase"), 
+                      sep=";")
+cmParam <- read.csv(system.file("extdata", "management.csv", package="TPEase"), 
+                      sep=";")
+envParam <- merge(soilParam, cmParam)
 
-# set weather data and observation data from the data loaded with loadData()
-TPE_analysis$set_weather(envID=1, weather)
-TPE_analysis$set_weather(envID=2, weather)
-#obs <- list(obs,obs)
-TPE_analysis$set_obs(varID=1, obs)
+tpea <- TPEase$new(name = "tpea", model = "Samara", varieties = c("Genotype_1"),
+                  vparameters = cropParam, eparameters = envParam)
 
-# run parameter estimation, will also update the parameters of the TPE a object
-TPE_analysis$runEstimation(varID=1, envID=1, maxiter=5, 
-                           paramnames=paramOfInterest, bounds = paramBounds)
+```
 
-# create a simulation grid
-TPE_analysis$createGrid("grid1", 0.5, 39, 22, -16.59, 9.20)
 
-# generate climate on each point of the grid
-TPE_analysis$genClimate(gridID=1, year=2014, yearNb=1, path="D:\\Marksim\\",
-                        filesE=T)
+## Creating a TPE object as a child of TPEase
 
-# run model simulation on each point of the grid using estimated parameters
-TPE_analysis$runGridSim(gridID=1, varID=1, trait="GrainYieldPopFin",
-                        year=2014, soilData=soil, latlonData=lat_lon)
+```{r setup, include=TRUE}
 
-# create a map of the studied region in TPE anaylisis
-TPE_analysis$createMap("map1", 1, 1, res=150, bounds=c(17,5,5,-20))
+tpea$createTPE(name = "tpe")
 
-# plot map
-TPE_analysis$plotMap()
-print(TPE_analysis$maps[[1]]$plots[[1]])
+```
+
+
+## Creating a Grid object as a child of TPE
+
+```{r setup, include=TRUE}
+
+tpea$createGrid(tpeID = 1, varID = 1, name = "grid", lon = -16.59, lat = 9.20,
+               cols = 10, rows = 10)
+
+```
+
+## Generating weather data on the grid
+
+```{r setup, include=TRUE}
+
+tpea$genClimate(tpeID = 1, gridID = 1, path = "C:/Marksim/")
 
 ```

@@ -36,7 +36,7 @@ GridPoint <- R6::R6Class("GridPoint",
     #' (in decimal degrees)
     #' @return A new \code{GridPoint} object.
     initialize = function(parent=NA, name="11", lon=-4.3, lat=11.18) {
-      super$initialize(name, parent, NA, NA)
+      super$initialize(name, parent, NA, NULL)
       self$lon <- lon
       self$lat <- lat
       self$cm$set_latlon(c(self$lat,self$lon))

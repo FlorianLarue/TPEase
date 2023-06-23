@@ -39,7 +39,7 @@ TPEmap <- R6::R6Class("TPEmap",
 
       cat(paste("\nCreating map", name,"\n"))
 
-      pathMap <- system.file("extdata", "World.shp", package="CGMTPE")
+      pathMap <- system.file("extdata", "World.shp", package="TPEase")
       tmpmap <- raster::shapefile(pathMap)
       if(length(bounds) == 4) {
         e <- as(raster::extent(bounds[4],bounds[2],bounds[3],bounds[1]),
