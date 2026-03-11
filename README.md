@@ -11,7 +11,7 @@ TPEase supports the Samara crop model. Work is ongoing to also support STICS and
 Use the provided install_github function from the [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html) package to install CGMTPE:
 
 ```r
-install_github("KawahFL/TPEase")
+install_github("FlorianLarue/TPEase")
 ```
 
 ## Usage
