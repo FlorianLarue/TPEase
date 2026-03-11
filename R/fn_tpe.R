@@ -28,15 +28,16 @@ generateClimate <- function(lon, lat, rcp, year, yearNb, modelNb, path,
   prec=extract(grid.prec,coordinates)
   prec[1,prec[1,]>999] <- 999
 
+  #if these data exists, transform data in Marksim readable format
+  #and write the data in CLI file
   if(!is.na(tmin[1])) {
-    #TODO: need to find solution. First, remove existing folder
+    #First, remove existing folder and create new one
     dirpath <- paste0(pathCLI,"CLI/ANYWHE_",modelNb,"_",rcp,"_",year)
     if(dir.exists(dirpath)) {
       unlink(dirpath, recursive=T)
     }
+    dir.create(dirpath)
 
-    #if these data exists, transform data in Marksim readable format
-    #and write the data in CLI file
     mdata <- matrix (rep(0,7*12),nrow=12,ncol=7)
     mdata[,1] <- seq(1:12)
     mdata[,2] <- rep(-99,12)
@@ -131,15 +132,16 @@ generateClimate2 <- function(lon, lat, rcp, year, yearNb, modelNb, path,
 
   prec[1,prec[1,]>999] <- 999
 
+  #if these data exists, transform data in Marksim readable format
+  #and write the data in CLI file
   if(!is.na(tmin[1])) {
-    #TODO: need to find solution. First, remove existing folder
+    #First, remove existing folder and create new one
     dirpath <- paste0(pathCLI,"CLI/ANYWHE_",modelNb,"_",rcp,"_",year)
     if(dir.exists(dirpath)) {
       unlink(dirpath, recursive=T)
     }
+    dir.create(dirpath)
 
-    #if these data exists, transform data in Marksim readable format
-    #and write the data in CLI file
     mdata <- matrix (rep(0,7*12),nrow=12,ncol=7)
     mdata[,1] <- seq(1:12)
     mdata[,2] <- rep(-99,12)

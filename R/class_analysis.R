@@ -210,7 +210,7 @@ TPEase <- R6::R6Class("TPEase",
     #' climate generation should be shown
     genClimate = function(tpeID=1, gridID=NA, rcp="rcp26", year=2014, yearNb=1,
                           modelNb="00000000000000000", path=NA, pathCLI=NA,
-                          seed=NA, filesE=F, verbose=T) {
+                          seed=1337, filesE=F, verbose=T) {
       self$TPEanalyses[[tpeID]]$genClimate(gridID, rcp, year, yearNb, modelNb,
                                            path, pathCLI, filesE, verbose, seed)
     },
