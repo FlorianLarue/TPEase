@@ -8,7 +8,7 @@ TPEase supports the Samara crop model. Work is ongoing to also support STICS and
 
 ## Installation
 
-Use the provided install_github function from the [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html) package to install CGMTPE:
+Use the provided install_github function from the [devtools](https://www.r-project.org/nosvn/pandoc/devtools.html) package to install TPEase:
 
 ```r
 install_github("FlorianLarue/TPEase")
@@ -17,35 +17,7 @@ install_github("FlorianLarue/TPEase")
 ## Usage
 
 ```r
-library(TPEase)
-
-# load example data
-loadData()
-
-# create a TPE analysis object
-TPE_analysis <- createTpe(varieties=c("Fadda"), 
-                          environments=c("BAMA2014S1"),
-                          latStart=11.8, lonStart=-4.3, 
-                          parameters=param)
-
-# create a simulation grid
-TPE_analysis$createGrid(5,3,3) #size 3x3 with 5km grid points
-
-# generate climate on each point of the grid
-TPE_analysis$genClim(path="D:\\Marksim\\")
-
-# run model simulation on each point of the grid
-TPE_analysis$runGridSim()
-
-# plot simulations
-TPE_analysis$plotSim("GrainYieldPopFin")
-
-# cluster simulations
-TPE_analysis$runClustering()
-
-# plot results on a map
-TPE_analysis$createMap()
-TPE_analysis$plotMap()
+# Usage is currently being rewritten in the next feature : vignettes
 
 ```
 
